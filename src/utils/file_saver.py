@@ -77,7 +77,7 @@ def create_final_composition_file(fraction_phase: PhaseType, name: str, fracao_f
 
 
 def save_excel_file(output_file: str, name: str, fraction_phase: PhaseType, filtered_data_dict: dict[str, pd.DataFrame]) -> None:
-    output = os.path.join(output_file, fraction_phase.value)
+    output = os.path.join(output_file, fraction_phase.name)
     composicoes_output = os.path.join(output, 'Composicoes')
     fracao_final_output = os.path.join(output, 'Fracao_Final')
 

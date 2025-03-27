@@ -8,5 +8,5 @@ class OperationsFilter(Enum):
 class PhaseType(Enum):
     OVERALL = 'Overall'
     VAPOR = 'Vapor'
-    LIQUID1 = 'Liquid1'
-    LIQUID2 = 'Liquid2'
+    OIL = 'Liquid1'
+    WATER = 'Liquid2'
