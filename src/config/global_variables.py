@@ -12,21 +12,19 @@ OUTPUT_FOLDER = os.path.abspath(os.path.join(current_dir, '../../tests'))
 NAME = 'composition_teste'
 PACKAGE = DWSIMPackages.PengRobinson1978
 
-# Avoid burn rate calculations.
+# Avoid burn rate and evaporation rate calculations.
 DEBUG_MODE = False
 
 # INPUT_FILE spreadsheet format.
 FORMAT_TYPE = FormatType.DEFAULT
 
 # Molar fraction phase to be output on the final file.
-# Read LIQUID1 as Oil and LIQUID2 as Water.
 FRACTION_PHASE = PhaseType.OVERALL
 
 # Type of operation made to filter data.
 OPERATION = OperationsFilter.CALORIFIC_VALUE
 
 # Which phase type to filter.
-# Read LIQUID1 as Oil and LIQUID2 as Water.
 PHASE_TYPE = PhaseType.OVERALL
 
 # Use data previously present on INPUT_FILE or just use all simulated data.
