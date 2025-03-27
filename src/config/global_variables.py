@@ -19,14 +19,12 @@ DEBUG_MODE = False
 FORMAT_TYPE = FormatType.DEFAULT
 
 # Molar fraction phase to be output on the final file.
-# Read LIQUID1 as Oil and LIQUID2 as Water.
 FRACTION_PHASE = PhaseType.OVERALL
 
 # Type of operation made to filter data.
 OPERATION = OperationsFilter.CALORIFIC_VALUE
 
 # Which phase type to filter.
-# Read LIQUID1 as Oil and LIQUID2 as Water.
 PHASE_TYPE = PhaseType.OVERALL
 
 # Use data previously present on INPUT_FILE or just use all simulated data.
