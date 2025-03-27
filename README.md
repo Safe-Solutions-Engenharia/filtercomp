@@ -1,6 +1,6 @@
 # FilterComp
 
-A tool for filtering and flashing process scenarios, integrating DWSIM for simulation support. It allows users to analyze scenarios based on predefined criteria, providing a structured and efficient way to flash multiple components.
+A tool for filtering scenarios and performing flash calculations with DWSIM integration. It allows users to analyze scenarios based on predefined criteria, providing a structured and efficient way to flash multiple components.
 
 ## Instalation
 
@@ -40,6 +40,12 @@ We acknowledge the DWSIM developers and contributors for their invaluable work.
 
 - 🔗 [DWSIM Official Website](https://dwsim.org/)
 - 🔗 [DWSIM GitHub Repository](https://github.com/DanWBR/dwsim)
+
+## Learn More
+
+For additional information and resources, check out the following:
+
+- [FilterComp Docs](/src/docs/).
 
 ## License
 
