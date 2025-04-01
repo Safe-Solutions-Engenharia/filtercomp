@@ -658,7 +658,7 @@ class FlashOperations:
 
             # Flash @STD
             self.flash_operation(compound_list, '101325', 
-                                 '298.15', flow_rate_name.lower(), 'kPa', 
+                                 '298.15', flow_rate_name.lower(), 'Pa', 
                                  flow_rate, 1, 1, 'Flash @STD')
 
             scenario_dict = self.get_std_flash_data(scenario_dict, temperature_K)
