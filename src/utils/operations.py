@@ -2,6 +2,7 @@ import logging
 import os
 from collections import OrderedDict
 import sqlite3
+import difflib
 
 from chemicals import Tc, Pc, CAS_from_any, Tb, MW
 from chemicals.phase_change import Riedel
@@ -98,13 +99,13 @@ class FlashOperations:
     #TODO: Adjust the 'force phase' relation.
     def flash_operation(self,
                         component_list: list[float], pressure_Pa: float, 
-                        temperature_K: float, flow_rate_name: str,
+                        temperature_K: float, flow_rate_name: str, pressure_unit: str,
                         flow_rate: float, gas_flow: float,
                         liquid_flow: float, flash_type: str) -> None:
         component_list = [float(comp) for comp in component_list]
         self.mst.SetOverallComposition(Array[float](component_list))
         self.mst.SetFlashSpec("PT")
-        self.mst.SetPressure(f'{pressure_Pa} Pa')
+        self.mst.SetPressure(f'{pressure_Pa} {pressure_unit}')
         self.mst.SetTemperature(f'{temperature_K} K')
 
         flow_types = {'overall_mass flow': [' kg/h', 'SetMassFlow'],
@@ -617,8 +618,18 @@ class FlashOperations:
             temperature_C = current_value[current_value['SCENARIO_Cenário'] == cen_name]['OVERALL_Temperature'].values[0] # C
             temperature_K = temperature_C + 273.15 # K
 
-            pressure_kPa = current_value[current_value['SCENARIO_Cenário'] == cen_name]['OVERALL_Pressure'].values[0] # kPa
-            pressure_Pa = pressure_kPa * 1000 # Pa
+            pressure_column_name = difflib.get_close_matches('OVERALL_Pressure', current_value.columns, n=1)
+            pressure_value = current_value[current_value['SCENARIO_Cenário'] == cen_name][pressure_column_name[0]].values[0]
+            pressure_unit = pressure_column_name[0].rsplit('_')[-1]
+
+            pressure_unit_conv = {
+                'kgf/cm2': 98.0665,
+                'Pa': 1 / 1000,
+                'kPa': 1,
+                'atm': 101.325
+            }
+
+            pressure_kPa = pressure_value * pressure_unit_conv.get(pressure_unit, 1)
 
             flow_rate_name = current_value.columns[6] # Mass Flow, Molar Flow or Volume Flow
             flow_rate = str(current_value[current_value['SCENARIO_Cenário'] == cen_name][flow_rate_name].values[0]) # kg/h, kmol/h or m3/h
@@ -637,8 +648,8 @@ class FlashOperations:
             scenario_dict['OVERALL_Pressure'] = pressure_kPa
 
             # Flash @P&T
-            self.flash_operation(compound_list, pressure_Pa, 
-                                 temperature_K, flow_rate_name.lower(), 
+            self.flash_operation(compound_list, pressure_value, 
+                                 temperature_K, flow_rate_name.lower(), pressure_unit,
                                  flow_rate, gas_flow, liquid_flow, 'Flash @P&T')
             
             scenario_dict = self.get_overall_data(scenario_dict)
@@ -647,7 +658,7 @@ class FlashOperations:
 
             # Flash @STD
             self.flash_operation(compound_list, '101325', 
-                                 '298.15', flow_rate_name.lower(), 
+                                 '298.15', flow_rate_name.lower(), 'kPa', 
                                  flow_rate, 1, 1, 'Flash @STD')
 
             scenario_dict = self.get_std_flash_data(scenario_dict, temperature_K)
