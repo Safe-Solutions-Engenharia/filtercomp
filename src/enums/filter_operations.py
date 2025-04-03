@@ -10,3 +10,7 @@ class PhaseType(Enum):
     VAPOR = 'Vapor'
     OIL = 'Liquid1'
     WATER = 'Liquid2'
+
+class CompoundBasis(Enum):
+    MOLE_FRAC = 'Molar_Fractions'
+    MASS_FRAC = 'Mass_Fractions'

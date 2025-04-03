@@ -12,20 +12,21 @@ import pandas as pd
 import clr
 
 from enums.dwsim_packages import DWSIMPackages
-from enums.filter_operations import PhaseType
+from enums.filter_operations import PhaseType, CompoundBasis
 from utils.logger import custom_logger
 
-DWSIMPATH = os.path.join(os.getenv('USERPROFILE'), "AppData", "Local", "DWSIM8")
+DWSIMPATH = os.path.join(os.getenv('USERPROFILE'), "AppData", "Local", "DWSIM")
 if not os.path.exists(DWSIMPATH):
-    custom_logger.log('DWSIM 8 not found!', logging.ERROR)
-    raise FileNotFoundError('Download DWSIM v8 to finish the operation!')
+    custom_logger.log('DWSIM 9 not found!', logging.ERROR)
+    raise FileNotFoundError('Download DWSIM v9 to finish the operation!')
 
 clr.AddReference(os.path.join(DWSIMPATH, "DWSIM.Automation.dll"))
 clr.AddReference(os.path.join(DWSIMPATH, "DWSIM.Interfaces.dll"))
 clr.AddReference(os.path.join(DWSIMPATH, "DWSIM.Thermodynamics.dll"))
+clr.AddReference(os.path.join(DWSIMPATH, "DWSIM.Thermodynamics.ThermoC.dll"))
 
 from System.IO import Directory # type: ignore
-from System import Array # type: ignore
+from System import Array, Double # type: ignore
 from DWSIM.Interfaces.Enums.GraphicObjects import ObjectType # type: ignore
 from DWSIM.Interfaces import IFlowsheet # type: ignore
 from DWSIM.Automation import Automation3 # type: ignore
@@ -37,6 +38,7 @@ class FlashOperations:
                  full_df_dict: dict[str, pd.DataFrame], 
                  full_info_dict: dict[str, pd.DataFrame],
                  molar_phase: PhaseType,
+                 compound_basis: CompoundBasis,
                  package: DWSIMPackages,
                  *,
                  debug_mode: bool = False) -> None:
@@ -45,6 +47,7 @@ class FlashOperations:
         db_filename = 'heat_of_combustion.db'
         self.database_path = os.path.join(base_path, 'files', 'database', db_filename)
         self.molar_phase = molar_phase.value
+        self.compound_basis = compound_basis.value
         self.debug_mode = debug_mode
 
         self.HEADERS: dict[str, list[str]] = {'SCENARIO': ['Cenário'],
@@ -103,7 +106,7 @@ class FlashOperations:
                         flow_rate: float, gas_flow: float,
                         liquid_flow: float, flash_type: str) -> None:
         component_list = [float(comp) for comp in component_list]
-        self.mst.SetOverallComposition(Array[float](component_list))
+        self.mst.SetOverallComposition(Array[Double](component_list))
         self.mst.SetFlashSpec("PT")
         self.mst.SetPressure(f'{pressure_Pa} {pressure_unit}')
         self.mst.SetTemperature(f'{temperature_K} K')
@@ -111,7 +114,6 @@ class FlashOperations:
         flow_types = {'overall_mass flow': [' kg/h', 'SetMassFlow'],
                       'overall_molar flow': [' kmol/h', 'SetMolarFlow'],
                       'overall_volumetric flow': [' m3/h', 'SetVolumetricFlow']}
-        
         flow_functions = flow_types[flow_rate_name]
         getattr(self.mst, flow_functions[1])(flow_rate + flow_functions[0])
 

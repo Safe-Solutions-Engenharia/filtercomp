@@ -3,7 +3,7 @@ import os
 
 from enums.dwsim_packages import DWSIMPackages
 from enums.format_type import FormatType
-from enums.filter_operations import OperationsFilter, PhaseType
+from enums.filter_operations import OperationsFilter, PhaseType, CompoundBasis
 
 current_dir = os.path.dirname(__file__) 
 
@@ -20,6 +20,9 @@ FORMAT_TYPE = FormatType.DEFAULT
 
 # Molar fraction phase to be output on the final file.
 FRACTION_PHASE = PhaseType.OVERALL
+
+# Compound basis to consider the input
+BASIS = CompoundBasis.MOLE_FRAC
 
 # Type of operation made to filter data.
 OPERATION = OperationsFilter.CALORIFIC_VALUE
