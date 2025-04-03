@@ -243,6 +243,9 @@ class FlashOperations:
     
     def get_pt_flash_data(self,
                           scenario_dict: dict[str, float]) -> dict[str, float]:
+        #Overall
+        pressure_kPa = self.mst.GetPhase('Overall').Properties.pressure / 1000
+
         # Vapor
         volumetric_flow_vapor = self.mst.GetPhase('Vapor').Properties.volumetric_flow * 3600 if self.mst.GetPhase(
             'Vapor').Properties.volumetric_flow else self.mst.GetPhase('Vapor').Properties.volumetric_flow
@@ -270,6 +273,7 @@ class FlashOperations:
                 volumetric_flow_oil, volumetric_flow_liquid, molecular_weight_oil, molecular_weight_water, _, _, _, _ = self.get_misc_properties('Liquid1', 'Liquid2')
     
         scenario_dict.update({
+            'OVERALL_Pressure': pressure_kPa,
             'VAPOUR PHASE_Vol Flow @T&P Cond': volumetric_flow_vapor,
             'VAPOUR PHASE_Density @T&P Cond': density_vapor,
             'VAPOUR PHASE_Molecular Weight @T&P Cond': molecular_weight_vapor,
@@ -628,15 +632,6 @@ class FlashOperations:
             pressure_value = current_value[current_value['SCENARIO_Cenário'] == cen_name][pressure_column_name[0]].values[0]
             pressure_unit = pressure_column_name[0].rsplit('_')[-1]
 
-            pressure_unit_conv = {
-                'kgf/cm2': 98.0665,
-                'Pa': 1 / 1000,
-                'kPa': 1,
-                'atm': 101.325
-            }
-
-            pressure_kPa = pressure_value * pressure_unit_conv.get(pressure_unit, 1)
-
             flow_rate_name = current_value.columns[6] # Mass Flow, Molar Flow or Volume Flow
             flow_rate = str(current_value[current_value['SCENARIO_Cenário'] == cen_name][flow_rate_name].values[0]) # kg/h, kmol/h or m3/h
 
@@ -651,7 +646,6 @@ class FlashOperations:
 
             scenario_dict['SCENARIO_Cenário'] = cen_name
             scenario_dict['OVERALL_Temperature'] = temperature_C
-            scenario_dict['OVERALL_Pressure'] = pressure_kPa
 
             # Flash @P&T
             self.flash_operation(compound_list, pressure_value, 
