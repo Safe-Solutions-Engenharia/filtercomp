@@ -420,12 +420,12 @@ class FlashOperations:
         if mass_fraction_liquid2_std:
             cp_std = self.mst.GetPhase('Liquid1').Properties.heatCapacityCp
         else:
-            if not (890 < rho_density < 1500) and not (17 < molecular_weight_oil < 19) and rho_density != 0:
-                cp_std = self.mst.GetPhase('Liquid1').Properties.heatCapacityCp
-            else:
+            if ((890 < rho_density < 1500) and (17 < molecular_weight_oil < 19)) or (rho_density == 0):
                 cp_std = 0.0
                 rho_density = 0.0
-
+            else:
+                cp_std = self.mst.GetPhase('Liquid1').Properties.heatCapacityCp
+                
         overall_vaporization_enthalpy, overall_combustion_enthalpy = self.get_overall_enthalpies() if rho_density else (1.0, 1.0)
         index_temperature = self.refine_bubble_point(298.15) if rho_density else 1.0
 
