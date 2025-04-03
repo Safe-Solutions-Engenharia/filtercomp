@@ -553,15 +553,17 @@ class FlashOperations:
         comp_phase = self.mst.GetPhase(self.molar_phase).Compounds
 
         density_liquid1 = self.mst.GetPhase('Liquid1').Properties.density
+        molecular_weight_liquid1 = self.mst.GetPhase('Liquid1').Properties.molecularWeight if self.mst.GetPhase(
+        'Liquid1').Properties.molecularWeight else 0
 
         if self.molar_phase == 'Liquid1':
-            if density_liquid1 is not None and 890 < density_liquid1 < 1500:
+            if (density_liquid1 is not None) and (890 < density_liquid1 < 1500) and (17 < molecular_weight_liquid1 < 19):
                 comp_phase = self.mst.GetPhase('Liquid2').Compounds
             else:
                 comp_phase = self.mst.GetPhase(self.molar_phase).Compounds
 
         elif self.molar_phase == 'Liquid2':
-            if density_liquid1 is not None and 890 < density_liquid1 < 1500:
+            if (density_liquid1 is not None) and (890 < density_liquid1 < 1500) and (17 < molecular_weight_liquid1 < 19):
                 comp_phase = self.mst.GetPhase('Liquid1').Compounds
             else:
                 comp_phase = self.mst.GetPhase(self.molar_phase).Compounds
@@ -577,11 +579,13 @@ class FlashOperations:
 
             if phase_type.value == 'Liquid1' or phase_type.value == 'Liquid2':
                 density_liquid1 = self.mst.GetPhase('Liquid1').Properties.density
+                molecular_weight_liquid1 = self.mst.GetPhase('Liquid1').Properties.molecularWeight if self.mst.GetPhase(
+                'Liquid1').Properties.molecularWeight else 0
 
                 liquid1_comp = self.mst.GetPhase('Liquid1').Compounds
                 liquid2_comp = self.mst.GetPhase('Liquid2').Compounds
 
-                if density_liquid1 is not None and 890 < density_liquid1 < 1500:
+                if (density_liquid1 is not None) and (890 < density_liquid1 < 1500) and (17 < molecular_weight_liquid1 < 19):
                     comp_list_oil = [liquid2_comp[x.Key].MoleFraction for x in compoud_dict.values()]
                     comp_list_water = [liquid1_comp[x.Key].MoleFraction for x in compoud_dict.values()]
                 else:
