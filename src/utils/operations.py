@@ -106,7 +106,7 @@ class FlashOperations:
                         flow_rate: float, gas_flow: float,
                         liquid_flow: float, flash_type: str) -> None:
         component_list = [float(comp) for comp in component_list]
-        self.mst.SetOverallComposition(Array[Double](component_list))
+        getattr(self.mst, f"SetOverall{self.compound_basis}")(Array[Double](component_list))
         self.mst.SetFlashSpec("PT")
         self.mst.SetPressure(f'{pressure_Pa} {pressure_unit}')
         self.mst.SetTemperature(f'{temperature_K} K')
