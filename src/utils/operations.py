@@ -302,7 +302,7 @@ class FlashOperations:
         overall_vaporization_enthalpy = 0
         overall_combustion_enthalpy = 0
         for comp_index, comp_value in enumerate(compound_names):
-            cas = CAS_from_any(comp_value[2:] if comp_value.startswith('N-') else comp_value)
+            cas = CAS_from_any(comp_value[2:] if comp_value.startswith('N-') or comp_value.startswith('n-') else comp_value)
             critical_temperature, boiling_temperature, critical_pressure = Tc(cas), Tb(cas), Pc(cas)
             vaporization_enthalpy = Riedel(boiling_temperature, critical_temperature, critical_pressure) # J/mol > kJ/kmol
 
