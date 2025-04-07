@@ -1,26 +1,33 @@
 import sqlite3
 
+
 DATABASE_PATH = r'.\files\database\heat_of_combustion.db'
 COMPOUND_NAME = 'Ethanol'
 HEAT_OF_COMBUSTION = -1366.8 # kJ/kmol
+
 
 def add_new_compound(compound_name: str, heat_of_combustion: float) -> None:
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
 
-    new_row_values = (compound_name, heat_of_combustion)
+    check_query = "SELECT 1 FROM table_name WHERE Composition = ?"
+    cursor.execute(check_query, (compound_name,))
+    exists = cursor.fetchone()
 
-    insert_query = """
-        INSERT INTO table_name (Composition, Enthalpy) 
-        VALUES (?, ?);
-    """
-    cursor.execute(insert_query, new_row_values)
+    if exists:
+        update_query = "UPDATE table_name SET Enthalpy = ? WHERE Composition = ?"
+        cursor.execute(update_query, (heat_of_combustion, compound_name))
+    else:
+        insert_query = "INSERT INTO table_name (Composition, Enthalpy) VALUES (?, ?)"
+        cursor.execute(insert_query, (compound_name, heat_of_combustion))
 
     conn.commit()
     conn.close()
 
+
 def main() -> None:
     add_new_compound(COMPOUND_NAME, HEAT_OF_COMBUSTION)
+
 
 if __name__ == "__main__":
     main()
