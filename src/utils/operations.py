@@ -111,11 +111,13 @@ class FlashOperations:
         self.mst.SetPressure(f'{pressure_Pa} {pressure_unit}')
         self.mst.SetTemperature(f'{temperature_K} K')
 
-        flow_types = {'overall_mass flow': [' kg/h', 'SetMassFlow'],
-                      'overall_molar flow': [' kmol/h', 'SetMolarFlow'],
-                      'overall_volumetric flow': [' m3/h', 'SetVolumetricFlow']}
-        flow_functions = flow_types[flow_rate_name]
-        getattr(self.mst, flow_functions[1])(flow_rate + flow_functions[0])
+        flow_types = {'overall_mass flow': 'SetMassFlow',
+                      'overall_molar flow': 'SetMolarFlow',
+                      'overall_volumetric flow': 'SetVolumetricFlow'}
+        flow_rate_unit = flow_rate_name.rsplit('_')[-1]
+        flow_rate_name_raw = flow_rate_name.rsplit('_', 1)[0]
+        flow_functions = flow_types[flow_rate_name_raw]
+        getattr(self.mst, flow_functions)(f'{flow_rate} {flow_rate_unit}')
 
         if flash_type == 'Flash @P&T':
             if not gas_flow:
