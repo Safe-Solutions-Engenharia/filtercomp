@@ -39,6 +39,7 @@ class FlashOperations:
                  full_info_dict: dict[str, pd.DataFrame],
                  molar_phase: PhaseType,
                  compound_basis: CompoundBasis,
+                 basis_unit: str,
                  package: DWSIMPackages,
                  *,
                  debug_mode: bool = False) -> None:
@@ -48,6 +49,7 @@ class FlashOperations:
         self.database_path = os.path.join(base_path, 'files', 'database', db_filename)
         self.molar_phase = molar_phase.value
         self.compound_basis = compound_basis.value
+        self.basis_unit = basis_unit
         self.debug_mode = debug_mode
 
         self.HEADERS: dict[str, list[str]] = {'SCENARIO': ['Cenário'],
@@ -106,7 +108,40 @@ class FlashOperations:
                         flow_rate: float, gas_flow: float,
                         liquid_flow: float, flash_type: str) -> None:
         component_list = [float(comp) for comp in component_list]
-        getattr(self.mst, f"SetOverall{self.compound_basis}")(Array[Double](component_list))
+
+        composition_unit_conv = {
+                                    # Mass flow conversions to kg/s
+                                    'kg/s': 1,
+                                    'kg/h': 1 / 3600,
+                                    'g/h': 1 / 3_600_000,
+
+                                    # Molar flow conversions to mol/s
+                                    'mol/s': 1,
+                                    'kmol/s': 1_000,
+                                    'kmol/h': 1000 / 3600
+                                }
+        
+        component_dict = dict(zip(self.mst.GetCompoundNames(), component_list))
+
+        if not self.basis_unit:
+            getattr(self.mst, f"SetOverall{self.compound_basis}")(Array[Double](component_list))
+
+        else:
+            conversion_factor = composition_unit_conv.get(self.basis_unit, 1)
+
+            if self.compound_basis == CompoundBasis.MOLE_FLOW.value:
+                for compound, value in component_dict.items():
+                    converted = value * conversion_factor
+                    self.mst.SetOverallCompoundMolarFlow(compound, converted)
+
+            elif self.compound_basis == CompoundBasis.MASS_FLOW.value:
+                for compound, value in component_dict.items():
+                    converted = value * conversion_factor
+                    self.mst.SetOverallCompoundMassFlow(compound, converted)
+
+            else:
+                raise ValueError(f"Unsupported compound basis: {self.compound_basis}")
+
         self.mst.SetFlashSpec("PT")
         self.mst.SetPressure(f'{pressure_Pa} {pressure_unit}')
         self.mst.SetTemperature(f'{temperature_K} K')
