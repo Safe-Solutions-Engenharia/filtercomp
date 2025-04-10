@@ -229,6 +229,61 @@ class CO2AndH2SFraction(Filter):
                 
                 self.filtered_data_dict[key_name] = result
 
+class CO2Fraction(Filter):
+    def __init__(self,
+                 filter_type: OperationsFilter, 
+                 flashed_df_dict: dict[str, pd.DataFrame], 
+                 full_info_dict: dict[str, pd.DataFrame],
+                 composition_dict: dict[str, dict[str, list[float]]],
+                 phase_type: PhaseType,
+                 use_simulated_value: bool) -> None:
+        super().__init__(filter_type,
+                         flashed_df_dict, 
+                         full_info_dict,
+                         composition_dict,
+                         phase_type,
+                         use_simulated_value)
+        
+        self.calculate_CO2()
+        for current_filtered_value in self.filtered_data_dict.values():
+            current_filtered_value.columns = [column.split('_')[1].strip() if '_' in column else column for column in current_filtered_value.columns]
+        self.operation_loader.stop()
+        
+    def calculate_CO2(self):
+        co2_position = list(self.flashed_df_dict.values())[0].columns.str.lower().get_loc('carbon dioxide'.lower())
+        df = list(self.flashed_df_dict.values())[0]
+        index_to_subtract = df.columns.get_loc(df.iloc[0][df.iloc[0] == 'COMPONENT FRACTION'].index[0])
+    
+        max_co2 = {}
+        for current_name, current_database in self.composition_dict.items():
+            all_co2 = {}
+
+            for scenario_name, scenario_current_database in current_database.items():
+                co2_val = scenario_current_database[self.phase_type.value][co2_position - index_to_subtract]
+
+                all_co2[scenario_name] = co2_val
+
+            if not all_co2:
+                continue
+            
+            max_value_co2 = max([item for item in all_co2.values()])
+
+            for k, v in all_co2.items():
+                if v == max_value_co2:
+                    max_co2[current_name] = k
+
+            key_names = []
+            for key in max_co2.keys():
+                if current_name in key:
+                    key_names.append(key)
+            
+            first_row = self.flashed_df_dict[current_name].loc[[0]]
+            for key_name in key_names:
+                match_row = self.flashed_df_dict[current_name].loc[self.flashed_df_dict[current_name]['SCENARIO_Cenário'] == max_co2[key_name]]
+                result = pd.concat([first_row, match_row])
+                result = result.reset_index(drop=True)
+                self.filtered_data_dict[key_name] = result
+
 class Dispersion(Filter):
     def __init__(self, 
                  filter_type: OperationsFilter,
@@ -253,6 +308,7 @@ class FilterFactory:
     filter_classes: dict[OperationsFilter, type[Filter]] = {
         OperationsFilter.CALORIFIC_VALUE: CalorificValue,
         OperationsFilter.CO2_AND_H2S_FRACTION: CO2AndH2SFraction,
+        OperationsFilter.CO2_FRACTION: CO2Fraction,
         OperationsFilter.DISPERSION: Dispersion
     }
 
