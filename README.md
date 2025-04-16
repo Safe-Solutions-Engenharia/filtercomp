@@ -46,7 +46,7 @@ We acknowledge the DWSIM developers and contributors for their invaluable work.
 
 For additional information and resources, check out the following:
 
-- [FilterComp Docs](/src/docs/).
+- [FilterComp Docs](https://safe-solutions-engenharia.github.io/filtercomp/).
 
 ## License
 
