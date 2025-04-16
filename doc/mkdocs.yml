@@ -1,0 +1,71 @@
+site_name: FilterComp
+site_description: A tool for automating flash calculations with DWSIM, filtering scenarios, and sorting results based on specific criteria.
+site_url: https://filter-comp.dev
+site_author: Jonathan Motta
+repo_url: https://github.com/Safe-Solutions-Engenharia/filtercomp
+repo_name: Safe-Solutions-Engenharia/filtercomp
+
+nav:
+  - Home: index.md
+  - Setup Guide: setup.md
+  - Editing Guide: update-documentation.md
+
+theme:
+  name: material
+  font:
+    text: Roboto
+    code: Red Hat Mono
+  logo: assets/images/logo_safe.png
+  favicon: assets/images/logo_safe.ico
+  features:
+    - content.code.copy
+    - navigation.footer
+  palette:
+    # Dark Mode
+    - scheme: slate
+      toggle:
+        icon: material/weather-night
+        name: Dark mode
+      primary: green
+      accent: deep purple
+
+    # Light Mode
+    - scheme: default
+      toggle:
+        icon: material/weather-sunny
+        name: Light mode
+      primary: green
+      accent: deep orange
+
+markdown_extensions:
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - pymdownx.details
+
+extra:
+  social:
+    - icon: fontawesome/brands/github-alt
+      link: https://github.com/Safe-Solutions-Engenharia
+    - icon: fontawesome/brands/twitter
+      link: https://x.com/SafeSolutionsBR
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/company/safe-solutions-engenharia/
+
+copyright: |
+  &copy; 2025 <a href="https://github.com/Safe-Solutions-Engenharia"  target="_blank" rel="noopener">Safe Solutions Engenharia</a>
