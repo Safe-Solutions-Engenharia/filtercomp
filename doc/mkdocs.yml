@@ -1,6 +1,7 @@
 site_name: FilterComp
 site_description: A tool for automating flash calculations with DWSIM, filtering scenarios, and sorting results based on specific criteria.
 site_url: https://filter-comp.dev
+site_dir: site
 site_author: Jonathan Motta
 repo_url: https://github.com/Safe-Solutions-Engenharia/filtercomp
 repo_name: Safe-Solutions-Engenharia/filtercomp
