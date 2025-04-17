@@ -8,8 +8,8 @@ from enums.filter_operations import (OperationsFilter, PhaseType, CompoundBasis,
 
 current_dir = os.path.dirname(__file__) 
 
-INPUT_FILE = os.path.abspath(os.path.join(current_dir, '../../tests/composicao_teste.xlsx'))
-OUTPUT_FOLDER = os.path.abspath(os.path.join(current_dir, '../../tests'))
+INPUT_FILE = os.path.abspath(os.path.join(current_dir, '../../files/test_files/composicao_teste.xlsx'))
+OUTPUT_FOLDER = os.path.abspath(os.path.join(current_dir, '../../files/test_files'))
 NAME = 'composition_teste'
 PACKAGE = DWSIMPackages.PengRobinson1978
 
