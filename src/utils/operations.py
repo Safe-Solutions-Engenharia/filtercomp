@@ -212,7 +212,6 @@ class FlashOperations:
     @staticmethod
     def get_compound_value(current_value: pd.DataFrame, cen_name: str) -> list[float]:
         compound_list = current_value[current_value['SCENARIO_Cenário'] == cen_name].iloc[0, 7:].to_list()
-        compound_list = [x / 100 if sum(compound_list) > 2 else x for x in compound_list]
 
         return compound_list
 
