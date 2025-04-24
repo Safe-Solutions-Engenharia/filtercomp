@@ -34,10 +34,10 @@ python main.py
 ## Usage
 
 1. Download and install the latest version of DWSIM.
-2. Generate an `.xlsx` file similar to [composicao_teste.xlsx](/tests/composicao_teste.xlsx), ensuring it contains the necessary data for analysis.
+2. Generate an `.xlsx` file similar to [composicao_teste.xlsx](/files/test_files/composicao_teste.xlsx), ensuring it contains the necessary data for analysis.
 3. Open and modify [global_variables.py](/src/config/global_variables.py) as needed to match the desired output.
 4. Execute the main script.
-5. Retrieve the output folder, which should resemble [Overall](/tests/Overall/).
+5. Retrieve the output folder, which should resemble [Overall](/files/test_files/Overall/).
 
 ## Features
 
