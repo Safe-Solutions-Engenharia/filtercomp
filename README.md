@@ -1,6 +1,17 @@
-# FilterComp
+<h1 align="center">
+  <b>FilterComp</b>
+  <br>
+</h1>
 
-A tool for filtering scenarios and performing flash calculations with DWSIM integration. It allows users to analyze scenarios based on predefined criteria, providing a structured and efficient way to flash multiple components.
+<div align="center">
+
+![Static Badge](https://img.shields.io/badge/made%20with-python-blue?style=flat)
+![GitHub last commit](https://img.shields.io/github/last-commit/Safe-Solutions-Engenharia/filtercomp)
+![GitHub License](https://img.shields.io/github/license/Safe-Solutions-Engenharia/filtercomp)
+
+</div>
+
+A tool for filtering scenarios and performing flash calculations with **DWSIM** integration. It allows users to analyze scenarios based on predefined criteria, providing a structured and efficient way to flash multiple components.
 
 ## Instalation
 
@@ -30,9 +41,9 @@ python main.py
 
 ## Features
 
-- ✅ Automatic flashing of multiple currents with various compounds.
-- ✅ Filtering currents using specific, unique methods.
-- ✅ Clean and structured data output from the analysis.
+- Automatic flashing of multiple currents with various compounds.
+- Filtering currents using specific, unique methods.
+- Clean and structured data output from the analysis.
 
 ## Acknowledgments
 
