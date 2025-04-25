@@ -12,11 +12,13 @@
         <meta name="author" content="Jonathan Motta">
       
       
-        <link rel="canonical" href="https://filter-comp.dev/update-documentation/">
+        <link rel="canonical" href="https://filter-comp.dev/configuration/">
       
       
         <link rel="prev" href="../setup/">
       
+      
+        <link rel="next" href="../formatting/">
       
       
       <link rel="icon" href="../assets/images/logo_safe.ico">
@@ -24,7 +26,7 @@
     
     
       
-        <title>Editing Guide - FilterComp</title>
+        <title>Configurations - FilterComp</title>
       
     
     
@@ -76,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#update-documentation" class="md-skip">
+        <a href="#configurations" class="md-skip">
           Skip to content
         </a>
       
@@ -111,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Editing Guide
+              Configurations
             
           </span>
         </div>
@@ -283,7 +285,7 @@
   
   
   <span class="md-ellipsis">
-    Setup Guide
+    Setup
     
   </span>
   
@@ -314,7 +316,7 @@
   
   
   <span class="md-ellipsis">
-    Editing Guide
+    Configurations
     
   </span>
   
@@ -327,7 +329,7 @@
   
   
   <span class="md-ellipsis">
-    Editing Guide
+    Configurations
     
   </span>
   
@@ -350,36 +352,102 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#understanging-project-structure" class="md-nav__link">
+  <a href="#enums" class="md-nav__link">
     <span class="md-ellipsis">
-      Understanging Project Structure
+      Enums
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Enums">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dwsim-packages" class="md-nav__link">
+    <span class="md-ellipsis">
+      DWSIM Packages
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#editing-documentation" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#format-type" class="md-nav__link">
     <span class="md-ellipsis">
-      Editing Documentation
+      Format Type
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#adding-pages-and-navigation" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#filter-operations" class="md-nav__link">
     <span class="md-ellipsis">
-      Adding Pages and Navigation
+      Filter Operations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Filter Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#operation-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operation Type
     </span>
   </a>
   
 </li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase Type
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compound-basis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compound Basis
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#molar-flow-unit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Molar Flow Unit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mass-flow-unit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mass Flow Unit
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
-  <a href="#further-reading" class="md-nav__link">
+  <a href="#global-variables" class="md-nav__link">
     <span class="md-ellipsis">
-      Further Reading
+      Global Variables
     </span>
   </a>
   
@@ -389,6 +457,94 @@
   
 </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formatting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Formats
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Operations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../filtering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Filters
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../database/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Database
+    
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -420,36 +576,102 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#understanging-project-structure" class="md-nav__link">
+  <a href="#enums" class="md-nav__link">
     <span class="md-ellipsis">
-      Understanging Project Structure
+      Enums
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Enums">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dwsim-packages" class="md-nav__link">
+    <span class="md-ellipsis">
+      DWSIM Packages
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#editing-documentation" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#format-type" class="md-nav__link">
     <span class="md-ellipsis">
-      Editing Documentation
+      Format Type
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#adding-pages-and-navigation" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#filter-operations" class="md-nav__link">
     <span class="md-ellipsis">
-      Adding Pages and Navigation
+      Filter Operations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Filter Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#operation-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operation Type
     </span>
   </a>
   
 </li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase Type
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compound-basis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compound Basis
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#molar-flow-unit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Molar Flow Unit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mass-flow-unit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mass Flow Unit
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
-  <a href="#further-reading" class="md-nav__link">
+  <a href="#global-variables" class="md-nav__link">
     <span class="md-ellipsis">
-      Further Reading
+      Global Variables
     </span>
   </a>
   
@@ -474,42 +696,93 @@
   
 
 
-<h1 id="update-documentation">Update Documentation</h1>
-<h2 id="understanging-project-structure">Understanging Project Structure</h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>documentation-default/
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├──<span class="w"> </span>docs/
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│<span class="w">   </span>├──<span class="w"> </span>index.md
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│<span class="w">   </span>└──<span class="w"> </span>assets/
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│<span class="w">       </span>└──<span class="w"> </span>images/
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>├──<span class="w"> </span>mkdocs.yml
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>├──<span class="w"> </span>requirements.txt
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>└──<span class="w"> </span>README.md
+<h1 id="configurations">Configurations</h1>
+<h2 id="enums">Enums</h2>
+<p><strong>Enums</strong> provide named symbolic constants, making the code more understandable and less error-prone.</p>
+<h3 id="dwsim-packages">DWSIM Packages</h3>
+<p>Used to select the thermodynamic model from <strong>DWSIM</strong>, which governs how physical and chemical properties are calculated.</p>
+<details class="note">
+<summary>DWSIM Packages</summary>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">DWSIMPackage</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">PengRobinson1978</span> <span class="o">=</span> <span class="s1">&#39;PengRobinson1978&#39;</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="o">...</span>
 </span></code></pre></div>
-<p>The <code>docs/</code> folder contains all Markdown source files from each page of the documentation. The <code>mkdocs.yml</code> file contains the configuration for the documentation name, theme, navigation and plugings.</p>
+</details>
 <hr />
-<h2 id="editing-documentation">Editing Documentation</h2>
-<p>All documentation is written in Markdown (<code>.md</code>). For example, <code>index.md</code> might look like:</p>
-<div class="language-md highlight"><span class="filename">index.md</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="gh"># Welcome</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>This is the homepage of your MkDocs documentation.
+<h3 id="format-type">Format Type</h3>
+<p>Used to standardize the input <code>.xlsx</code> file format to match the default output structure used during the processing phase.</p>
+<details class="note">
+<summary>Format Type</summary>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">FormatType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">DEFAULT</span> <span class="o">=</span> <span class="s1">&#39;Default&#39;</span>
 </span></code></pre></div>
-<p>Always use Markdown syntax to add headings, links, images, tables, and more.</p>
+</details>
 <hr />
-<h2 id="adding-pages-and-navigation">Adding Pages and Navigation</h2>
-<p>In <code>mkdocs.yml</code>, define the order of the documentation structure:</p>
-<div class="language-yaml highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">mkdocs.yml</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-2-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-2-10">10</a></span>
-<span class="normal"><a href="#__codelineno-2-11">11</a></span>
-<span class="normal"><a href="#__codelineno-2-12">12</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="nt">nav</span><span class="p">:</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Home</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">index.md</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Setup Guide</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">setup.md</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Editing Guide</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">update-documentation.md</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Deploy Example</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deployment.md</span>
-</span></code></pre></div></td></tr></table></div>
+<h3 id="filter-operations">Filter Operations</h3>
+<h4 id="operation-type">Operation Type</h4>
+<p>Defines types of operations that can be performed in the filtering phase.</p>
+<details class="note">
+<summary>Operations Filter</summary>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">OperationsFilter</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">CALORIFIC_VALUE</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">CO2_AND_H2S_FRACTION</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">DISPERSION</span> <span class="o">=</span> <span class="mi">2</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">CO2_FRACTION</span> <span class="o">=</span> <span class="mi">3</span>
+</span></code></pre></div>
+</details>
+<h4 id="phase-type">Phase Type</h4>
+<p>Represents the phase of the material stream: overall, vapor, oily, or aqueous.</p>
+<details class="note">
+<summary>Phase Type</summary>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">PhaseType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">OVERALL</span> <span class="o">=</span> <span class="s1">&#39;Overall&#39;</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">VAPOR</span> <span class="o">=</span> <span class="s1">&#39;Vapor&#39;</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">OIL</span> <span class="o">=</span> <span class="s1">&#39;Liquid1&#39;</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">WATER</span> <span class="o">=</span> <span class="s1">&#39;Liquid2&#39;</span>
+</span></code></pre></div>
+</details>
+<h4 id="compound-basis">Compound Basis</h4>
+<p>Defines the reference basis for compound data, with an associated default unit depending on the selected basis.</p>
+<details class="note">
+<summary>Compound Basis</summary>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">CompoundBasis</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">MOLE_FRAC</span> <span class="o">=</span> <span class="s1">&#39;MolarComposition&#39;</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">MASS_FRAC</span> <span class="o">=</span> <span class="s1">&#39;MassComposition&#39;</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">MOLE_FLOW</span> <span class="o">=</span> <span class="s1">&#39;CompoundMolarFlow&#39;</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">MASS_FLOW</span> <span class="o">=</span> <span class="s1">&#39;CompoundMassFlow&#39;</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="nd">@property</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">default_unit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>        <span class="k">return</span> <span class="p">{</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>            <span class="n">CompoundBasis</span><span class="o">.</span><span class="n">MASS_FLOW</span><span class="p">:</span> <span class="s1">&#39;kg/h&#39;</span><span class="p">,</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>            <span class="n">CompoundBasis</span><span class="o">.</span><span class="n">MOLE_FLOW</span><span class="p">:</span> <span class="s1">&#39;kmol/h&#39;</span><span class="p">,</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>            <span class="n">CompoundBasis</span><span class="o">.</span><span class="n">MOLE_FRAC</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>            <span class="n">CompoundBasis</span><span class="o">.</span><span class="n">MASS_FRAC</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>        <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span></code></pre></div>
+</details>
+<h4 id="molar-flow-unit">Molar Flow Unit</h4>
+<p>Specifies the unit of measurement for molar flow, used when a different unit is required instead of the default.</p>
+<details class="note">
+<summary>Molar Flow Unit</summary>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">MolarFlowUnit</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">KMOL_H</span> <span class="o">=</span> <span class="s1">&#39;kmol/h&#39;</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">KMOL_S</span> <span class="o">=</span> <span class="s1">&#39;kmol/s&#39;</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">MOL_S</span> <span class="o">=</span> <span class="s1">&#39;mol/s&#39;</span>
+</span></code></pre></div>
+</details>
+<h4 id="mass-flow-unit">Mass Flow Unit</h4>
+<p>Specifies the unit of measurement for mass flow, used when a different unit is required instead of the default.</p>
+<details class="note">
+<summary>Mass Flow Unit</summary>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">MassFlowUnit</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">KG_H</span> <span class="o">=</span> <span class="s1">&#39;kg/h&#39;</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">G_H</span> <span class="o">=</span> <span class="s1">&#39;g/h&#39;</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="n">KG_S</span> <span class="o">=</span> <span class="s1">&#39;kg/s&#39;</span>
+</span></code></pre></div>
+</details>
 <hr />
-<h2 id="further-reading">Further Reading</h2>
-<p>To learn more about specific plugins and Markdown syntax, check out the the <a href="https://www.mkdocs.org/">mkdocs documentation</a>.</p>
+<h2 id="global-variables">Global Variables</h2>
 
 
 
@@ -539,7 +812,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../setup/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Setup Guide">
+          <a href="../setup/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Setup">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -549,11 +822,27 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Setup Guide
+                Setup
               </div>
             </div>
           </a>
         
+        
+          
+          <a href="../formatting/" class="md-footer__link md-footer__link--next" aria-label="Next: Formats">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Formats
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
         
       </nav>
     
@@ -627,6 +916,8 @@
     
     
       <script src="../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

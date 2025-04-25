@@ -2,14 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://filter-comp.dev/</loc>
-         <lastmod>2025-04-16</lastmod>
+         <lastmod>2025-04-25</lastmod>
+    </url>
+    <url>
+         <loc>https://filter-comp.dev/configuration/</loc>
+         <lastmod>2025-04-25</lastmod>
+    </url>
+    <url>
+         <loc>https://filter-comp.dev/database/</loc>
+         <lastmod>2025-04-25</lastmod>
+    </url>
+    <url>
+         <loc>https://filter-comp.dev/filtering/</loc>
+         <lastmod>2025-04-25</lastmod>
+    </url>
+    <url>
+         <loc>https://filter-comp.dev/formatting/</loc>
+         <lastmod>2025-04-25</lastmod>
+    </url>
+    <url>
+         <loc>https://filter-comp.dev/operations/</loc>
+         <lastmod>2025-04-25</lastmod>
     </url>
     <url>
          <loc>https://filter-comp.dev/setup/</loc>
-         <lastmod>2025-04-16</lastmod>
-    </url>
-    <url>
-         <loc>https://filter-comp.dev/update-documentation/</loc>
-         <lastmod>2025-04-16</lastmod>
+         <lastmod>2025-04-25</lastmod>
     </url>
 </urlset>

@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#documentation-guide" class="md-skip">
+        <a href="#project-structure" class="md-skip">
           Skip to content
         </a>
       
@@ -262,8 +262,6 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
-        
-      
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
           
@@ -296,8 +294,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -306,9 +302,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#get-started" class="md-nav__link">
+  <a href="#project-structure" class="md-nav__link">
     <span class="md-ellipsis">
-      Get Started
+      Project Structure
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contributing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contributing
     </span>
   </a>
   
@@ -334,7 +339,7 @@
   
   
   <span class="md-ellipsis">
-    Setup Guide
+    Setup
     
   </span>
   
@@ -351,12 +356,100 @@
   
   
     <li class="md-nav__item">
-      <a href="update-documentation/" class="md-nav__link">
+      <a href="configuration/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Editing Guide
+    Configurations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="formatting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Formats
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Operations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="filtering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Filters
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="database/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Database
     
   </span>
   
@@ -383,8 +476,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -393,9 +484,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#get-started" class="md-nav__link">
+  <a href="#project-structure" class="md-nav__link">
     <span class="md-ellipsis">
-      Get Started
+      Project Structure
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contributing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contributing
     </span>
   </a>
   
@@ -420,12 +520,49 @@
   
 
 
-<h1 id="documentation-guide">Documentation Guide</h1>
-<p>Welcome to the official documentation for the <strong>documentation-default</strong>! This guide will walk you through everything you need to know—from setting up the environment to deploying and updating your documentation.</p>
+<h1 align="center">
+  <b>FilterComp</b>
+  <br>
+</h1>
+
 <hr />
-<h2 id="get-started">Get Started</h2>
-<p>To get started right away, head to the <a href="setup/">Setup Guide</a> and follow the step-by-step instructions.</p>
-<p>For contributions or questions, feel free to open an issue or pull request on <a href="https://github.com/Safe-Solutions-Engenharia/documentation-default">GitHub</a>.</p>
+<p>Welcome to <strong>FilterComp</strong>, a tool developed by <strong>Safe Solutions Engenharia</strong> for filtering, processing, and comparing datasets using the flash calculation logic from <strong>DWSIM</strong>.</p>
+<p>This tool was designed to streamline data analysis pipelines, enabling users to filter large datasets based on dynamic criteria, apply statistical and logical comparisons.</p>
+<hr />
+<h2 id="project-structure">Project Structure</h2>
+<p>Below is the core structure of the project, highlighting the most important components you'll interact with. The <code>src/</code> directory contains all the logic and entry points for running and testing the tool, while <code>utils/</code> groups the main modules responsible for file operations, formatting, filtering, and logging.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>filtercomp/
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├── src/
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│   ├── utils/
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│   │   ├── file_saver.py        # Handles data saving
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│   │   ├── format_files.py      # Handles data formatting
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│   │   ├── logger.py            # Logging setup and utilities
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│   │   ├── operation_filter.py  # Filtering logic after flashing operations
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│   │   └── operations.py        # Defines flashing operations
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│   │
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>│   ├── tests/                   # Unit tests for core functionality
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>│   └── main.py                  # Main file
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>│
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>└── requirements.txt             # Project dependencies
+</span></code></pre></div>
+<hr />
+<h2 id="contributing">Contributing</h2>
+<p>Contributions are welcome! To contribute:</p>
+<ol>
+<li>
+<p>Fork the repository</p>
+</li>
+<li>
+<p>Create a new feature branch</p>
+</li>
+<li>
+<p>Make your changes and commit</p>
+</li>
+<li>
+<p>Open a pull request for review</p>
+</li>
+</ol>
 
 
 
@@ -456,13 +593,13 @@
         
         
           
-          <a href="setup/" class="md-footer__link md-footer__link--next" aria-label="Next: Setup Guide">
+          <a href="setup/" class="md-footer__link md-footer__link--next" aria-label="Next: Setup">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Setup Guide
+                Setup
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -543,6 +680,8 @@
     
     
       <script src="assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

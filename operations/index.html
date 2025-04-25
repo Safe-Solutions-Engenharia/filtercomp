@@ -12,22 +12,28 @@
         <meta name="author" content="Jonathan Motta">
       
       
+        <link rel="canonical" href="https://filter-comp.dev/operations/">
       
       
+        <link rel="prev" href="../formatting/">
       
-      <link rel="icon" href="/assets/images/logo_safe.ico">
+      
+        <link rel="next" href="../filtering/">
+      
+      
+      <link rel="icon" href="../assets/images/logo_safe.ico">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.11">
     
     
       
-        <title>FilterComp</title>
+        <title>Operations - FilterComp</title>
       
     
     
-      <link rel="stylesheet" href="/assets/stylesheets/main.4af4bdda.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.4af4bdda.min.css">
       
         
-        <link rel="stylesheet" href="/assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -46,7 +52,7 @@
       
     
     
-    <script>__md_scope=new URL("/",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -71,6 +77,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#flash-operations" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -83,9 +94,9 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="/." title="FilterComp" class="md-header__button md-logo" aria-label="FilterComp" data-md-component="logo">
+    <a href=".." title="FilterComp" class="md-header__button md-logo" aria-label="FilterComp" data-md-component="logo">
       
-  <img src="/assets/images/logo_safe.png" alt="logo">
+  <img src="../assets/images/logo_safe.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -102,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              Operations
             
           </span>
         </div>
@@ -218,9 +229,9 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/." title="FilterComp" class="md-nav__button md-logo" aria-label="FilterComp" data-md-component="logo">
+    <a href=".." title="FilterComp" class="md-nav__button md-logo" aria-label="FilterComp" data-md-component="logo">
       
-  <img src="/assets/images/logo_safe.png" alt="logo">
+  <img src="../assets/images/logo_safe.png" alt="logo">
 
     </a>
     FilterComp
@@ -247,7 +258,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/." class="md-nav__link">
+      <a href=".." class="md-nav__link">
         
   
   
@@ -269,7 +280,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/setup/" class="md-nav__link">
+      <a href="../setup/" class="md-nav__link">
         
   
   
@@ -291,7 +302,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/configuration/" class="md-nav__link">
+      <a href="../configuration/" class="md-nav__link">
         
   
   
@@ -313,7 +324,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/formatting/" class="md-nav__link">
+      <a href="../formatting/" class="md-nav__link">
         
   
   
@@ -332,10 +343,19 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="/operations/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -346,6 +366,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -357,7 +378,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/filtering/" class="md-nav__link">
+      <a href="../filtering/" class="md-nav__link">
         
   
   
@@ -379,7 +400,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/database/" class="md-nav__link">
+      <a href="../database/" class="md-nav__link">
         
   
   
@@ -411,6 +432,8 @@
   
   
   
+    
+  
   
 </nav>
                   </div>
@@ -422,8 +445,78 @@
             <div class="md-content" data-md-component="content">
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+                  
 
+
+  
+  
+
+
+<h1 id="flash-operations">Flash Operations</h1>
+<div class="arithmatex">\[
+\text{Burn Rate} \left(\frac {kg} {m²s}\right) = 1.27 \cdot 10^{\text{-6}} \rho_f  
+\left[ 
+  \frac{\Delta H_{\text{c}}}
+       {\Delta H_{\text{v}} + c_p (T_{\text{b}} - T_{\text{f}})}
+\right]
+\]</div>
+<p>Where:</p>
+<ul>
+<li><span class="arithmatex">\( \rho_f \)</span> = <strong>Density</strong> of the fuel <span class="arithmatex">\((\text{kg/m}^3)\)</span></li>
+<li><span class="arithmatex">\( \Delta H_{\text{c}} \)</span> = <strong>Heat of combustion</strong> <span class="arithmatex">\((\text{kJ/kg})\)</span></li>
+<li><span class="arithmatex">\( \Delta H_{\text{v}} \)</span> = <strong>Heat of vaporization</strong> <span class="arithmatex">\((\text{kJ/kg})\)</span></li>
+<li><span class="arithmatex">\( c_p \)</span> = <strong>Specific heat</strong> <span class="arithmatex">\((\text{kJ/kg·K})\)</span></li>
+<li><span class="arithmatex">\( T_{\text{b}} \)</span> = <strong>Boiling point temperature</strong> of the fuel <span class="arithmatex">\((\text{K})\)</span></li>
+<li><span class="arithmatex">\( T_{\text{f}} \)</span> = <strong>Actual fuel temperature</strong> <span class="arithmatex">\((\text{K})\)</span></li>
+</ul>
+<div class="arithmatex">\[
+\text{Evaporation Rate} \left(\frac {kg} {m²s}\right) = k \cdot \left( \frac{T_{\text{b}} - T_{\text{f}}}{\Delta H_{\text{v}}} \right)
+\]</div>
+<p>Where:</p>
+<ul>
+<li><span class="arithmatex">\( k \)</span> = <strong>Constant</strong> (for average soil and concrete; k = 10.5)</li>
+<li><span class="arithmatex">\( T_{\text{b}} \)</span> = <strong>Boiling point temperature</strong> of the fuel <span class="arithmatex">\((\text{K})\)</span></li>
+<li><span class="arithmatex">\( T_{\text{f}} \)</span> = <strong>Actual fuel temperature</strong> <span class="arithmatex">\((\text{K})\)</span></li>
+<li><span class="arithmatex">\( \Delta H_{\text{v}} \)</span> = <strong>Heat of vaporization</strong> <span class="arithmatex">\((\text{kJ/kg})\)</span></li>
+</ul>
+<p><pre class="mermaid"><code>  flowchart TD
+    A[Start] --&gt; B[Save state &amp; 
+    set vapor_fraction = 0];
+    B --&gt; C[Loop: vapor_fraction &lt; 1];
+    C --&gt; D[Try flash calculation at 
+    T = release + ΔT];
+    D --&gt; E{Flash succeeds?};
+    E --&gt;|Yes| F{vapor_fraction &lt; 1?};
+    F --&gt;|Yes| G[Increase ΔT by 50 K] --&gt; C;
+    F --&gt;|No| H[Go to refinement loop];
+    E --&gt;|No| I[Adjust tolerances 
+    and retries] --&gt; D;</code></pre>
+<em>Representative fluxogram of the buble temperature</em></p>
+<p><pre class="mermaid"><code>  flowchart TD
+    A[Refinement loop] --&gt; B[Loop: vapor_fraction &gt;= 1];
+    B --&gt; C[Decrease ΔT by 1 K];
+    C --&gt; D[Try flash calculation];
+    D --&gt; E{Flash succeeds?};
+    E --&gt;|Yes| F{vapor_fraction &lt; 1?};
+    E --&gt;|No| G[Adjust tolerances 
+    and retries] --&gt; D;
+    F --&gt; |No| B[Loop: vapor_fraction &gt;= 1];
+    F --&gt; |Yes| H[Refined temperature found];
+    H --&gt; I[Return ΔT];</code></pre>
+<em>Representative fluxogram of the buble temperature</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
               </article>
             </div>
           
@@ -435,6 +528,44 @@
       
         <footer class="md-footer">
   
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../formatting/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Formats">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Formats
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../filtering/" class="md-footer__link md-footer__link--next" aria-label="Next: Filters">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Filters
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
     
   
   <div class="md-footer-meta md-typeset">
@@ -502,10 +633,10 @@
     
     
       
-      <script id="__config" type="application/json">{"base": "/", "features": ["content.code.copy", "navigation.footer"], "search": "/assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy", "navigation.footer"], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="/assets/javascripts/bundle.c8b220af.min.js"></script>
+      <script src="../assets/javascripts/bundle.c8b220af.min.js"></script>
       
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
