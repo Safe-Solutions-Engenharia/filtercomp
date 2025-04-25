@@ -1,5 +1,7 @@
 # Setup Guide
 
+---
+
 ## Prerequisites
 
 Ensure your system has the following installed:
@@ -7,15 +9,15 @@ Ensure your system has the following installed:
 * [Python 3.10+](https://www.python.org/downloads/)
 * [pip](https://pip.pypa.io/en/stable/)
 * [Git](https://git-scm.com/)
-
+* [DWSIM](https://dwsim.org/)
 ---
 
 ## Cloning the Project
 
 Clone the repository to your local machine:
 ```bash 
-git clone https://github.com/Safe-Solutions-Engenharia/documentation-default.git 
-cd documentation-default
+git clone https://github.com/Safe-Solutions-Engenharia/filtercomp.git
+cd filtercomp
 ```
 
 ---
