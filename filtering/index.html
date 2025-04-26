@@ -77,6 +77,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#operation-filters" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -369,6 +374,21 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Filters
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
@@ -381,6 +401,52 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#heat-of-combustion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Heat of Combustion
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#co2-and-h2s-fraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      CO₂ and H₂S Fraction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#co2-fraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      CO₂ Fraction
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -425,6 +491,43 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#heat-of-combustion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Heat of Combustion
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#co2-and-h2s-fraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      CO₂ and H₂S Fraction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#co2-fraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      CO₂ Fraction
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -443,11 +546,19 @@
   
 
 
-  <h1>Filters</h1>
-
+<h1 id="operation-filters">Operation Filters</h1>
+<h2 id="heat-of-combustion">Heat of Combustion</h2>
 <div class="arithmatex">\[
-\text{Calorific Power} \left(\frac {kJ}{h} \right) = \left[ \sum_{i} \left( H_i \cdot x_i \right) \right] \cdot \dot{n}
+\text{Heat of Combustion} \left(\frac {kJ}{h} \right) = \left[ \sum_{i} \left( H_i \cdot x_i \right) \right] \cdot \dot{n}
 \]</div>
+<p>Where:</p>
+<ul>
+<li><span class="arithmatex">\( H_i \)</span> =  <strong>Enthalpy of combustion</strong> of component <span class="arithmatex">\(i\)</span> <span class="arithmatex">\((\text{kJ/kmol})\)</span></li>
+<li><span class="arithmatex">\( x_i \)</span> = <strong>Molar fraction</strong> (or relative molar contribution) of component <span class="arithmatex">\(i\)</span></li>
+<li><span class="arithmatex">\( \dot{n} \)</span> = <strong>Total molar flow rate</strong> of the phase <span class="arithmatex">\((\text{kmol/h})\)</span></li>
+</ul>
+<h2 id="co2-and-h2s-fraction">CO₂ and H₂S Fraction</h2>
+<h2 id="co2-fraction">CO₂ Fraction</h2>
 
 
 

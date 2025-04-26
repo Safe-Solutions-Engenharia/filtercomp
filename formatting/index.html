@@ -77,6 +77,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#file-format-type" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -325,6 +330,21 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Formats
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
@@ -337,6 +357,76 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-a-new-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create a New Format
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Create a New Format">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-declare-the-new-format-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Declare the new format type
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-implement-the-new-format-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Implement the new format class
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-register-the-new-format-in-the-factory" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Register the new format in the factory
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -425,6 +515,67 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-a-new-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create a New Format
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Create a New Format">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-declare-the-new-format-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Declare the new format type
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-implement-the-new-format-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Implement the new format class
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-register-the-new-format-in-the-factory" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Register the new format in the factory
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -443,9 +594,57 @@
   
 
 
-  <h1>Formats</h1>
-
-
+<h1 id="file-format-type">File Format Type</h1>
+<p>This module defines classes and utilities for formatting data from Excel spreadsheets.</p>
+<h2 id="overview">Overview</h2>
+<p>The key classes in this module are:</p>
+<ul>
+<li>
+<p><code>Format</code>: Abstract base class for formatting Excel sheets.</p>
+</li>
+<li>
+<p><code>FormatFactory</code>: Factory to return the appropriate format class based on type.</p>
+</li>
+</ul>
+<h2 id="create-a-new-format">Create a New Format</h2>
+<p>To create a new data format, you need to follow three simple steps:</p>
+<h3 id="1-declare-the-new-format-type">1. Declare the new format type</h3>
+<p>In <code>format_type.py</code>, extend the <code>FormatType</code> enum by adding a new entry.</p>
+<div class="language-python highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">format_type.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-3">3</a></span>
+<span class="normal"><a href="#__codelineno-0-4">4</a></span>
+<span class="normal"><a href="#__codelineno-0-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="k">class</span><span class="w"> </span><span class="nc">FormatType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a>    <span class="n">DEFAULT</span> <span class="o">=</span> <span class="s1">&#39;Default&#39;</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="hll">    <span class="n">NEW_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;New_Format&#39;</span>
+</span></span></code></pre></div></td></tr></table></div>
+<h3 id="2-implement-the-new-format-class">2. Implement the new format class</h3>
+<p>Create a new class in <code>format_files.py</code> that inherits from the base <code>Format</code> class. Override and customize the logic as needed.</p>
+<div class="language-python highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">format_files.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-48">48</a></span>
+<span class="normal"><a href="#__codelineno-1-49">49</a></span>
+<span class="normal"><a href="#__codelineno-1-50">50</a></span>
+<span class="normal"><a href="#__codelineno-1-51">51</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-48"><a id="__codelineno-1-48" name="__codelineno-1-48"></a><span class="k">class</span><span class="w"> </span><span class="nc">FormatNewFormat</span><span class="p">(</span><span class="n">Format</span><span class="p">):</span>
+</span><span id="__span-1-49"><a id="__codelineno-1-49" name="__codelineno-1-49"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">format_type</span><span class="p">:</span> <span class="n">FormatType</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-1-50"><a id="__codelineno-1-50" name="__codelineno-1-50"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">format_type</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
+</span><span id="__span-1-51"><a id="__codelineno-1-51" name="__codelineno-1-51"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_format_dicts</span><span class="p">()</span>
+</span></code></pre></div></td></tr></table></div>
+<blockquote>
+<p>You can define format-specific methods within this class to handle unique parsing rules or transformations.</p>
+</blockquote>
+<h3 id="3-register-the-new-format-in-the-factory">3. Register the new format in the factory</h3>
+<p>Update the <code>FormatFactory</code> to include the new format class in its internal dictionary. This allows the factory to instantiate the correct class based on the format type.</p>
+<div class="language-python highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">format_files.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-228">228</a></span>
+<span class="normal"><a href="#__codelineno-2-229">229</a></span>
+<span class="normal"><a href="#__codelineno-2-230">230</a></span>
+<span class="normal"><a href="#__codelineno-2-231">231</a></span>
+<span class="normal"><a href="#__codelineno-2-232">232</a></span>
+<span class="normal"><a href="#__codelineno-2-233">233</a></span>
+<span class="normal"><a href="#__codelineno-2-234">234</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-228"><a id="__codelineno-2-228" name="__codelineno-2-228"></a><span class="k">class</span><span class="w"> </span><span class="nc">FormatFactory</span><span class="p">:</span>
+</span><span id="__span-2-229"><a id="__codelineno-2-229" name="__codelineno-2-229"></a>    <span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">Format</span><span class="p">)</span>
+</span><span id="__span-2-230"><a id="__codelineno-2-230" name="__codelineno-2-230"></a>
+</span><span id="__span-2-231"><a id="__codelineno-2-231" name="__codelineno-2-231"></a>    <span class="n">format_classes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">FormatType</span><span class="p">,</span> <span class="nb">type</span><span class="p">[</span><span class="n">Format</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="__span-2-232"><a id="__codelineno-2-232" name="__codelineno-2-232"></a><span class="hll">        <span class="n">FormatType</span><span class="o">.</span><span class="n">NEW_FORMAT</span><span class="p">:</span> <span class="n">FormatNewFormat</span><span class="p">,</span>
+</span></span><span id="__span-2-233"><a id="__codelineno-2-233" name="__codelineno-2-233"></a>        <span class="n">FormatType</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">:</span> <span class="n">FormatDefault</span>
+</span><span id="__span-2-234"><a id="__codelineno-2-234" name="__codelineno-2-234"></a>    <span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
 
 
 
