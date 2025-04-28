@@ -6,7 +6,7 @@
 
 Ensure your system has the following installed:
 
-* [Python 3.10+](https://www.python.org/downloads/)
+* [Python 3.10.1](https://www.python.org/ftp/python/3.10.1/) (Different versions may cause compatibility issues with certain packages.)
 * [pip](https://pip.pypa.io/en/stable/)
 * [Git](https://git-scm.com/)
 * [DWSIM](https://dwsim.org/)
