@@ -1,14 +1,16 @@
 # File Format Type
 
-This module defines classes and utilities for formatting data from Excel spreadsheets.
-
 ## Overview
+
+This module defines classes and utilities for formatting data from Excel spreadsheets.
 
 The key classes in this module are:
 
 - `Format`: Abstract base class for formatting Excel sheets.
 
 - `FormatFactory`: Factory to return the appropriate format class based on type.
+
+---
 
 ## Create a New Format
 
@@ -28,7 +30,7 @@ class FormatType(Enum):
 
 Create a new class in `format_files.py` that inherits from the base `Format` class. Override and customize the logic as needed.
 
-```python title="format_files.py" linenums="48"
+```python title="format_files.py"
 class FormatNewFormat(Format):
     def __init__(self, format_type: FormatType, data_dict: str) -> None:
         super().__init__(format_type, data_dict)

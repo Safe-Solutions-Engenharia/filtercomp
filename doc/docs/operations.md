@@ -7,6 +7,8 @@ A **flash operation** is a rapid phase separation process in which a liquid mixt
 ![flash_image](assets/images/flash_image.png){ style="display: block; margin: 0 auto;" }
 <p style="text-align: center; font-size: 0.9em; color: gray;">Simple flash drum example.</p>
 
+---
+
 ## Flash Operation Logic
 
 In the code, two sequential flash operations are performed:
@@ -20,6 +22,8 @@ The first flash is executed using the **temperature** and **pressure** specified
 After the first separation, a second flash operation is performed.
 In this step, the system conditions are changed to **ambient temperature** and **ambient pressure**.
 
+---
+
 ## Flash Data Processing
 
 The flash operation results, including phase compositions and thermodynamic properties, are extracted directly from **DWSIM** after each flash operation.
@@ -27,11 +31,13 @@ The flash operation results, including phase compositions and thermodynamic prop
 However, two important properties — **Burn Rate** and **Evaporation Rate** — are not directly available from DWSIM.
 These properties are instead calculated within the code using:
 
-* **A heat of combustion database**; and
+* **An enthalpy of combustion database**; and
 
 * Additional thermophysical property calculations.
 
 This ensures that all necessary parameters are available for further analysis even when **DWSIM** does not provide them directly.
+
+---
 
 ## Burn Rate Calculation
 
@@ -49,11 +55,13 @@ $$
 Where:
 
 - \( \rho_f \) = **Density** of the fuel \((\text{kg/m}^3)\)
-- \( \Delta H_{\text{c}} \) = **Heat of combustion** \((\text{kJ/kg})\)
-- \( \Delta H_{\text{v}} \) = **Heat of vaporization** \((\text{kJ/kg})\)
+- \( \Delta H_{\text{c}} \) = **Enthalpy of combustion** \((\text{kJ/kg})\)
+- \( \Delta H_{\text{v}} \) = **Enthalpy of vaporization** \((\text{kJ/kg})\)
 - \( c_p \) = **Specific heat** \((\text{kJ/kg·K})\)
 - \( T_{\text{b}} \) = **Boiling point temperature** of the fuel \((\text{K})\)
 - \( T_{\text{f}} \) = **Actual fuel temperature** \((\text{K})\)
+
+---
 
 ## Evaporation Rate Calculation
 
@@ -70,7 +78,9 @@ Where:
 - \( k \) = **Constant** (for average soil and concrete; k = 10.5)
 - \( T_{\text{b}} \) = **Boiling point temperature** of the fuel \((\text{K})\)
 - \( T_{\text{f}} \) = **Actual fuel temperature** \((\text{K})\)
-- \( \Delta H_{\text{v}} \) = **Heat of vaporization** \((\text{kJ/kg})\)
+- \( \Delta H_{\text{v}} \) = **Enthalpy of vaporization** \((\text{kJ/kg})\)
+
+---
 
 ## \( \Delta T \) Calculation
 
