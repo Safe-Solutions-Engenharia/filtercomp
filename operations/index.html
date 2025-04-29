@@ -702,6 +702,7 @@
 <p><img alt="flash_image" src="../assets/images/flash_image.png" style="display: block; margin: 0 auto;" /></p>
 <p style="text-align: center; font-size: 0.9em; color: gray;">Simple flash drum example.</p>
 
+<hr />
 <h2 id="flash-operation-logic">Flash Operation Logic</h2>
 <p>In the code, two sequential flash operations are performed:</p>
 <h3 id="1-first-flash-operation">1. First Flash Operation</h3>
@@ -709,6 +710,7 @@
 <h3 id="2-second-flash-operation">2. Second Flash Operation</h3>
 <p>After the first separation, a second flash operation is performed.
 In this step, the system conditions are changed to <strong>ambient temperature</strong> and <strong>ambient pressure</strong>.</p>
+<hr />
 <h2 id="flash-data-processing">Flash Data Processing</h2>
 <p>The flash operation results, including phase compositions and thermodynamic properties, are extracted directly from <strong>DWSIM</strong> after each flash operation.</p>
 <p>However, two important properties — <strong>Burn Rate</strong> and <strong>Evaporation Rate</strong> — are not directly available from DWSIM.
@@ -722,6 +724,7 @@ These properties are instead calculated within the code using:</p>
 </li>
 </ul>
 <p>This ensures that all necessary parameters are available for further analysis even when <strong>DWSIM</strong> does not provide them directly.</p>
+<hr />
 <h2 id="burn-rate-calculation">Burn Rate Calculation</h2>
 <p>The <strong>burn rate</strong> represents the rate at which a fuel combusts from a surface, expressed in units of <span class="arithmatex">\((\text{kg/m²s})\)</span>. It quantifies how much mass of fuel burns per unit area per unit time.</p>
 <p>The <strong>burn rate</strong> is calculated using the following equation:
@@ -741,6 +744,7 @@ $$</p>
 <li><span class="arithmatex">\( T_{\text{b}} \)</span> = <strong>Boiling point temperature</strong> of the fuel <span class="arithmatex">\((\text{K})\)</span></li>
 <li><span class="arithmatex">\( T_{\text{f}} \)</span> = <strong>Actual fuel temperature</strong> <span class="arithmatex">\((\text{K})\)</span></li>
 </ul>
+<hr />
 <h2 id="evaporation-rate-calculation">Evaporation Rate Calculation</h2>
 <p>The <strong>evaporation rate</strong> represents the mass of fuel evaporating per unit area per unit time, expressed in <span class="arithmatex">\((\text{kg/m²s})\)</span>.
 It provides a measure of how quickly the liquid fuel transitions into the vapor phase under given conditions.</p>
@@ -755,6 +759,7 @@ $$</p>
 <li><span class="arithmatex">\( T_{\text{f}} \)</span> = <strong>Actual fuel temperature</strong> <span class="arithmatex">\((\text{K})\)</span></li>
 <li><span class="arithmatex">\( \Delta H_{\text{v}} \)</span> = <strong>Heat of vaporization</strong> <span class="arithmatex">\((\text{kJ/kg})\)</span></li>
 </ul>
+<hr />
 <h2 id="delta-t-calculation"><span class="arithmatex">\( \Delta T \)</span> Calculation</h2>
 <p>The temperature difference, <span class="arithmatex">\( \Delta T \)</span>, plays a critical role in both the <strong>Burn Rate</strong> and <strong>Evaporation Rate</strong> calculations, as it represents the temperature for both processes.</p>
 <p>In both cases, <span class="arithmatex">\( \Delta T \)</span> is the difference between the <strong>boiling point temperature</strong> of the fuel (<span class="arithmatex">\( T_{\text{b}} \)</span>) and the <strong>actual fuel temperature</strong> (<span class="arithmatex">\( T_{\text{f}} \)</span>).</p>

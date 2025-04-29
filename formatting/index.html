@@ -595,8 +595,8 @@
 
 
 <h1 id="file-format-type">File Format Type</h1>
-<p>This module defines classes and utilities for formatting data from Excel spreadsheets.</p>
 <h2 id="overview">Overview</h2>
+<p>This module defines classes and utilities for formatting data from Excel spreadsheets.</p>
 <p>The key classes in this module are:</p>
 <ul>
 <li>
@@ -606,6 +606,7 @@
 <p><code>FormatFactory</code>: Factory to return the appropriate format class based on type.</p>
 </li>
 </ul>
+<hr />
 <h2 id="create-a-new-format">Create a New Format</h2>
 <p>To create a new data format, you need to follow three simple steps:</p>
 <h3 id="1-declare-the-new-format-type">1. Declare the new format type</h3>
@@ -618,14 +619,11 @@
 </span></span></code></pre></div></td></tr></table></div>
 <h3 id="2-implement-the-new-format-class">2. Implement the new format class</h3>
 <p>Create a new class in <code>format_files.py</code> that inherits from the base <code>Format</code> class. Override and customize the logic as needed.</p>
-<div class="language-python highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">format_files.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-48">48</a></span>
-<span class="normal"><a href="#__codelineno-1-49">49</a></span>
-<span class="normal"><a href="#__codelineno-1-50">50</a></span>
-<span class="normal"><a href="#__codelineno-1-51">51</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-48"><a id="__codelineno-1-48" name="__codelineno-1-48"></a><span class="k">class</span><span class="w"> </span><span class="nc">FormatNewFormat</span><span class="p">(</span><span class="n">Format</span><span class="p">):</span>
-</span><span id="__span-1-49"><a id="__codelineno-1-49" name="__codelineno-1-49"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">format_type</span><span class="p">:</span> <span class="n">FormatType</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="__span-1-50"><a id="__codelineno-1-50" name="__codelineno-1-50"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">format_type</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
-</span><span id="__span-1-51"><a id="__codelineno-1-51" name="__codelineno-1-51"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_format_dicts</span><span class="p">()</span>
-</span></code></pre></div></td></tr></table></div>
+<div class="language-python highlight"><span class="filename">format_files.py</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">FormatNewFormat</span><span class="p">(</span><span class="n">Format</span><span class="p">):</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">format_type</span><span class="p">:</span> <span class="n">FormatType</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">format_type</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_format_dicts</span><span class="p">()</span>
+</span></code></pre></div>
 <blockquote>
 <p>You can define format-specific methods within this class to handle unique parsing rules or transformations.</p>
 </blockquote>

@@ -418,9 +418,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#heat-of-combustion" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
-      Heat of Combustion
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#calorific-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      Calorific Value
     </span>
   </a>
   
@@ -441,6 +450,48 @@
       CO₂ Fraction
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-a-new-filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create a New Filter
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Create a New Filter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-declare-the-new-filter-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Declare the new filter type
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-implement-the-new-filter-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Implement the new filter class
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-register-the-new-filter-in-the-factory" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Register the new filter in the factory
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -501,9 +552,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#heat-of-combustion" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
-      Heat of Combustion
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#calorific-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      Calorific Value
     </span>
   </a>
   
@@ -527,6 +587,48 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#create-a-new-filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create a New Filter
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Create a New Filter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-declare-the-new-filter-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Declare the new filter type
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-implement-the-new-filter-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Implement the new filter class
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-register-the-new-filter-in-the-factory" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Register the new filter in the factory
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -547,18 +649,88 @@
 
 
 <h1 id="operation-filters">Operation Filters</h1>
-<h2 id="heat-of-combustion">Heat of Combustion</h2>
+<h2 id="overview">Overview</h2>
+<p>This module defines classes and utilities for filtering data based on specific criteria. It processes each row of a dataframe, compares the relevant values, and selects the highest value according to the defined filter conditions.</p>
+<hr />
+<h2 id="calorific-value">Calorific Value</h2>
+<p>The <strong>Calorific Value</strong> is calculated by combining:</p>
+<ul>
+<li>The <strong>composition</strong> of the fluid phase,</li>
+<li>The <strong>heat of combustion</strong> of each individual component,</li>
+<li>The <strong>molar</strong> flow rate of the phase.</li>
+</ul>
+<p>The <strong>Calorific Value</strong> is computed as:</p>
 <div class="arithmatex">\[
-\text{Heat of Combustion} \left(\frac {kJ}{h} \right) = \left[ \sum_{i} \left( H_i \cdot x_i \right) \right] \cdot \dot{n}
+\text{Calorific Value} \left(\frac {kJ}{h} \right) = \left[ \sum_{i} \left( H_i \cdot x_i \right) \right] \cdot \dot{n}
 \]</div>
 <p>Where:</p>
 <ul>
-<li><span class="arithmatex">\( H_i \)</span> =  <strong>Enthalpy of combustion</strong> of component <span class="arithmatex">\(i\)</span> <span class="arithmatex">\((\text{kJ/kmol})\)</span></li>
+<li><span class="arithmatex">\( H_i \)</span> =  <strong>Heat of combustion</strong> of component <span class="arithmatex">\(i\)</span> <span class="arithmatex">\((\text{kJ/kmol})\)</span></li>
 <li><span class="arithmatex">\( x_i \)</span> = <strong>Molar fraction</strong> (or relative molar contribution) of component <span class="arithmatex">\(i\)</span></li>
 <li><span class="arithmatex">\( \dot{n} \)</span> = <strong>Total molar flow rate</strong> of the phase <span class="arithmatex">\((\text{kmol/h})\)</span></li>
 </ul>
+<hr />
 <h2 id="co2-and-h2s-fraction">CO₂ and H₂S Fraction</h2>
+<p>This class filters data based on the <strong>CO₂ and H₂S molar fractions</strong>. It processes each row of the input dataframes, identifies the maximum values for CO₂ and H₂S according to specific conditions, and selects the scenario that best meets the defined criteria.</p>
+<p>If the scenarios corresponding to the maximum CO₂ and H₂S values are different, the module compares their molecular weights: if the values are similar, the CO₂ and H₂S data are merged into a single stream; if they differ significantly, both streams are selected independently.</p>
+<hr />
 <h2 id="co2-fraction">CO₂ Fraction</h2>
+<p>This class filters data based on the <strong>CO₂ molar fraction</strong>. It processes the input dataframes, identifies the scenario with the highest CO₂ content for each current, and selects the corresponding data.</p>
+<hr />
+<h2 id="create-a-new-filter">Create a New Filter</h2>
+<p>To create a new filter, you need to follow three simple steps:</p>
+<h3 id="1-declare-the-new-filter-type">1. Declare the new filter type</h3>
+<p>In <code>filter_operations.py</code>, extend the <code>OperationFilter</code> enum by adding a new entry.</p>
+<div class="language-python highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">filter_operations.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-3">3</a></span>
+<span class="normal"><a href="#__codelineno-0-4">4</a></span>
+<span class="normal"><a href="#__codelineno-0-5">5</a></span>
+<span class="normal"><a href="#__codelineno-0-6">6</a></span>
+<span class="normal"><a href="#__codelineno-0-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="k">class</span><span class="w"> </span><span class="nc">OperationsFilter</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a>    <span class="n">CALORIFIC_VALUE</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a>    <span class="n">CO2_AND_H2S_FRACTION</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a>    <span class="n">CO2_FRACTION</span> <span class="o">=</span> <span class="mi">3</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="hll">    <span class="n">NEW_FILTER</span> <span class="o">=</span> <span class="mi">4</span>
+</span></span></code></pre></div></td></tr></table></div>
+<h3 id="2-implement-the-new-filter-class">2. Implement the new filter class</h3>
+<p>Create a new class in <code>operation_filter.py</code> that inherits from the base <code>Filter</code> class. Override and customize the logic as needed.</p>
+<div class="language-python highlight"><span class="filename">operation_filter.py</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">NewFilter</span><span class="p">(</span><span class="n">Filter</span><span class="p">):</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>                 <span class="n">filter_type</span><span class="p">:</span> <span class="n">OperationsFilter</span><span class="p">,</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>                 <span class="n">flashed_df_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span> 
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>                 <span class="n">full_info_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>                 <span class="n">composition_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>                 <span class="n">phase_type</span><span class="p">:</span> <span class="n">PhaseType</span><span class="p">,</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>                 <span class="n">use_simulated_value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">filter_type</span><span class="p">,</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>                         <span class="n">flashed_df_dict</span><span class="p">,</span> 
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>                         <span class="n">full_info_dict</span><span class="p">,</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>                         <span class="n">composition_dict</span><span class="p">,</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>                         <span class="n">phase_type</span><span class="p">,</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>                         <span class="n">use_simulated_value</span><span class="p">)</span>
+</span></code></pre></div>
+<blockquote>
+<p>You can define methods within this class to handle unique parsing rules or transformations.</p>
+</blockquote>
+<h3 id="3-register-the-new-filter-in-the-factory">3. Register the new filter in the factory</h3>
+<p>Update the <code>FilterFactory</code> to include the new filter class in its internal dictionary. This allows the factory to instantiate the correct class based on the filter type.</p>
+<div class="language-python highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">operation_filter.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-305">305</a></span>
+<span class="normal"><a href="#__codelineno-2-306">306</a></span>
+<span class="normal"><a href="#__codelineno-2-307">307</a></span>
+<span class="normal"><a href="#__codelineno-2-308">308</a></span>
+<span class="normal"><a href="#__codelineno-2-309">309</a></span>
+<span class="normal"><a href="#__codelineno-2-310">310</a></span>
+<span class="normal"><a href="#__codelineno-2-311">311</a></span>
+<span class="normal"><a href="#__codelineno-2-312">312</a></span>
+<span class="normal"><a href="#__codelineno-2-313">313</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-305"><a id="__codelineno-2-305" name="__codelineno-2-305"></a><span class="k">class</span><span class="w"> </span><span class="nc">FilterFactory</span><span class="p">:</span>
+</span><span id="__span-2-306"><a id="__codelineno-2-306" name="__codelineno-2-306"></a>    <span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">Filter</span><span class="p">)</span>
+</span><span id="__span-2-307"><a id="__codelineno-2-307" name="__codelineno-2-307"></a>
+</span><span id="__span-2-308"><a id="__codelineno-2-308" name="__codelineno-2-308"></a>    <span class="n">filter_classes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">OperationsFilter</span><span class="p">,</span> <span class="nb">type</span><span class="p">[</span><span class="n">Filter</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="__span-2-309"><a id="__codelineno-2-309" name="__codelineno-2-309"></a>        <span class="n">OperationsFilter</span><span class="o">.</span><span class="n">CALORIFIC_VALUE</span><span class="p">:</span> <span class="n">CalorificValue</span><span class="p">,</span>
+</span><span id="__span-2-310"><a id="__codelineno-2-310" name="__codelineno-2-310"></a>        <span class="n">OperationsFilter</span><span class="o">.</span><span class="n">CO2_AND_H2S_FRACTION</span><span class="p">:</span> <span class="n">CO2AndH2SFraction</span><span class="p">,</span>
+</span><span id="__span-2-311"><a id="__codelineno-2-311" name="__codelineno-2-311"></a>        <span class="n">OperationsFilter</span><span class="o">.</span><span class="n">CO2_FRACTION</span><span class="p">:</span> <span class="n">CO2Fraction</span><span class="p">,</span>
+</span><span id="__span-2-312"><a id="__codelineno-2-312" name="__codelineno-2-312"></a><span class="hll">        <span class="n">OperationsFilter</span><span class="o">.</span><span class="n">NEW_FILTER</span><span class="p">:</span> <span class="n">NewFilter</span>
+</span></span><span id="__span-2-313"><a id="__codelineno-2-313" name="__codelineno-2-313"></a>    <span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
 
 
 
