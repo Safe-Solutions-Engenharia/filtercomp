@@ -566,26 +566,28 @@
 <h2 id="insert-new-or-update-members">Insert New or Update Members</h2>
 <p>This module provides functionality to connect to a local SQLite database and <strong>insert a new record</strong> or <strong>update an existing one</strong> for the enthalpy of combustion of a chemical compound.</p>
 <p>To add or update a compound, define the following variables at the beginning of the script:</p>
-<div class="language-python highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">insert_to_database.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-5">5</a></span>
-<span class="normal"><a href="#__codelineno-0-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="n">COMPOUND_NAME</span> <span class="o">=</span> <span class="s1">&#39;Example compound&#39;</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="n">HEAT_OF_COMBUSTION</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1000</span> <span class="c1"># kJ/kmol</span>
+<div class="language-python highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">insert_to_database.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-6">6</a></span>
+<span class="normal"><a href="#__codelineno-0-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="n">COMPOUND_NAME</span> <span class="o">=</span> <span class="s1">&#39;Example compound&#39;</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="n">HEAT_OF_COMBUSTION</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1000</span> <span class="c1"># kJ/kmol</span>
 </span></code></pre></div></td></tr></table></div>
 <blockquote>
 <p>This ensures the database always holds the most up-to-date information for each chemical compound.</p>
 </blockquote>
 <hr />
 <h2 id="delete-a-member">Delete a Member</h2>
-<blockquote>
-<p>Not implemented yet!</p>
-</blockquote>
+<p>This module provides functionality to connect to a local SQLite database and <strong>delete an existing record</strong> corresponding to the enthalpy of combustion of a chemical compound.</p>
+<p>To delete a compound, define the following variable at the beginning of the script:</p>
+<div class="language-python highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">delete_from_database.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="n">COMPOUND_NAME</span> <span class="o">=</span> <span class="s1">&#39;Example compound&#39;</span>
+</span></code></pre></div></td></tr></table></div>
 <hr />
 <h2 id="check-all-members">Check All Members</h2>
 <p>This module provides functionality to connect to a local SQLite database and <strong>retrieve</strong> the enthalpy of combustion data for all the chemical compounds inside the database.</p>
 <hr />
 <h2 id="check-a-specific-member">Check a Specific Member</h2>
-<blockquote>
-<p>Not implemented yet!</p>
-</blockquote>
+<p>This module provides functionality to connect to a local SQLite database and <strong>retrieve</strong> the enthalpy of combustion for a specific chemical compound.</p>
+<p>To check a compound, define the following variable at the beginning of the script:</p>
+<div class="language-python highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">check_database_single_member.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="n">COMPOUND_NAME</span> <span class="o">=</span> <span class="s1">&#39;Example compound&#39;</span>
+</span></code></pre></div></td></tr></table></div>
 
 
 
