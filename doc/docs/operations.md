@@ -31,7 +31,7 @@ The flash operation results, including phase compositions and thermodynamic prop
 However, two important properties — **Burn Rate** and **Evaporation Rate** — are not directly available from DWSIM.
 These properties are instead calculated within the code using:
 
-* **An enthalpy of combustion database**; and
+* **A heat of combustion database**; and
 
 * Additional thermophysical property calculations.
 
@@ -55,8 +55,8 @@ $$
 Where:
 
 - \( \rho_f \) = **Density** of the fuel \((\text{kg/m}^3)\)
-- \( \Delta H_{\text{c}} \) = **Enthalpy of combustion** \((\text{kJ/kg})\)
-- \( \Delta H_{\text{v}} \) = **Enthalpy of vaporization** \((\text{kJ/kg})\)
+- \( \Delta H_{\text{c}} \) = **Heat of combustion** \((\text{kJ/kg})\)
+- \( \Delta H_{\text{v}} \) = **Heat of vaporization** \((\text{kJ/kg})\)
 - \( c_p \) = **Specific heat** \((\text{kJ/kg·K})\)
 - \( T_{\text{b}} \) = **Boiling point temperature** of the fuel \((\text{K})\)
 - \( T_{\text{f}} \) = **Actual fuel temperature** \((\text{K})\)
@@ -78,7 +78,7 @@ Where:
 - \( k \) = **Constant** (for average soil and concrete; k = 10.5)
 - \( T_{\text{b}} \) = **Boiling point temperature** of the fuel \((\text{K})\)
 - \( T_{\text{f}} \) = **Actual fuel temperature** \((\text{K})\)
-- \( \Delta H_{\text{v}} \) = **Enthalpy of vaporization** \((\text{kJ/kg})\)
+- \( \Delta H_{\text{v}} \) = **Heat of vaporization** \((\text{kJ/kg})\)
 
 ---
 

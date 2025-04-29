@@ -6,23 +6,23 @@ This module defines classes and utilities for filtering data based on specific c
 
 ---
 
-## Heat of Combustion
+## Calorific Value
 
-The calorific value is calculated by combining:
+The **Calorific Value** is calculated by combining:
 
 * The **composition** of the fluid phase,
-* The **enthalpy of combustion** of each individual component,
+* The **heat of combustion** of each individual component,
 * The **molar** flow rate of the phase.
 
-The calorific value (Heat of Combustion) is computed as:
+The **Calorific Value** is computed as:
 
 $$
-\text{Heat of Combustion} \left(\frac {kJ}{h} \right) = \left[ \sum_{i} \left( H_i \cdot x_i \right) \right] \cdot \dot{n}
+\text{Calorific Value} \left(\frac {kJ}{h} \right) = \left[ \sum_{i} \left( H_i \cdot x_i \right) \right] \cdot \dot{n}
 $$
 
 Where:
 
-- \( H_i \) =  **Enthalpy of combustion** of component \(i\) \((\text{kJ/kmol})\)
+- \( H_i \) =  **Heat of combustion** of component \(i\) \((\text{kJ/kmol})\)
 - \( x_i \) = **Molar fraction** (or relative molar contribution) of component \(i\)
 - \( \dot{n} \) = **Total molar flow rate** of the phase \((\text{kmol/h})\)
 
