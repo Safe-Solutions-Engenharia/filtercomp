@@ -6,7 +6,7 @@ This module provides functionality to connect to a local SQLite database and **i
 
 To add or update a compound, define the following variables at the beginning of the script:
 
-```python title="insert_to_database.py" linenums="5"
+```python title="insert_to_database.py" linenums="6"
 COMPOUND_NAME = 'Example compound'
 HEAT_OF_COMBUSTION = -1000 # kJ/kmol
 ```
@@ -17,7 +17,13 @@ HEAT_OF_COMBUSTION = -1000 # kJ/kmol
 
 ## Delete a Member
 
-> Not implemented yet!
+This module provides functionality to connect to a local SQLite database and **delete an existing record** corresponding to the enthalpy of combustion of a chemical compound.
+
+To delete a compound, define the following variable at the beginning of the script:
+
+```python title="delete_from_database.py" linenums="6"
+COMPOUND_NAME = 'Example compound'
+```
 
 ---
 
@@ -29,4 +35,10 @@ This module provides functionality to connect to a local SQLite database and **r
 
 ## Check a Specific Member
 
-> Not implemented yet!
+This module provides functionality to connect to a local SQLite database and **retrieve** the enthalpy of combustion for a specific chemical compound.
+
+To check a compound, define the following variable at the beginning of the script:
+
+```python title="check_database_single_member.py" linenums="6"
+COMPOUND_NAME = 'Example compound'
+```
