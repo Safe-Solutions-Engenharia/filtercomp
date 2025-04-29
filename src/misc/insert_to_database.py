@@ -1,7 +1,7 @@
 from pathlib import Path
 import sqlite3
 
-BASE_DIR = Path(__file__).resolve().parents[2]  # Go up from 'misc' -> 'src' -> root
+BASE_DIR = Path(__file__).resolve().parents[2]
 DATABASE_PATH = BASE_DIR / 'files' / 'database' / 'heat_of_combustion.db'
 COMPOUND_NAME = 'Ethanol'
 HEAT_OF_COMBUSTION = -1366.8 # kJ/kmol
