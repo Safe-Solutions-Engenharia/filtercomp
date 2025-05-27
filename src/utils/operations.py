@@ -63,7 +63,9 @@ class FlashOperations:
                         'OILY PHASE': ['Molar Flow @Std Cond', 'Vol Flow @T&P Cond', 'Vol Flow @Std Cond',
                                         'Mass Fraction', 'Density @T&P Cond', 'Density @Std Cond', 'Molecular Weight @Std Cond', 'Molecular Weight @T&P Cond']}
         
+        #TODO: create a better method of translating the names.
         self.name_convention: dict[str, str] = {'Isobutane': 'i-Butane',
+                                                'N-butane': 'n-Butane',
                                                 '2-methyl-1-butene': '2-Methyl-Butane',
                                                 'Isopentane': 'i-Pentane',
                                                 'N-pentane': 'n-Pentane',

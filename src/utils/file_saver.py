@@ -49,8 +49,8 @@ def create_final_composition_file(fraction_phase: PhaseType, name: str, fracao_f
         composition = df.iloc[:, 33:]
         composition_base = [sheet.cell(row=7 + row_index_value, column= 2).value for row_index_value in range(36)]
 
-        columns_not_in_base = [col for col in composition.columns if col not in composition_base]
-        base_not_in_columns = [col for col in composition_base if col not in composition.columns]
+        columns_not_in_base = [col for col in composition.columns if col.lower() not in [c.lower() for c in composition_base]]
+        base_not_in_columns = [col for col in composition_base if col.lower() not in [c.lower() for c in composition.columns]]
 
         if columns_not_in_base:
             indices_to_replace = [composition_base.index(item) for item in base_not_in_columns]
