@@ -301,6 +301,7 @@ class FlashOperations:
 
         if (density_oil is not None) and (890 < density_oil < 1500 and 17 < molecular_weight_oil < 19):
             volumetric_flow_oil, volumetric_flow_liquid, molecular_weight_oil, molecular_weight_water, _, _, _, _ = self.get_misc_properties('Liquid2', 'Liquid1')
+            
             density_oil = self.mst.GetPhase('Liquid2').Properties.density if self.mst.GetPhase(
                 'Liquid2').Properties.density else 0
         else:
@@ -513,6 +514,9 @@ class FlashOperations:
             molecular_weight_oil_std, molecular_weight_water_std,
             mass_fraction_oil_std, mass_fraction_water_std,
             molar_flow_oil_std, molar_flow_water_std) = self.get_misc_properties('Liquid2', 'Liquid1')
+
+            density_oil_std = self.mst.GetPhase('Liquid2').Properties.density if self.mst.GetPhase(
+            'Liquid1').Properties.density else 0
         else:
             (volumetric_flow_oil, volumetric_flow_liquid,
             molecular_weight_oil_std, molecular_weight_water_std,
