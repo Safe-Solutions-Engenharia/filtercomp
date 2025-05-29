@@ -11,7 +11,7 @@ from tqdm import tqdm
 import pandas as pd
 import clr
 
-from dwsim_components_db import compounds
+from dwsim_components_db import compounds_dwsim
 
 from rapidfuzz import process
 
@@ -88,7 +88,7 @@ class FlashOperations:
             if col_lower in self.name_convention:
                 new_name = self.name_convention[col_lower]
             else:
-                match = process.extractOne(col, self.compounds, score_cutoff=75)
+                match = process.extractOne(col, compounds_dwsim, score_cutoff=75)
                 if match:
                     new_name = match[0]
                 else:
