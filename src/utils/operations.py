@@ -11,6 +11,10 @@ from tqdm import tqdm
 import pandas as pd
 import clr
 
+from dwsim_components_db import compounds
+
+from rapidfuzz import process
+
 from enums.dwsim_packages import DWSIMPackages
 from enums.filter_operations import PhaseType, CompoundBasis
 from utils.logger import custom_logger
@@ -64,27 +68,8 @@ class FlashOperations:
                                         'Mass Fraction', 'Density @T&P Cond', 'Density @Std Cond', 'Molecular Weight @Std Cond', 'Molecular Weight @T&P Cond']}
         
         #TODO: create a better method of translating the names.
-        self.name_convention: dict[str, str] = {'Isobutane': 'i-Butane',
-                                                'N-butane': 'n-Butane',
-                                                '2-methyl-1-butene': '2-Methyl-Butane',
-                                                'Isopentane': 'i-Pentane',
-                                                'N-pentane': 'n-Pentane',
-                                                'N-hexane': 'Hexane',
-                                                'N-heptane': 'Heptane',
-                                                'N-octane': 'Octane',
-                                                'N-nonane': 'Nonane',
-                                                'N-decane': 'Decane',
-                                                'N-undecane': 'Undecane',
-                                                'N-dodecane': 'Dodecane',
-                                                'N-tridecane': 'Tridecane',
-                                                'N-tetradecane': 'Tetradecane',
-                                                'N-pentadecane': 'Pentadecane',
-                                                'N-hexadecane': 'Hexadecane',
-                                                'N-heptadecane': 'Heptadecane',
-                                                'N-octadecane': 'Octadecane',
-                                                'N-nonadecane': 'Nonadecane',
-                                                'N-heptacosane': 'C20+',
-                                                'N-nonacosane': 'C20++'}
+        self.name_convention: dict[str, str] = {'c20+': 'N-heptacosane',
+                                                'c20++': 'N-nonacosane'}
         
         self.full_df_dict = full_df_dict
         self.full_info_dict = full_info_dict
@@ -96,13 +81,25 @@ class FlashOperations:
         self.old_header = None
 
     def replace_compound_names_dataframe(self, compound_df: pd.DataFrame) -> pd.DataFrame:
+        renamed_columns = {}
         for col in compound_df.columns:
-            if col in self.name_convention.values():
-                key = next(k for k, v in self.name_convention.items() if v == col)
-                compound_df.rename(columns={col: key}, inplace=True)
-        
-        return compound_df
+            col_lower = col.lower().strip()
+            
+            if col_lower in self.name_convention:
+                new_name = self.name_convention[col_lower]
+            else:
+                match = process.extractOne(col, self.compounds, score_cutoff=75)
+                if match:
+                    new_name = match[0]
+                else:
+                    new_name = col
+            
+            new_name = new_name[0].upper() + new_name[1:].lower()
+            renamed_columns[col] = new_name
 
+        compound_df.rename(columns=renamed_columns, inplace=True)
+        return compound_df
+    
     #TODO: Adjust the 'force phase' relation.
     def flash_operation(self,
                         component_list: list[float], pressure_Pa: float, 
