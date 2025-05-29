@@ -294,24 +294,18 @@ class FlashOperations:
         density_vapor = self.mst.GetPhase('Vapor').Properties.density
 
         # Liquid (Oil + Water)
-        mass_fraction_liquid2 = self.mst.GetPhase('Liquid2').Properties.massfraction
         density_oil = self.mst.GetPhase('Liquid1').Properties.density if self.mst.GetPhase(
             'Liquid1').Properties.density else 0
         molecular_weight_oil = self.mst.GetPhase('Liquid1').Properties.molecularWeight if self.mst.GetPhase(
             'Liquid1').Properties.molecularWeight else 0
-        
-        if mass_fraction_liquid2 and (890 > density_oil or density_oil > 1500) and (17 > molecular_weight_oil or molecular_weight_oil > 19):
-            volumetric_flow_oil, volumetric_flow_liquid, molecular_weight_oil, molecular_weight_water, _, _, _, _ = self.get_misc_properties('Liquid1', 'Liquid2')
+
+        if (density_oil is not None) and (890 < density_oil < 1500 and 17 < molecular_weight_oil < 19):
+            volumetric_flow_oil, volumetric_flow_liquid, molecular_weight_oil, molecular_weight_water, _, _, _, _ = self.get_misc_properties('Liquid2', 'Liquid1')
+            density_oil = self.mst.GetPhase('Liquid2').Properties.density if self.mst.GetPhase(
+                'Liquid2').Properties.density else 0
         else:
-            if mass_fraction_liquid2:
-                volumetric_flow_oil, volumetric_flow_liquid, molecular_weight_oil, molecular_weight_water, _, _, _, _ = self.get_misc_properties('Liquid2', 'Liquid1')
-            elif density_oil is not None and (890 < density_oil < 1500 and 17 < molecular_weight_oil < 19):
-                volumetric_flow_oil, volumetric_flow_liquid, molecular_weight_oil, molecular_weight_water, _, _, _, _ = self.get_misc_properties('Liquid2', 'Liquid1')
-                density_oil = self.mst.GetPhase('Liquid2').Properties.density if self.mst.GetPhase(
-                    'Liquid2').Properties.density else 0
-            else:
-                volumetric_flow_oil, volumetric_flow_liquid, molecular_weight_oil, molecular_weight_water, _, _, _, _ = self.get_misc_properties('Liquid1', 'Liquid2')
-    
+            volumetric_flow_oil, volumetric_flow_liquid, molecular_weight_oil, molecular_weight_water, _, _, _, _ = self.get_misc_properties('Liquid1', 'Liquid2')
+
         scenario_dict.update({
             'OVERALL_Pressure': pressure_kPa,
             'VAPOUR PHASE_Vol Flow @T&P Cond': volumetric_flow_vapor,
@@ -514,30 +508,16 @@ class FlashOperations:
         molecular_weight_oil = self.mst.GetPhase('Liquid1').Properties.molecularWeight if self.mst.GetPhase(
             'Liquid1').Properties.molecularWeight else 0
         
-        if mass_fraction_liquid2_std and (890 > density_oil_std or density_oil_std > 1500) and (17 > molecular_weight_oil or molecular_weight_oil > 19):
+        if (density_oil_std is not None) and (890 < density_oil_std < 1500 and 17 < molecular_weight_oil < 19):
+            (volumetric_flow_oil, volumetric_flow_liquid,
+            molecular_weight_oil_std, molecular_weight_water_std,
+            mass_fraction_oil_std, mass_fraction_water_std,
+            molar_flow_oil_std, molar_flow_water_std) = self.get_misc_properties('Liquid2', 'Liquid1')
+        else:
             (volumetric_flow_oil, volumetric_flow_liquid,
             molecular_weight_oil_std, molecular_weight_water_std,
             mass_fraction_oil_std, mass_fraction_water_std,
             molar_flow_oil_std, molar_flow_water_std) = self.get_misc_properties('Liquid1', 'Liquid2')
-
-        else:
-            if mass_fraction_liquid2_std:
-                (volumetric_flow_oil, volumetric_flow_liquid,
-                molecular_weight_oil_std, molecular_weight_water_std,
-                mass_fraction_oil_std, mass_fraction_water_std,
-                molar_flow_oil_std, molar_flow_water_std) = self.get_misc_properties('Liquid2', 'Liquid1')
-            elif density_oil_std is not None and (890 < density_oil_std < 1500 and 17 < molecular_weight_oil < 19):
-                (volumetric_flow_oil, volumetric_flow_liquid,
-                molecular_weight_oil_std, molecular_weight_water_std,
-                mass_fraction_oil_std, mass_fraction_water_std,
-                molar_flow_oil_std, molar_flow_water_std) = self.get_misc_properties('Liquid2', 'Liquid1')
-                density_oil_std = self.mst.GetPhase('Liquid2').Properties.density if self.mst.GetPhase(
-                'Liquid2').Properties.density else 0
-            else:
-                (volumetric_flow_oil, volumetric_flow_liquid,
-                molecular_weight_oil_std, molecular_weight_water_std,
-                mass_fraction_oil_std, mass_fraction_water_std,
-                molar_flow_oil_std, molar_flow_water_std) = self.get_misc_properties('Liquid1', 'Liquid2')
 
         # Burn rate (Oil)
         if not self.debug_mode:
