@@ -13,7 +13,7 @@ import clr
 
 from dwsim_components_db import compounds_dwsim
 
-from rapidfuzz import process
+from rapidfuzz import process, fuzz
 
 from enums.dwsim_packages import DWSIMPackages
 from enums.filter_operations import PhaseType, CompoundBasis
@@ -83,19 +83,21 @@ class FlashOperations:
     def replace_compound_names_dataframe(self, compound_df: pd.DataFrame) -> pd.DataFrame:
         renamed_columns = {}
         for col in compound_df.columns:
-            col_lower = col.lower().strip()
+            col_lower = col.lower()
             
             if col_lower in self.name_convention:
                 new_name = self.name_convention[col_lower]
+            elif col_lower.startswith('i-'):
+                new_name = "iso" + col_lower[2:]
             else:
-                match = process.extractOne(col, compounds_dwsim, score_cutoff=75)
+                match = process.extractOne(col_lower, compounds_dwsim, scorer=fuzz.ratio, score_cutoff=70)
                 if match:
                     new_name = match[0]
                 else:
                     new_name = col
-            
-            new_name = new_name[0].upper() + new_name[1:].lower()
-            renamed_columns[col] = new_name
+    
+        new_name = new_name[0].upper() + new_name[1:].lower()
+        renamed_columns[col] = new_name
 
         compound_df.rename(columns=renamed_columns, inplace=True)
         return compound_df
