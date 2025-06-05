@@ -1,4 +1,4 @@
-compounds = [
+compounds_dwsim = [
     "1-butanol",
     "1-butene",
     "1-heptanol",

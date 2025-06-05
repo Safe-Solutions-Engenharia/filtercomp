@@ -7,17 +7,15 @@ import difflib
 from chemicals import Tc, Pc, CAS_from_any, Tb, MW
 from chemicals.phase_change import Riedel
 import numpy as np
+from rapidfuzz import process, fuzz
 from tqdm import tqdm
 import pandas as pd
 import clr
 
-from dwsim_components_db import compounds_dwsim
-
-from rapidfuzz import process, fuzz
-
 from enums.dwsim_packages import DWSIMPackages
 from enums.filter_operations import PhaseType, CompoundBasis
 from utils.logger import custom_logger
+from utils.dwsim_components_db import compounds_dwsim
 
 DWSIMPATH = os.path.join(os.getenv('USERPROFILE'), "AppData", "Local", "DWSIM")
 if not os.path.exists(DWSIMPATH):
