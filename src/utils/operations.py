@@ -66,8 +66,8 @@ class FlashOperations:
                                         'Mass Fraction', 'Density @T&P Cond', 'Density @Std Cond', 'Molecular Weight @Std Cond', 'Molecular Weight @T&P Cond']}
         
         #TODO: create a better method of translating the names.
-        self.name_convention: dict[str, str] = {'c20+': 'N-heptacosane',
-                                                'c20++': 'N-nonacosane'}
+        self.name_convention: dict[str, str] = {'C20+': 'N-heptacosane',
+                                                'C20++': 'N-nonacosane'}
         
         self.full_df_dict = full_df_dict
         self.full_info_dict = full_info_dict
@@ -79,7 +79,7 @@ class FlashOperations:
         self.old_header = None
 
     def replace_compound_names_dataframe(self, compound_df: pd.DataFrame) -> pd.DataFrame:
-        renamed_columns = {}
+        renamed_columns: dict[str, str] = {}
         for col in compound_df.columns:
             col_lower = col.lower()
             
@@ -87,15 +87,19 @@ class FlashOperations:
                 new_name = self.name_convention[col_lower]
             elif col_lower.startswith('i-'):
                 new_name = "iso" + col_lower[2:]
+                new_name = new_name[0].upper() + new_name[1:].lower()
             else:
-                match = process.extractOne(col_lower, compounds_dwsim, scorer=fuzz.ratio, score_cutoff=70)
+                initial = col_lower[0]
+                filtered_candidates = [c for c in compounds_dwsim if c.lower().startswith(initial)]
+
+                match = process.extractOne(col_lower, filtered_candidates, scorer=fuzz.ratio, score_cutoff=70)
                 if match:
                     new_name = match[0]
+                    new_name = new_name[0].upper() + new_name[1:].lower()
                 else:
                     new_name = col
     
-        new_name = new_name[0].upper() + new_name[1:].lower()
-        renamed_columns[col] = new_name
+            renamed_columns[col] = new_name
 
         compound_df.rename(columns=renamed_columns, inplace=True)
         return compound_df
@@ -601,6 +605,7 @@ class FlashOperations:
                 comp_phase = self.mst.GetPhase(self.molar_phase).Compounds
 
         composition_list = [comp_phase[x.Key].MoleFraction for x in compoud_dict.values()]
+
         return composition_list
     
     def get_all_compound_value(self, compoud_dict: dict[str, any]) -> None:
