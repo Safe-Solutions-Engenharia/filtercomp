@@ -90,7 +90,7 @@ class FlashOperations:
                 new_name = new_name[0].upper() + new_name[1:].lower()
             else:
                 initial = col_lower[0]
-                filtered_candidates = [c for c in compounds_dwsim if c.lower().startswith(initial)]
+                filtered_candidates = [c.lower() for c in compounds_dwsim]
 
                 match = process.extractOne(col_lower, filtered_candidates, scorer=fuzz.ratio, score_cutoff=70)
                 if match:
