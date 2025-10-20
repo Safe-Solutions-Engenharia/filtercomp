@@ -305,6 +305,7 @@ compounds_dwsim = [
     "N-decane",
     "N-docosane",
     "N-dodecane",
+    "N-eicosane",
     "N-heneicosane",
     "N-heptacosane",
     "N-heptadecane",
