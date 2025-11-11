@@ -134,6 +134,21 @@ Specifies the unit of measurement for mass flow, used when a different unit is r
         KG_S = 'kg/s'
     ```
 
+#### Phase Activity
+
+Represents the phase activity of the input stream (before P&T flash): vapor or liquid.
+
+??? note "Phase Type"
+    ```python
+    class PhaseActivity(Enum):
+        ACTIVE = 1
+        INACTIVE = 0
+
+    class PhaseInput(NamedTuple):
+        Vapor: PhaseActivity
+        Liquid: PhaseActivity
+    ```
+
 ---
 
 ## Global Variables
@@ -166,6 +181,12 @@ These **global constants** configure how the system reads input data, selects ca
 
 ### Processing Options
 
+??? note "DEBUG_MODE"
+    When `True`, disables calculations like **burn rate and evaporation**, enabling debugging.
+    ```python
+    DEBUG_MODE = False
+    ```
+
 ??? note "PACKAGE"
     Thermodynamic model selected from `DWSIMPackages`, used for property calculations inside **DWSIM**.
     ```python
@@ -182,6 +203,13 @@ These **global constants** configure how the system reads input data, selects ca
     Specifies which phase (overall, vapor, oil, or water) will be used for **fraction** output.
     ```python
     FRACTION_PHASE = PhaseType.OVERALL
+    ```
+
+??? note "PHASE_ACTIVITY"
+    Specifies which phase (vapor or liquid) can be active on the **P&T flash** step.
+    ```python
+    PHASE_ACTIVITY = PhaseInput(Vapor=PhaseActivity.ACTIVE,
+                                Liquid=PhaseActivity.ACTIVE)
     ```
 
 ??? note "BASIS"
@@ -212,12 +240,6 @@ These **global constants** configure how the system reads input data, selects ca
     If `True`, only **simulation-generated data** is used. If `False`, pre-existing data in the input file will be included.
     ```python
     ONLY_SIMULATED_VALUE = False
-    ```
-
-??? note "DEBUG_MODE"
-    When `True`, disables calculations like **burn rate and evaporation**, enabling debugging.
-    ```python
-    DEBUG_MODE = False
     ```
 
 ---

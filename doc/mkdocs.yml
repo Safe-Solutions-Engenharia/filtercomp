@@ -14,6 +14,7 @@ nav:
   - Operations: operations.md
   - Filters: filtering.md
   - Database: database.md
+  - FAQ: error_handle.md
 
 theme:
   name: material
