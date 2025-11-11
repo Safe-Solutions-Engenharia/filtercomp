@@ -13,7 +13,7 @@ import pandas as pd
 import clr
 
 from enums.dwsim_packages import DWSIMPackages
-from enums.filter_operations import PhaseType, CompoundBasis
+from enums.filter_operations import PhaseType, CompoundBasis, PhaseActivity
 from utils.logger import custom_logger
 from utils.dwsim_components_db import compounds_dwsim
 
@@ -40,6 +40,7 @@ class FlashOperations:
                  full_df_dict: dict[str, pd.DataFrame], 
                  full_info_dict: dict[str, pd.DataFrame],
                  molar_phase: PhaseType,
+                 phase_activity: PhaseActivity,
                  compound_basis: CompoundBasis,
                  basis_unit: str,
                  package: DWSIMPackages,
@@ -50,6 +51,7 @@ class FlashOperations:
         db_filename = 'heat_of_combustion.db'
         self.database_path = os.path.join(base_path, 'files', 'database', db_filename)
         self.molar_phase = molar_phase.value
+        self.phase_activity = phase_activity
         self.compound_basis = compound_basis.value
         self.basis_unit = basis_unit
         self.debug_mode = debug_mode
@@ -199,7 +201,7 @@ class FlashOperations:
     @staticmethod
     def get_compound_name(current_value: pd.DataFrame, 
                           flowsheet: IFlowsheet) -> dict[str, any]:
-        compound_names = [x.lower() for x in current_value][7:]
+        compound_names = [x.lower() for x in current_value][4:]
         compound_index = {name.lower(): index for index, name in enumerate(compound_names)}
 
         compound_dict = {}
@@ -213,7 +215,7 @@ class FlashOperations:
         return compound_dict
 
     def get_compound_value(self, current_value: pd.DataFrame, cen_name: str) -> list[float]:
-        compound_list = current_value[current_value['SCENARIO_Cenário'] == cen_name].iloc[0, 7:].to_list()
+        compound_list = current_value[current_value['SCENARIO_Cenário'] == cen_name].iloc[0, 4:].to_list()
 
         if self.compound_basis == 'MolarComposition':
             compound_list = [x / 100 if sum(compound_list) > 2 else x for x in compound_list]
@@ -227,7 +229,7 @@ class FlashOperations:
             for value in values:
                 df.loc[0, f"{key}_{value}"] = key
 
-        for values2 in current_value.columns[7:]:
+        for values2 in current_value.columns[4:]:
             df.loc[0, values2] = 'COMPONENT FRACTION'
 
         return df
@@ -665,13 +667,11 @@ class FlashOperations:
             pressure_value = current_value[current_value['SCENARIO_Cenário'] == cen_name][pressure_column_name[0]].values[0]
             pressure_unit = pressure_column_name[0].rsplit('_')[-1]
 
-            flow_rate_name = current_value.columns[6] # Mass Flow, Molar Flow or Volume Flow
+            flow_rate_name = current_value.columns[3] # Mass Flow, Molar Flow or Volume Flow
             flow_rate = str(current_value[current_value['SCENARIO_Cenário'] == cen_name][flow_rate_name].values[0]) # kg/h, kmol/h or m3/h
 
-            gas_flow = current_value[current_value['SCENARIO_Cenário'] == cen_name]['OVERALL_Gas_flow'].values[0]
-            oil_flow = current_value[current_value['SCENARIO_Cenário'] == cen_name]['OVERALL_Oil_flow'].values[0]
-            water_flow = current_value[current_value['SCENARIO_Cenário'] == cen_name]['OVERALL_Water_flow'].values[0]
-            liquid_flow = oil_flow + water_flow
+            gas_flow = self.phase_activity[0].value
+            liquid_flow = self.phase_activity[1].value
 
             [flowsheet.SelectedCompounds.Add(compound.Key, compound.Value) for compound in compound_dict.values()]
             ms1 = flowsheet.AddObject(ObjectType.MaterialStream, 50, 50, "Current")

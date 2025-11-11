@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import NamedTuple
 
 class OperationsFilter(Enum):
     CALORIFIC_VALUE = 0
@@ -36,3 +37,11 @@ class MassFlowUnit(Enum):
     KG_H = 'kg/h'
     G_H = 'g/h'
     KG_S = 'kg/s'
+
+class PhaseActivity(Enum):
+    ACTIVE = 1
+    INACTIVE = 0
+
+class PhaseInput(NamedTuple):
+    Vapor: PhaseActivity
+    Liquid: PhaseActivity

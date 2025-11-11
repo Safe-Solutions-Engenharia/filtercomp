@@ -4,7 +4,7 @@ import os
 from enums.dwsim_packages import DWSIMPackages
 from enums.format_type import FormatType
 from enums.filter_operations import (OperationsFilter, PhaseType, CompoundBasis, 
-                                     MolarFlowUnit, MassFlowUnit)
+                                     MolarFlowUnit, MassFlowUnit, PhaseActivity, PhaseInput)
 
 current_dir = os.path.dirname(__file__) 
 
@@ -22,16 +22,20 @@ FORMAT_TYPE = FormatType.DEFAULT
 # Molar fraction phase to be output on the final file.
 FRACTION_PHASE = PhaseType.OVERALL
 
+# Which phase is active or inactive during @P&T flash.
+PHASE_ACTIVITY = PhaseInput(Vapor=PhaseActivity.ACTIVE,
+                            Liquid=PhaseActivity.ACTIVE)
+
 # Compound basis to consider the input
 BASIS = CompoundBasis.MOLE_FRAC
 
 # Assigned unit only when applicable (MASS_FLOW or MOLE_FLOW)
 BASIS_UNIT = BASIS.default_unit
 
-# Type of operation made to filter data.
+# Type of operation made to filter output data.
 OPERATION = OperationsFilter.CALORIFIC_VALUE
 
-# Which phase type to filter.
+# Which phase type to filter (based on the filter operation; e.g., calorific, H2S/CO2, etc.).
 PHASE_TYPE = PhaseType.OVERALL
 
 # Use data previously present on INPUT_FILE or just use all simulated data.

@@ -2,7 +2,7 @@ import logging
 
 from config.global_variables import (
     INPUT_FILE, OUTPUT_FOLDER, NAME, PACKAGE, DEBUG_MODE,
-    FORMAT_TYPE, FRACTION_PHASE, BASIS, BASIS_UNIT, OPERATION, 
+    FORMAT_TYPE, FRACTION_PHASE, PHASE_ACTIVITY, BASIS, BASIS_UNIT, OPERATION, 
     PHASE_TYPE, ONLY_SIMULATED_VALUE, LOG_TYPE, WRITE_LOGGER, LOG_PATH
 )
 from utils.format_files import FormatFactory
@@ -18,7 +18,7 @@ def main() -> None:
     full_df_dict, full_info_dict = FormatFactory.create_format(FORMAT_TYPE, INPUT_FILE).formated_data()
 
     flash_operations = FlashOperations(full_df_dict, full_info_dict,
-                                      FRACTION_PHASE, BASIS, BASIS_UNIT, PACKAGE, debug_mode=DEBUG_MODE)
+                                      FRACTION_PHASE, PHASE_ACTIVITY, BASIS, BASIS_UNIT, PACKAGE, debug_mode=DEBUG_MODE)
 
     flashed_df_dict = flash_operations.flashed_df_dict
     composition_dict = flash_operations.composition_dict

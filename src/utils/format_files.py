@@ -29,7 +29,7 @@ class FormatDefault(Format):
     def _format_dicts(self) -> None:
         for stream_name, stream_value in self.data_dict.items():
             columns = stream_value.columns
-            new_columns = [f'SCENARIO_{columns[0]}'] + [f'OVERALL_{col}' if 0 < index <= 6 else col for index, col in enumerate(columns)][1:]
+            new_columns = [f'SCENARIO_{columns[0]}'] + [f'OVERALL_{col}' if 0 < index <= 3 else col for index, col in enumerate(columns)][1:]
             stream_value.columns = new_columns
 
             stream_value.columns = [
@@ -39,9 +39,9 @@ class FormatDefault(Format):
 
             self.all_df_dict[stream_name] = stream_value
 
-            full_info_df = pd.DataFrame(columns=stream_value.columns[:7])
-            full_info_df.loc[0, :] = [col.split('_')[0] for col in stream_value.columns[:7]]
-            full_info_df = pd.concat([full_info_df, stream_value.iloc[:, :7]], axis=0)
+            full_info_df = pd.DataFrame(columns=stream_value.columns[:4])
+            full_info_df.loc[0, :] = [col.split('_')[0] for col in stream_value.columns[:4]]
+            full_info_df = pd.concat([full_info_df, stream_value.iloc[:, :4]], axis=0)
             full_info_df.reset_index(inplace=True, drop=True)
             self.full_info_dict[stream_name] = full_info_df
 
