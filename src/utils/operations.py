@@ -498,7 +498,8 @@ class FlashOperations:
 
     def get_std_flash_data(self, 
                           scenario_dict: dict[str, float],
-                          release_temperature: float) -> dict[str, float]:
+                          release_temperature: float,
+                          compoud_dict: dict[str, any]) -> tuple[dict[str, float], list[float]]:
         # Vapor
         mass_fraction_vapor_std = self.mst.GetPhase('Vapor').Properties.massfraction
         molar_flow_vapor_std = self.mst.GetPhase('Vapor').Properties.molarflow * 3.6 if self.mst.GetPhase(
@@ -533,6 +534,8 @@ class FlashOperations:
             mass_fraction_oil_std, mass_fraction_water_std,
             molar_flow_oil_std, molar_flow_water_std) = self.get_misc_properties('Liquid1', 'Liquid2')
 
+        new_compound_list = self.get_compound_value_after_flash(compoud_dict)
+
         # Burn rate (Oil)
         if not self.debug_mode:
             burn_rate, overall_vaporization_enthalpy, rho_density = self.get_burn_rate(mass_fraction_liquid2_std, 
@@ -564,7 +567,7 @@ class FlashOperations:
             'OILY PHASE_Molar Flow @Std Cond': molar_flow_oil_std,
         })
 
-        return scenario_dict
+        return scenario_dict, new_compound_list
     
     def get_compounds_molar_fraction(self, scenario_dict: dict[str, float],
                                     compound_list: list[str],
@@ -693,10 +696,8 @@ class FlashOperations:
             self.flash_operation(compound_list, '101325', 
                                  '298.15', flow_rate_name.lower(), 'Pa', 
                                  flow_rate, 1, 1, 'Flash @STD')
-
-            scenario_dict = self.get_std_flash_data(scenario_dict, temperature_K)
-
-            new_compound_list = self.get_compound_value_after_flash(compound_dict)
+            
+            scenario_dict, new_compound_list = self.get_std_flash_data(scenario_dict, temperature_K, compound_dict)
 
             self.get_all_compound_value(compound_dict)
 
