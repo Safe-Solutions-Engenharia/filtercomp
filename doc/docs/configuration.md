@@ -181,6 +181,12 @@ These **global constants** configure how the system reads input data, selects ca
 
 ### Processing Options
 
+??? note "TEMPLATE"
+    Used to select a **DWSIM** template with only one **Material Stream** and all required compounds.
+    ```python
+    TEMPLATE: str | None = None #os.path.abspath(os.path.join(current_dir, '../../files/test_files/template.dwxmz'))
+    ```
+
 ??? note "DEBUG_MODE"
     When `True`, disables calculations like **burn rate and evaporation**, enabling debugging.
     ```python
