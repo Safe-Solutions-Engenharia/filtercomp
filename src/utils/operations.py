@@ -203,13 +203,13 @@ class FlashOperations:
     @staticmethod
     def get_compound_name(current_value: pd.DataFrame, 
                           flowsheet: IFlowsheet) -> dict[str, any]:
-        compound_names = [x.lower() for x in current_value][4:]
-        compound_index = {name.lower(): index for index, name in enumerate(compound_names)}
+        compound_names = [x for x in current_value][4:]
+        compound_index = {name: index for index, name in enumerate(compound_names)}
 
         compound_dict = {}
         for compound in flowsheet.AvailableCompounds:
-            if compound.Key.lower() in compound_index:
-                index = compound_index[compound.Key.lower()]
+            if compound.Key in compound_index:
+                index = compound_index[compound.Key]
                 compound_dict[index] = compound
 
         compound_dict = OrderedDict(sorted(compound_dict.items()))
