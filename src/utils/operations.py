@@ -41,6 +41,7 @@ class FlashOperations:
                  full_info_dict: dict[str, pd.DataFrame],
                  molar_phase: PhaseType,
                  phase_activity: PhaseActivity,
+                 template_path: str | None,
                  compound_basis: CompoundBasis,
                  basis_unit: str,
                  package: DWSIMPackages,
@@ -52,6 +53,7 @@ class FlashOperations:
         self.database_path = os.path.join(base_path, 'files', 'database', db_filename)
         self.molar_phase = molar_phase.value
         self.phase_activity = phase_activity
+        self.template_path = template_path
         self.compound_basis = compound_basis.value
         self.basis_unit = basis_unit
         self.debug_mode = debug_mode
@@ -649,7 +651,11 @@ class FlashOperations:
             scenario_dict: dict[str, float] = {}
             Directory.SetCurrentDirectory(DWSIMPATH)
             interf = Automation3()
-            flowsheet = interf.CreateFlowsheet()
+
+            if self.template_path and os.path.exists(self.template_path):
+                flowsheet = interf.LoadFlowsheet(self.template_path)
+            else:
+                flowsheet = interf.CreateFlowsheet()
 
             package_full_name = f'{self.package}PropertyPackage'
             self.instantiated_package = getattr(PropertyPackages, package_full_name)()
@@ -676,9 +682,13 @@ class FlashOperations:
             gas_flow = self.phase_activity[0].value
             liquid_flow = self.phase_activity[1].value
 
-            [flowsheet.SelectedCompounds.Add(compound.Key, compound.Value) for compound in compound_dict.values()]
-            ms1 = flowsheet.AddObject(ObjectType.MaterialStream, 50, 50, "Current")
-            self.mst = ms1.GetAsObject()
+            if self.template_path and os.path.exists(self.template_path):
+                ms_generic = next(iter(flowsheet.SimulationObjects.Values))
+                self.mst = ms_generic.GetAsObject()
+            else:
+                [flowsheet.SelectedCompounds.Add(compound.Key, compound.Value) for compound in compound_dict.values()]
+                ms1 = flowsheet.AddObject(ObjectType.MaterialStream, 50, 50, "Current")
+                self.mst = ms1.GetAsObject()
 
             scenario_dict['SCENARIO_Cenário'] = cen_name
             scenario_dict['OVERALL_Temperature'] = temperature_C
@@ -687,7 +697,7 @@ class FlashOperations:
             self.flash_operation(compound_list, pressure_value, 
                                  temperature_K, flow_rate_name.lower(), pressure_unit,
                                  flow_rate, gas_flow, liquid_flow, 'Flash @P&T')
-            
+                        
             scenario_dict = self.get_overall_data(scenario_dict)
 
             scenario_dict = self.get_pt_flash_data(scenario_dict)

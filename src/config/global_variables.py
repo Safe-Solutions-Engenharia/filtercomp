@@ -13,6 +13,10 @@ OUTPUT_FOLDER = os.path.abspath(os.path.join(current_dir, '../../files/test_file
 NAME = 'composition_teste'
 PACKAGE = DWSIMPackages.PengRobinson1978
 
+# Optional DWSIM template must have one "Material Stream" and all required compounds;
+# If provided a template, the 'PACKAGE' variable is ignored.
+TEMPLATE: str | None = None #os.path.abspath(os.path.join(current_dir, '../../files/test_files/template.dwxmz'))
+
 # Avoid burn rate and evaporation rate calculations.
 DEBUG_MODE = False
 
