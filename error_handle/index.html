@@ -468,6 +468,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#results" class="md-nav__link">
+    <span class="md-ellipsis">
+      Results
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -511,6 +520,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#results" class="md-nav__link">
+    <span class="md-ellipsis">
+      Results
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -541,6 +559,18 @@ If the error persists, open an issue in the project's repository.</p>
 <summary>I installed the correct version of DWSIM, but the code can't seem to find it</summary>
 <p>If it's a fresh install, try opening it once, running and saving a simple project, then try the code again. 
 If not, check if the code is being run by the user whose account contains the DWSIM folder in the <em>AppData</em> directory.</p>
+</details>
+<h2 id="results">Results</h2>
+<details class="question" open="open">
+<summary>Why are my results different from the DWSIM GUI?</summary>
+<p>Discrepancies often occur because the automation interface may revert custom Property Package parameters to their defaults, leading to different calculation results.</p>
+<p><strong>Solution:</strong>
+To ensure consistency, initialize the simulation using a pre-configured template:</p>
+<ol>
+<li>Create a DWSIM simulation containing <strong>one</strong> material stream and all required components.</li>
+<li>Save it as a <code>.dwxmz</code> file.</li>
+<li>Update the <code>TEMPLATE</code> variable in <code>global_variables.py</code> with the path to this new file.</li>
+</ol>
 </details>
 
 
