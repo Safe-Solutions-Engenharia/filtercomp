@@ -70,8 +70,8 @@ class FlashOperations:
                                         'Mass Fraction', 'Density @T&P Cond', 'Density @Std Cond', 'Molecular Weight @Std Cond', 'Molecular Weight @T&P Cond']}
         
         #TODO: create a better method of translating the names.
-        self.name_convention: dict[str, str] = {'C20+': 'N-heptacosane',
-                                                'C20++': 'N-nonacosane'}
+        self.name_convention: dict[str, str] = {'c20+': 'N-heptacosane',
+                                                'c20++': 'N-nonacosane'}
         
         self.full_df_dict = full_df_dict
         self.full_info_dict = full_info_dict
