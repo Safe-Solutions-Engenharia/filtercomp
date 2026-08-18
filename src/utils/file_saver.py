@@ -24,6 +24,39 @@ def create_scenario_xlsx(output: str, name: str, filtered_data_dict: dict[str, p
             scenario_df.to_excel(writer, sheet_name=name, index=False)
 
 
+def create_package_scenarios_xlsx(output: str, name: str, packages: dict[str, dict[str, any]]) -> None:
+    file_path = os.path.join(output, f"package_scenarios.xlsx")
+
+    with pd.ExcelWriter(file_path, engine="openpyxl") as writer:
+        for stream_name, scenarios_dict in packages.items():
+            rows = []
+            
+            for cen_name, pkg_info in scenarios_dict.items():
+                selected_pkg = ""
+                recommended_pkgs = ""
+
+                if isinstance(pkg_info, (list, tuple)):
+                    selected_pkg = pkg_info[0] if len(pkg_info) > 0 else ""
+                    
+                    if len(pkg_info) > 1:
+                        if isinstance(pkg_info[1], (list, tuple)):
+                            recommended_pkgs = ", ".join(str(p) for p in pkg_info[1])
+                        else:
+                            recommended_pkgs = str(pkg_info[1])
+                else:
+                    selected_pkg = str(pkg_info)
+
+                rows.append({
+                    'Cenário': cen_name,
+                    'Pacote Selecionado': selected_pkg,
+                    'Pacotes Recomendados': recommended_pkgs
+                })
+
+            df_stream = pd.DataFrame(rows)
+            sheet_title = str(stream_name)[:31]
+            df_stream.to_excel(writer, sheet_name=sheet_title, index=False)
+
+
 def add_composition_value(composition_base: list[str], composition: pd.DataFrame, index: int, sheet: any) -> None:
     indices_in_base = [composition_base.index(item) for item in composition.columns]
     missing_items_indices = [i for i, item in enumerate(composition_base) if item not in composition.columns]
@@ -76,7 +109,7 @@ def create_final_composition_file(fraction_phase: PhaseType, name: str, fracao_f
     wb.save(os.path.join(fracao_final_output, f'{name}.xlsx'))
 
 
-def save_excel_file(output_file: str, name: str, fraction_phase: PhaseType, filtered_data_dict: dict[str, pd.DataFrame]) -> None:
+def save_excel_file(output_file: str, name: str, fraction_phase: PhaseType, filtered_data_dict: dict[str, pd.DataFrame], packages: dict[str, dict[int, any]]) -> None:
     output = os.path.join(output_file, fraction_phase.name)
     composicoes_output = os.path.join(output, 'Composicoes')
     fracao_final_output = os.path.join(output, 'Fracao_Final')
@@ -91,6 +124,7 @@ def save_excel_file(output_file: str, name: str, fraction_phase: PhaseType, filt
         os.makedirs(fracao_final_output)
 
     create_scenario_xlsx(output, name, filtered_data_dict)
+    create_package_scenarios_xlsx(output, name, packages)
 
     composicoes_output_final = os.path.join(composicoes_output, f'composicoes_{name}.xlsx')
 

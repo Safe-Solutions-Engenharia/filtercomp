@@ -1,7 +1,7 @@
 import logging
 import os
 
-from enums.dwsim_packages import DWSIMPackages
+from enums.dwsim_packages import DWSIMPackages, DWSIMAutomatic
 from enums.format_type import FormatType
 from enums.filter_operations import (OperationsFilter, PhaseType, CompoundBasis, 
                                      MolarFlowUnit, MassFlowUnit, PhaseActivity, PhaseInput)
@@ -11,10 +11,13 @@ current_dir = os.path.dirname(__file__)
 INPUT_FILE = os.path.abspath(os.path.join(current_dir, '../../files/test_files/composicao_teste.xlsx'))
 OUTPUT_FOLDER = os.path.abspath(os.path.join(current_dir, '../../files/test_files'))
 NAME = 'composition_teste'
+AUTOMATIC_PACKAGE = DWSIMAutomatic.isAutomatic
+POLAR_PROPORTION = 60.0 #%
+
+# If 'AUTOMATIC_PACKAGE' is 'isAutomatic', the variable 'PACKAGE' is ignored.
 PACKAGE = DWSIMPackages.PengRobinson1978
 
 # Optional DWSIM template must have one "Material Stream" and all required compounds;
-# If provided a template, the 'PACKAGE' variable is ignored.
 TEMPLATE: str | None = None #os.path.abspath(os.path.join(current_dir, '../../files/test_files/template.dwxmz'))
 
 # Avoid burn rate and evaporation rate calculations.

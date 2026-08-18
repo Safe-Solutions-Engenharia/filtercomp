@@ -1,5 +1,9 @@
 from enum import Enum
 
+class DWSIMAutomatic(Enum):
+    isAutomatic = True
+    isManual = False
+
 class DWSIMPackages(Enum):
     ActivityCoefficient = 'ActivityCoefficient'
     BlackOil = 'BlackOil'
@@ -31,4 +35,3 @@ class DWSIMPackages(Enum):
     UNIFAC = 'UNIFAC'
     UNIFACLL = 'UNIFACLL'
     UNIQUAC = 'UNIQUAC'
-    Wilson = 'Wilson'

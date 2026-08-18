@@ -6,16 +6,18 @@ import difflib
 
 from chemicals import Tc, Pc, CAS_from_any, Tb, MW
 from chemicals.phase_change import Riedel
+from pint import UnitRegistry
 import numpy as np
 from rapidfuzz import process, fuzz
 from tqdm import tqdm
 import pandas as pd
 import clr
+from itertools import combinations
 
-from enums.dwsim_packages import DWSIMPackages
+from enums.dwsim_packages import DWSIMPackages, DWSIMAutomatic
 from enums.filter_operations import PhaseType, CompoundBasis, PhaseActivity
 from utils.logger import custom_logger
-from utils.dwsim_components_db import compounds_dwsim
+from utils.dwsim_components_db import compounds_dwsim, componente_dwsim_polar, componente_dwsim_hidrocarboneto
 
 DWSIMPATH = os.path.join(os.getenv('USERPROFILE'), "AppData", "Local", "DWSIM")
 if not os.path.exists(DWSIMPATH):
@@ -44,6 +46,8 @@ class FlashOperations:
                  template_path: str | None,
                  compound_basis: CompoundBasis,
                  basis_unit: str,
+                 automatic_package: DWSIMAutomatic,
+                 polar_proportion: float,
                  package: DWSIMPackages,
                  *,
                  debug_mode: bool = False) -> None:
@@ -75,7 +79,10 @@ class FlashOperations:
         
         self.full_df_dict = full_df_dict
         self.full_info_dict = full_info_dict
+        self.automatic_package = automatic_package.value
+        self.polar_proportion = polar_proportion
         self.package = package.value
+        self.currents_package: dict[str, dict[int, any]] = {}
         self.composition_dict: dict[str, dict[str, dict[str, list[float]]]] = {}
         self.flashed_df_dict: dict[str, pd.DataFrame] = self.dwsim_main_flash_operation(self.full_df_dict)
 
@@ -645,6 +652,7 @@ class FlashOperations:
     def operations_per_scenario(self, current_name: str, current_value: pd.DataFrame) -> pd.DataFrame:
         self.current_name = current_name
         dataframe_base = self.dataframe_base(current_value)
+        self.selected_packages = {}
 
         for cen_name in tqdm(current_value['SCENARIO_Cenário'], desc=current_name):
             self.cen_name = cen_name
@@ -656,11 +664,6 @@ class FlashOperations:
                 flowsheet = interf.LoadFlowsheet(self.template_path)
             else:
                 flowsheet = interf.CreateFlowsheet()
-
-            package_full_name = f'{self.package}PropertyPackage'
-            self.instantiated_package = getattr(PropertyPackages, package_full_name)()
-
-            flowsheet.AddPropertyPackage(self.instantiated_package)
 
             compound_dict = self.get_compound_name(current_value, flowsheet)
             compound_list = self.get_compound_value(current_value, cen_name)
@@ -692,6 +695,99 @@ class FlashOperations:
 
             scenario_dict['SCENARIO_Cenário'] = cen_name
             scenario_dict['OVERALL_Temperature'] = temperature_C
+            
+            if self.automatic_package:
+                components = [v.Key for v in compound_dict.values()]
+                components_dict = dict(zip(components, compound_list))
+
+                total_flow = sum(components_dict.values())
+
+                if total_flow > 0:
+                    norm_dict_unit = {k: v / total_flow for k, v in components_dict.items()}
+                else:
+                    norm_dict_unit = {k: 0.0 for k in components_dict.keys()}
+
+                water_fraction = norm_dict_unit.get('Water', 0.0)
+
+                hydrocarbon_sum = sum(
+                    val for name, val in norm_dict_unit.items()
+                    if componente_dwsim_hidrocarboneto.get(name, False)
+                )
+
+                polar_sum = sum(
+                    val for name, val in norm_dict_unit.items()
+                    if componente_dwsim_polar.get(name, False)
+                )
+
+                proportion = self.polar_proportion / 100.0 if self.polar_proportion > 1.0 else self.polar_proportion
+
+                ureg = UnitRegistry()
+                pressure = pressure_value * ureg(pressure_unit)
+                pressure_bar = pressure.to('bar').magnitude
+
+                if water_fraction >= 0.995 and hydrocarbon_sum >= 0.001:
+                    package_full_name = f'{DWSIMPackages.SteamTables.value}PropertyPackage'
+                    self.selected_packages[cen_name] = [DWSIMPackages.SteamTables.value]
+                elif water_fraction >= 0.001 or polar_sum >= proportion:
+                    if pressure_bar > 10:
+                        package_full_name = f'{DWSIMPackages.PRSV2.value}PropertyPackage'
+                        self.selected_packages[cen_name] = [DWSIMPackages.PRSV2.value]
+                    else:
+                        x_core = 0.80 # 80% dos componentes relevantes.
+                        componentes_ordenados = sorted(
+                            [(nome, xi) for nome, xi in norm_dict_unit.items() if xi >= 1e-6],
+                            key=lambda item: item[1],
+                            reverse=True
+                        )
+
+                        core_components = []
+                        acumulado = 0.0
+                        for nome, xi in componentes_ordenados:
+                            core_components.append(nome)
+                            acumulado += xi
+                            if acumulado >= x_core:
+                                break
+
+                        nrtl_instance = PropertyPackages.NRTLPropertyPackage()
+
+                        pares_faltantes_core = []
+
+                        if len(core_components) > 1:
+                            for c1, c2 in combinations(core_components, 2):
+                                ip = None
+
+                                if c1 in nrtl_instance.m_uni.InteractionParameters.Keys and c2 in nrtl_instance.m_uni.InteractionParameters[c1].Keys:
+                                    ip = nrtl_instance.m_uni.InteractionParameters[c1][c2]
+                                elif c2 in nrtl_instance.m_uni.InteractionParameters.Keys and c1 in nrtl_instance.m_uni.InteractionParameters[c2].Keys:
+                                    ip = nrtl_instance.m_uni.InteractionParameters[c2][c1]
+
+                                parametro_real = False
+                                if ip is not None:
+                                    if abs(ip.A12) > 1e-6 or abs(ip.A21) > 1e-6 or abs(ip.alpha12) > 1e-6:
+                                        parametro_real = True
+
+                                if not parametro_real:
+                                    pares_faltantes_core.append((c1, c2))
+
+                        if not pares_faltantes_core and len(core_components) > 1:
+                            package_full_name = f'{DWSIMPackages.NRTL.value}PropertyPackage'
+                            self.selected_packages[cen_name] = [DWSIMPackages.NRTL.value, [DWSIMPackages.UNIQUAC.value]]
+                        else:
+                            if water_fraction >= 0.05 and hydrocarbon_sum >= 0.05:
+                                package_full_name = f'{DWSIMPackages.UNIFACLL.value}PropertyPackage'
+                                self.selected_packages[cen_name] = [DWSIMPackages.UNIFACLL.value]
+                            else:
+                                package_full_name = f'{DWSIMPackages.UNIFAC.value}PropertyPackage'
+                                self.selected_packages[cen_name] = [DWSIMPackages.UNIFAC.value]
+                else:
+                    package_full_name = f'{DWSIMPackages.PengRobinson1978.value}PropertyPackage'
+                    self.selected_packages[cen_name] = [DWSIMPackages.PengRobinson1978.value, [DWSIMPackages.SRK.value, DWSIMPackages.LKP.value]]
+            else:
+                package_full_name = f'{self.package}PropertyPackage'
+                self.selected_packages[cen_name] = [self.package]
+
+            self.instantiated_package = getattr(PropertyPackages, package_full_name)()
+            flowsheet.AddPropertyPackage(self.instantiated_package)
 
             # Flash @P&T
             self.flash_operation(compound_list, pressure_value, 
@@ -730,6 +826,8 @@ class FlashOperations:
             current_value = self.replace_compound_names_dataframe(current_value)
 
             current_database = self.operations_per_scenario(current_name, current_value)
+
+            self.currents_package[current_name] = self.selected_packages
 
             current_database = current_database.fillna(value=-1)
             current_database.reset_index(inplace=True, drop=True)
