@@ -362,6 +362,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#dwsim-automatic" class="md-nav__link">
+    <span class="md-ellipsis">
+      DWSIM Automatic
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#dwsim-packages" class="md-nav__link">
     <span class="md-ellipsis">
       DWSIM Packages
@@ -650,6 +659,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#dwsim-automatic" class="md-nav__link">
+    <span class="md-ellipsis">
+      DWSIM Automatic
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#dwsim-packages" class="md-nav__link">
     <span class="md-ellipsis">
       DWSIM Packages
@@ -806,42 +824,51 @@
 <h2 id="enums">Enums</h2>
 <p><strong>Enums</strong> provide named symbolic constants, making the code more understandable and less error-prone.</p>
 <hr />
+<h3 id="dwsim-automatic">DWSIM Automatic</h3>
+<p>Defines the logic for automatic Property Package selection.</p>
+<details class="note">
+<summary>DWSIM Packages</summary>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">DWSIMAutomatic</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">isAutomatic</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">isManual</span> <span class="o">=</span> <span class="kc">False</span>
+</span></code></pre></div>
+</details>
 <h3 id="dwsim-packages">DWSIM Packages</h3>
 <p>Used to select the thermodynamic model from <strong>DWSIM</strong>, which governs how physical and chemical properties are calculated.</p>
 <details class="note">
 <summary>DWSIM Packages</summary>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">DWSIMPackage</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">ActivityCoefficient</span> <span class="o">=</span> <span class="s1">&#39;ActivityCoefficient&#39;</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">BlackOil</span> <span class="o">=</span> <span class="s1">&#39;BlackOil&#39;</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">CAPEOPEN</span> <span class="o">=</span> <span class="s1">&#39;CAPEOPEN&#39;</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">ChaoSeader</span> <span class="o">=</span> <span class="s1">&#39;ChaoSeader&#39;</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">CoolProp</span> <span class="o">=</span> <span class="s1">&#39;CoolProp&#39;</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">CoolPropIncompressibleMixture</span> <span class="o">=</span> <span class="s1">&#39;CoolPropIncompressibleMixture&#39;</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">CoolPropIncompressiblePure</span> <span class="o">=</span> <span class="s1">&#39;CoolPropIncompressiblePure&#39;</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">DebyeHuckel</span> <span class="o">=</span> <span class="s1">&#39;DebyeHuckel&#39;</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="n">ElectrolyteBase</span> <span class="o">=</span> <span class="s1">&#39;ElectrolyteBase&#39;</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="n">ElectrolyteNRTL</span> <span class="o">=</span> <span class="s1">&#39;ElectrolyteNRTL&#39;</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="n">ExUNIQUAC</span> <span class="o">=</span> <span class="s1">&#39;ExUNIQUAC&#39;</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="n">GraysonStreed</span> <span class="o">=</span> <span class="s1">&#39;GraysonStreed&#39;</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    <span class="n">Raoult</span> <span class="o">=</span> <span class="s1">&#39;Raoult&#39;</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="n">LKP</span> <span class="o">=</span> <span class="s1">&#39;LKP&#39;</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    <span class="n">LIQUAC2</span> <span class="o">=</span> <span class="s1">&#39;LIQUAC2&#39;</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>    <span class="n">MODFAC</span> <span class="o">=</span> <span class="s1">&#39;MODFAC&#39;</span>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>    <span class="n">NISTMFAC</span> <span class="o">=</span> <span class="s1">&#39;NISTMFAC&#39;</span>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    <span class="n">NRTL</span> <span class="o">=</span> <span class="s1">&#39;NRTL&#39;</span>
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>    <span class="n">PengRobinson</span> <span class="o">=</span> <span class="s1">&#39;PengRobinson&#39;</span>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>    <span class="n">PengRobinson1978</span> <span class="o">=</span> <span class="s1">&#39;PengRobinson1978&#39;</span>
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>    <span class="n">PengRobinsonLK</span> <span class="o">=</span> <span class="s1">&#39;PengRobinsonLK&#39;</span>
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>    <span class="n">PRSV2</span> <span class="o">=</span> <span class="s1">&#39;PRSV2&#39;</span>
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    <span class="n">PRSV2VL</span> <span class="o">=</span> <span class="s1">&#39;PRSV2VL&#39;</span>
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>    <span class="n">Seawater</span> <span class="o">=</span> <span class="s1">&#39;Seawater&#39;</span>
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>    <span class="n">SRK</span> <span class="o">=</span> <span class="s1">&#39;SRK&#39;</span>
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>    <span class="n">SourWater</span> <span class="o">=</span> <span class="s1">&#39;SourWater&#39;</span>
-</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>    <span class="n">SteamTables</span> <span class="o">=</span> <span class="s1">&#39;SteamTables&#39;</span>
-</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>    <span class="n">UNIFAC</span> <span class="o">=</span> <span class="s1">&#39;UNIFAC&#39;</span>
-</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>    <span class="n">UNIFACLL</span> <span class="o">=</span> <span class="s1">&#39;UNIFACLL&#39;</span>
-</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>    <span class="n">UNIQUAC</span> <span class="o">=</span> <span class="s1">&#39;UNIQUAC&#39;</span>
-</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>    <span class="n">Wilson</span> <span class="o">=</span> <span class="s1">&#39;Wilson&#39;</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">DWSIMPackage</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">ActivityCoefficient</span> <span class="o">=</span> <span class="s1">&#39;ActivityCoefficient&#39;</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">BlackOil</span> <span class="o">=</span> <span class="s1">&#39;BlackOil&#39;</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">CAPEOPEN</span> <span class="o">=</span> <span class="s1">&#39;CAPEOPEN&#39;</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">ChaoSeader</span> <span class="o">=</span> <span class="s1">&#39;ChaoSeader&#39;</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">CoolProp</span> <span class="o">=</span> <span class="s1">&#39;CoolProp&#39;</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">CoolPropIncompressibleMixture</span> <span class="o">=</span> <span class="s1">&#39;CoolPropIncompressibleMixture&#39;</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">CoolPropIncompressiblePure</span> <span class="o">=</span> <span class="s1">&#39;CoolPropIncompressiblePure&#39;</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">DebyeHuckel</span> <span class="o">=</span> <span class="s1">&#39;DebyeHuckel&#39;</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="n">ElectrolyteBase</span> <span class="o">=</span> <span class="s1">&#39;ElectrolyteBase&#39;</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    <span class="n">ElectrolyteNRTL</span> <span class="o">=</span> <span class="s1">&#39;ElectrolyteNRTL&#39;</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    <span class="n">ExUNIQUAC</span> <span class="o">=</span> <span class="s1">&#39;ExUNIQUAC&#39;</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    <span class="n">GraysonStreed</span> <span class="o">=</span> <span class="s1">&#39;GraysonStreed&#39;</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    <span class="n">Raoult</span> <span class="o">=</span> <span class="s1">&#39;Raoult&#39;</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    <span class="n">LKP</span> <span class="o">=</span> <span class="s1">&#39;LKP&#39;</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    <span class="n">LIQUAC2</span> <span class="o">=</span> <span class="s1">&#39;LIQUAC2&#39;</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>    <span class="n">MODFAC</span> <span class="o">=</span> <span class="s1">&#39;MODFAC&#39;</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>    <span class="n">NISTMFAC</span> <span class="o">=</span> <span class="s1">&#39;NISTMFAC&#39;</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>    <span class="n">NRTL</span> <span class="o">=</span> <span class="s1">&#39;NRTL&#39;</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>    <span class="n">PengRobinson</span> <span class="o">=</span> <span class="s1">&#39;PengRobinson&#39;</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>    <span class="n">PengRobinson1978</span> <span class="o">=</span> <span class="s1">&#39;PengRobinson1978&#39;</span>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>    <span class="n">PengRobinsonLK</span> <span class="o">=</span> <span class="s1">&#39;PengRobinsonLK&#39;</span>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>    <span class="n">PRSV2</span> <span class="o">=</span> <span class="s1">&#39;PRSV2&#39;</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>    <span class="n">PRSV2VL</span> <span class="o">=</span> <span class="s1">&#39;PRSV2VL&#39;</span>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>    <span class="n">Seawater</span> <span class="o">=</span> <span class="s1">&#39;Seawater&#39;</span>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>    <span class="n">SRK</span> <span class="o">=</span> <span class="s1">&#39;SRK&#39;</span>
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>    <span class="n">SourWater</span> <span class="o">=</span> <span class="s1">&#39;SourWater&#39;</span>
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>    <span class="n">SteamTables</span> <span class="o">=</span> <span class="s1">&#39;SteamTables&#39;</span>
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>    <span class="n">UNIFAC</span> <span class="o">=</span> <span class="s1">&#39;UNIFAC&#39;</span>
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>    <span class="n">UNIFACLL</span> <span class="o">=</span> <span class="s1">&#39;UNIFACLL&#39;</span>
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>    <span class="n">UNIQUAC</span> <span class="o">=</span> <span class="s1">&#39;UNIQUAC&#39;</span>
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>    <span class="n">Wilson</span> <span class="o">=</span> <span class="s1">&#39;Wilson&#39;</span>
 </span></code></pre></div>
 </details>
 <hr />
@@ -849,8 +876,8 @@
 <p>Used to standardize the input <code>.xlsx</code> file format to match the default output structure used during the processing phase.</p>
 <details class="note">
 <summary>Format Type</summary>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">FormatType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">DEFAULT</span> <span class="o">=</span> <span class="s1">&#39;Default&#39;</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">FormatType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">DEFAULT</span> <span class="o">=</span> <span class="s1">&#39;Default&#39;</span>
 </span></code></pre></div>
 </details>
 <hr />
@@ -859,75 +886,75 @@
 <p>Defines types of operations that can be performed in the filtering phase.</p>
 <details class="note">
 <summary>Operations Filter</summary>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">OperationsFilter</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">CALORIFIC_VALUE</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">CO2_AND_H2S_FRACTION</span> <span class="o">=</span> <span class="mi">1</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">DISPERSION</span> <span class="o">=</span> <span class="mi">2</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">CO2_FRACTION</span> <span class="o">=</span> <span class="mi">3</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">OperationsFilter</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">CALORIFIC_VALUE</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">CO2_AND_H2S_FRACTION</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">DISPERSION</span> <span class="o">=</span> <span class="mi">2</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">CO2_FRACTION</span> <span class="o">=</span> <span class="mi">3</span>
 </span></code></pre></div>
 </details>
 <h4 id="phase-type">Phase Type</h4>
 <p>Represents the phase of the material stream: overall, vapor, oily, or aqueous.</p>
 <details class="note">
 <summary>Phase Type</summary>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">PhaseType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">OVERALL</span> <span class="o">=</span> <span class="s1">&#39;Overall&#39;</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">VAPOR</span> <span class="o">=</span> <span class="s1">&#39;Vapor&#39;</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">OIL</span> <span class="o">=</span> <span class="s1">&#39;Liquid1&#39;</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">WATER</span> <span class="o">=</span> <span class="s1">&#39;Liquid2&#39;</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">PhaseType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">OVERALL</span> <span class="o">=</span> <span class="s1">&#39;Overall&#39;</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">VAPOR</span> <span class="o">=</span> <span class="s1">&#39;Vapor&#39;</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">OIL</span> <span class="o">=</span> <span class="s1">&#39;Liquid1&#39;</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">WATER</span> <span class="o">=</span> <span class="s1">&#39;Liquid2&#39;</span>
 </span></code></pre></div>
 </details>
 <h4 id="compound-basis">Compound Basis</h4>
 <p>Defines the reference basis for compound data, with an associated default unit depending on the selected basis.</p>
 <details class="note">
 <summary>Compound Basis</summary>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">CompoundBasis</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">MOLE_FRAC</span> <span class="o">=</span> <span class="s1">&#39;MolarComposition&#39;</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">MASS_FRAC</span> <span class="o">=</span> <span class="s1">&#39;MassComposition&#39;</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">MOLE_FLOW</span> <span class="o">=</span> <span class="s1">&#39;CompoundMolarFlow&#39;</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">MASS_FLOW</span> <span class="o">=</span> <span class="s1">&#39;CompoundMassFlow&#39;</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="nd">@property</span>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">default_unit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>        <span class="k">return</span> <span class="p">{</span>
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>            <span class="n">CompoundBasis</span><span class="o">.</span><span class="n">MASS_FLOW</span><span class="p">:</span> <span class="s1">&#39;kg/h&#39;</span><span class="p">,</span>
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>            <span class="n">CompoundBasis</span><span class="o">.</span><span class="n">MOLE_FLOW</span><span class="p">:</span> <span class="s1">&#39;kmol/h&#39;</span><span class="p">,</span>
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>            <span class="n">CompoundBasis</span><span class="o">.</span><span class="n">MOLE_FRAC</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>            <span class="n">CompoundBasis</span><span class="o">.</span><span class="n">MASS_FRAC</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>        <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">CompoundBasis</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">MOLE_FRAC</span> <span class="o">=</span> <span class="s1">&#39;MolarComposition&#39;</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">MASS_FRAC</span> <span class="o">=</span> <span class="s1">&#39;MassComposition&#39;</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">MOLE_FLOW</span> <span class="o">=</span> <span class="s1">&#39;CompoundMolarFlow&#39;</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">MASS_FLOW</span> <span class="o">=</span> <span class="s1">&#39;CompoundMassFlow&#39;</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="nd">@property</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">default_unit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>        <span class="k">return</span> <span class="p">{</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>            <span class="n">CompoundBasis</span><span class="o">.</span><span class="n">MASS_FLOW</span><span class="p">:</span> <span class="s1">&#39;kg/h&#39;</span><span class="p">,</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>            <span class="n">CompoundBasis</span><span class="o">.</span><span class="n">MOLE_FLOW</span><span class="p">:</span> <span class="s1">&#39;kmol/h&#39;</span><span class="p">,</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>            <span class="n">CompoundBasis</span><span class="o">.</span><span class="n">MOLE_FRAC</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>            <span class="n">CompoundBasis</span><span class="o">.</span><span class="n">MASS_FRAC</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>        <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 </span></code></pre></div>
 </details>
 <h4 id="molar-flow-unit">Molar Flow Unit</h4>
 <p>Specifies the unit of measurement for molar flow, used when a different unit is required instead of the default.</p>
 <details class="note">
 <summary>Molar Flow Unit</summary>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">MolarFlowUnit</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">KMOL_H</span> <span class="o">=</span> <span class="s1">&#39;kmol/h&#39;</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">KMOL_S</span> <span class="o">=</span> <span class="s1">&#39;kmol/s&#39;</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">MOL_S</span> <span class="o">=</span> <span class="s1">&#39;mol/s&#39;</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">MolarFlowUnit</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">KMOL_H</span> <span class="o">=</span> <span class="s1">&#39;kmol/h&#39;</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">KMOL_S</span> <span class="o">=</span> <span class="s1">&#39;kmol/s&#39;</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="n">MOL_S</span> <span class="o">=</span> <span class="s1">&#39;mol/s&#39;</span>
 </span></code></pre></div>
 </details>
 <h4 id="mass-flow-unit">Mass Flow Unit</h4>
 <p>Specifies the unit of measurement for mass flow, used when a different unit is required instead of the default.</p>
 <details class="note">
 <summary>Mass Flow Unit</summary>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">MassFlowUnit</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">KG_H</span> <span class="o">=</span> <span class="s1">&#39;kg/h&#39;</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">G_H</span> <span class="o">=</span> <span class="s1">&#39;g/h&#39;</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="n">KG_S</span> <span class="o">=</span> <span class="s1">&#39;kg/s&#39;</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">MassFlowUnit</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="n">KG_H</span> <span class="o">=</span> <span class="s1">&#39;kg/h&#39;</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="n">G_H</span> <span class="o">=</span> <span class="s1">&#39;g/h&#39;</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="n">KG_S</span> <span class="o">=</span> <span class="s1">&#39;kg/s&#39;</span>
 </span></code></pre></div>
 </details>
 <h4 id="phase-activity">Phase Activity</h4>
 <p>Represents the phase activity of the input stream (before P&amp;T flash): vapor or liquid.</p>
 <details class="note">
 <summary>Phase Type</summary>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">PhaseActivity</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="n">ACTIVE</span> <span class="o">=</span> <span class="mi">1</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="n">INACTIVE</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="k">class</span><span class="w"> </span><span class="nc">PhaseInput</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="n">Vapor</span><span class="p">:</span> <span class="n">PhaseActivity</span>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    <span class="n">Liquid</span><span class="p">:</span> <span class="n">PhaseActivity</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">PhaseActivity</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="n">ACTIVE</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="n">INACTIVE</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="k">class</span><span class="w"> </span><span class="nc">PhaseInput</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    <span class="n">Vapor</span><span class="p">:</span> <span class="n">PhaseActivity</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>    <span class="n">Liquid</span><span class="p">:</span> <span class="n">PhaseActivity</span>
 </span></code></pre></div>
 </details>
 <hr />
@@ -938,88 +965,100 @@
 <details class="note">
 <summary>INPUT_FILE</summary>
 <p><strong>Path to the input <code>.xlsx</code> file</strong> containing the composition data.
-<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">INPUT_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_dir</span><span class="p">,</span> <span class="s1">&#39;../../files/test_files/composicao_teste.xlsx&#39;</span><span class="p">))</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">INPUT_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_dir</span><span class="p">,</span> <span class="s1">&#39;../../files/test_files/composicao_teste.xlsx&#39;</span><span class="p">))</span>
 </span></code></pre></div></p>
 </details>
 <details class="note">
 <summary>OUTPUT_FOLDER</summary>
 <p><strong>Directory to store the output files</strong> generated by the process.
-<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">OUTPUT_FOLDER</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_dir</span><span class="p">,</span> <span class="s1">&#39;../../files/test_files&#39;</span><span class="p">))</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">OUTPUT_FOLDER</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_dir</span><span class="p">,</span> <span class="s1">&#39;../../files/test_files&#39;</span><span class="p">))</span>
 </span></code></pre></div></p>
 </details>
 <details class="note">
 <summary>NAME</summary>
 <p><strong>Descriptive name</strong> used to identify the final output file.
-<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">NAME</span> <span class="o">=</span> <span class="s1">&#39;composition_teste&#39;</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">NAME</span> <span class="o">=</span> <span class="s1">&#39;composition_teste&#39;</span>
 </span></code></pre></div></p>
 </details>
 <hr />
 <h3 id="processing-options">Processing Options</h3>
 <details class="note">
+<summary>AUTOMATIC_PACKAGE</summary>
+<p>Automatic selection of Thermodynamic model for <strong>DWSIM</strong>.
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">AUTOMATIC_PACKAGE</span> <span class="o">=</span> <span class="n">DWSIMAutomatic</span><span class="o">.</span><span class="n">isAutomatic</span>
+</span></code></pre></div></p>
+</details>
+<details class="note">
+<summary>POLAR_PROPORTION</summary>
+<p>Polar fraction threshold used for automatic Thermodynamic model selection.
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">POLAR_PROPORTION</span> <span class="o">=</span> <span class="mf">60.0</span> <span class="c1">#%</span>
+</span></code></pre></div></p>
+</details>
+<details class="note">
 <summary>TEMPLATE</summary>
 <p>Used to select a <strong>DWSIM</strong> template with only one <strong>Material Stream</strong> and all required compounds.
-<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">TEMPLATE</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1">#os.path.abspath(os.path.join(current_dir, &#39;../../files/test_files/template.dwxmz&#39;))</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">TEMPLATE</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1">#os.path.abspath(os.path.join(current_dir, &#39;../../files/test_files/template.dwxmz&#39;))</span>
 </span></code></pre></div></p>
 </details>
 <details class="note">
 <summary>DEBUG_MODE</summary>
 <p>When <code>True</code>, disables calculations like <strong>burn rate and evaporation</strong>, enabling debugging.
-<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">DEBUG_MODE</span> <span class="o">=</span> <span class="kc">False</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">DEBUG_MODE</span> <span class="o">=</span> <span class="kc">False</span>
 </span></code></pre></div></p>
 </details>
 <details class="note">
 <summary>PACKAGE</summary>
 <p>Thermodynamic model selected from <code>DWSIMPackages</code>, used for property calculations inside <strong>DWSIM</strong>.
-<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">PACKAGE</span> <span class="o">=</span> <span class="n">DWSIMPackages</span><span class="o">.</span><span class="n">PengRobinson1978</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">PACKAGE</span> <span class="o">=</span> <span class="n">DWSIMPackages</span><span class="o">.</span><span class="n">PengRobinson1978</span>
 </span></code></pre></div></p>
 </details>
 <details class="note">
 <summary>FORMAT_TYPE</summary>
 <p>Used to <strong>standardize the input file format</strong> with the expected default structure during processing.
-<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">FORMAT_TYPE</span> <span class="o">=</span> <span class="n">FormatType</span><span class="o">.</span><span class="n">DEFAULT</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">FORMAT_TYPE</span> <span class="o">=</span> <span class="n">FormatType</span><span class="o">.</span><span class="n">DEFAULT</span>
 </span></code></pre></div></p>
 </details>
 <details class="note">
 <summary>FRACTION_PHASE</summary>
 <p>Specifies which phase (overall, vapor, oil, or water) will be used for <strong>fraction</strong> output.
-<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">FRACTION_PHASE</span> <span class="o">=</span> <span class="n">PhaseType</span><span class="o">.</span><span class="n">OVERALL</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">FRACTION_PHASE</span> <span class="o">=</span> <span class="n">PhaseType</span><span class="o">.</span><span class="n">OVERALL</span>
 </span></code></pre></div></p>
 </details>
 <details class="note">
 <summary>PHASE_ACTIVITY</summary>
 <p>Specifies which phase (vapor or liquid) can be active on the <strong>P&amp;T flash</strong> step.
-<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">PHASE_ACTIVITY</span> <span class="o">=</span> <span class="n">PhaseInput</span><span class="p">(</span><span class="n">Vapor</span><span class="o">=</span><span class="n">PhaseActivity</span><span class="o">.</span><span class="n">ACTIVE</span><span class="p">,</span>
-</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>                            <span class="n">Liquid</span><span class="o">=</span><span class="n">PhaseActivity</span><span class="o">.</span><span class="n">ACTIVE</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">PHASE_ACTIVITY</span> <span class="o">=</span> <span class="n">PhaseInput</span><span class="p">(</span><span class="n">Vapor</span><span class="o">=</span><span class="n">PhaseActivity</span><span class="o">.</span><span class="n">ACTIVE</span><span class="p">,</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>                            <span class="n">Liquid</span><span class="o">=</span><span class="n">PhaseActivity</span><span class="o">.</span><span class="n">ACTIVE</span><span class="p">)</span>
 </span></code></pre></div></p>
 </details>
 <details class="note">
 <summary>BASIS</summary>
 <p>Defines the <strong>basis for compound data</strong>.
-<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">BASIS</span> <span class="o">=</span> <span class="n">CompoundBasis</span><span class="o">.</span><span class="n">MOLE_FLOW</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">BASIS</span> <span class="o">=</span> <span class="n">CompoundBasis</span><span class="o">.</span><span class="n">MOLE_FLOW</span>
 </span></code></pre></div></p>
 </details>
 <details class="note">
 <summary>BASIS_UNIT</summary>
 <p>Set the <strong>unit</strong> associated with the selected <code>BASIS</code>, such as <code>'kmol/h'</code> for <code>MOLE_FLOW</code>.
-<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">BASIS_UNIT</span> <span class="o">=</span> <span class="n">BASIS</span><span class="o">.</span><span class="n">default_unit</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="n">BASIS_UNIT</span> <span class="o">=</span> <span class="n">BASIS</span><span class="o">.</span><span class="n">default_unit</span>
 </span></code></pre></div></p>
 </details>
 <details class="note">
 <summary>OPERATION</summary>
 <p>Type of <strong>operation filter</strong> to apply (e.g., CO₂ filtering).
-<div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">OPERATION</span> <span class="o">=</span> <span class="n">OperationsFilter</span><span class="o">.</span><span class="n">CO2_FRACTION</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="n">OPERATION</span> <span class="o">=</span> <span class="n">OperationsFilter</span><span class="o">.</span><span class="n">CO2_FRACTION</span>
 </span></code></pre></div></p>
 </details>
 <details class="note">
 <summary>PHASE_TYPE</summary>
 <p>Defines the <strong>phase to consider during filtering</strong>.
-<div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">PHASE_TYPE</span> <span class="o">=</span> <span class="n">PhaseType</span><span class="o">.</span><span class="n">OVERALL</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="n">PHASE_TYPE</span> <span class="o">=</span> <span class="n">PhaseType</span><span class="o">.</span><span class="n">OVERALL</span>
 </span></code></pre></div></p>
 </details>
 <details class="note">
 <summary>ONLY_SIMULATED_VALUE</summary>
 <p>If <code>True</code>, only <strong>simulation-generated data</strong> is used. If <code>False</code>, pre-existing data in the input file will be included.
-<div class="language-python highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="n">ONLY_SIMULATED_VALUE</span> <span class="o">=</span> <span class="kc">False</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="n">ONLY_SIMULATED_VALUE</span> <span class="o">=</span> <span class="kc">False</span>
 </span></code></pre></div></p>
 </details>
 <hr />
@@ -1027,19 +1066,19 @@
 <details class="note">
 <summary>LOG_TYPE</summary>
 <p>Sets the <strong>log verbosity level</strong>, e.g., <code>INFO</code>, <code>DEBUG</code>, <code>WARNING</code>, etc.
-<div class="language-python highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="n">LOG_TYPE</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="n">LOG_TYPE</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span>
 </span></code></pre></div></p>
 </details>
 <details class="note">
 <summary>WRITE_LOGGER</summary>
 <p>Controls whether logs should be <strong>written to a file</strong>.
-<div class="language-python highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="n">WRITE_LOGGER</span> <span class="o">=</span> <span class="kc">False</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="n">WRITE_LOGGER</span> <span class="o">=</span> <span class="kc">False</span>
 </span></code></pre></div></p>
 </details>
 <details class="note">
 <summary>LOG_PATH</summary>
 <p>File path where the logger output is written if <code>WRITE_LOGGER</code> is <code>True</code>.
-<div class="language-python highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="n">LOG_PATH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_dir</span><span class="p">,</span> <span class="s1">&#39;../../files/utils/composition_logs.log&#39;</span><span class="p">))</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="n">LOG_PATH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_dir</span><span class="p">,</span> <span class="s1">&#39;../../files/utils/composition_logs.log&#39;</span><span class="p">))</span>
 </span></code></pre></div></p>
 </details>
 

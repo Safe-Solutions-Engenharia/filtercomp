@@ -438,6 +438,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#automatic-property-package" class="md-nav__link">
+    <span class="md-ellipsis">
+      Automatic Property Package
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#flash-data-processing" class="md-nav__link">
     <span class="md-ellipsis">
       Flash Data Processing
@@ -640,6 +649,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#automatic-property-package" class="md-nav__link">
+    <span class="md-ellipsis">
+      Automatic Property Package
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#flash-data-processing" class="md-nav__link">
     <span class="md-ellipsis">
       Flash Data Processing
@@ -732,6 +750,36 @@
 <h3 id="2-second-flash-operation">2. Second Flash Operation</h3>
 <p>After the first separation, a second flash operation is performed.
 In this step, the system conditions are changed to <strong>ambient temperature</strong> and <strong>ambient pressure</strong>.</p>
+<hr />
+<h2 id="automatic-property-package">Automatic Property Package</h2>
+<p>The subsequent decision tree illustrates the automated selection logic for thermodynamic Property Packages based on stream conditions and composition. The algorithm evaluates water purity, presence of polar compounds, operating pressure, binary interaction parameter availability, and liquid-liquid equilibrium (LLE) potential to assign the most suitable thermodynamic model (e.g., Steam Tables, Peng-Robinson, NRTL, or UNIFAC variants).</p>
+<div style="text-align: center;">
+<pre class="mermaid"><code>  flowchart TD
+    A{"Pure water?&lt;br&gt;(xH2O &gt;= 99.5%&lt;br&gt;&amp; xHC &lt; 0.1%)"}
+
+    A --&gt;|Yes| B[Steam Tables]
+    A --&gt;|No| C{"Polar?&lt;br&gt;(xH2O &gt;= 0.1% or&lt;br&gt;polar components)"}
+
+    C --&gt;|No| D["* Peng-Robinson&lt;br&gt;* Soave-Redlich-Kwong&lt;br&gt;* Lee-Kesler-Plocker"]
+    C --&gt;|Yes| E{"Pressure &gt; 10 bar"}
+
+    E --&gt;|Yes| F["* Peng-Robinson-Stryjek-Vera 2"]
+    E --&gt;|No| G{"Has parameters?"}
+
+    G --&gt;|Yes| H["* NRTL&lt;br&gt;* UNIQUAC"]
+    G --&gt;|No| I{"LLE?"}
+
+    I --&gt;|Yes| J["* UNIFACLL"]
+    I --&gt;|No| K["* UNIFAC"]
+
+    style B fill:#1b8e3e,stroke:#000,stroke-width:2px,color:#fff
+    style D fill:#1b8e3e,stroke:#000,stroke-width:2px,color:#fff
+    style F fill:#1b8e3e,stroke:#000,stroke-width:2px,color:#fff
+    style H fill:#1b8e3e,stroke:#000,stroke-width:2px,color:#fff
+    style J fill:#1b8e3e,stroke:#000,stroke-width:2px,color:#fff
+    style K fill:#1b8e3e,stroke:#000,stroke-width:2px,color:#fff</code></pre>
+</div>
+
 <hr />
 <h2 id="flash-data-processing">Flash Data Processing</h2>
 <p>The flash operation results, including phase compositions and thermodynamic properties, are extracted directly from <strong>DWSIM</strong> after each flash operation.</p>
