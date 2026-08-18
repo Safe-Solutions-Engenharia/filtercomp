@@ -11,6 +11,8 @@ current_dir = os.path.dirname(__file__)
 INPUT_FILE = os.path.abspath(os.path.join(current_dir, '../../files/test_files/composicao_teste.xlsx'))
 OUTPUT_FOLDER = os.path.abspath(os.path.join(current_dir, '../../files/test_files'))
 NAME = 'composition_teste'
+
+# Select the automation mode and define the threshold for polar component proportion for the decision tree.
 AUTOMATIC_PACKAGE = DWSIMAutomatic.isAutomatic
 POLAR_PROPORTION = 60.0 #%
 
