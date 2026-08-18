@@ -24,6 +24,41 @@ In this step, the system conditions are changed to **ambient temperature** and *
 
 ---
 
+## Automatic Property Package
+
+The subsequent decision tree illustrates the automated selection logic for thermodynamic Property Packages based on stream conditions and composition. The algorithm evaluates water purity, presence of polar compounds, operating pressure, binary interaction parameter availability, and liquid-liquid equilibrium (LLE) potential to assign the most suitable thermodynamic model (e.g., Steam Tables, Peng-Robinson, NRTL, or UNIFAC variants).
+
+<div style="text-align: center;">
+```mermaid
+  flowchart TD
+    A{"Pure water?<br>(xH2O >= 99.5%<br>& xHC < 0.1%)"}
+    
+    A -->|Yes| B[Steam Tables]
+    A -->|No| C{"Polar?<br>(xH2O >= 0.1% or<br>polar components)"}
+    
+    C -->|No| D["* Peng-Robinson<br>* Soave-Redlich-Kwong<br>* Lee-Kesler-Plocker"]
+    C -->|Yes| E{"Pressure > 10 bar"}
+    
+    E -->|Yes| F["* Peng-Robinson-Stryjek-Vera 2"]
+    E -->|No| G{"Has parameters?"}
+    
+    G -->|Yes| H["* NRTL<br>* UNIQUAC"]
+    G -->|No| I{"LLE?"}
+    
+    I -->|Yes| J["* UNIFACLL"]
+    I -->|No| K["* UNIFAC"]
+
+    style B fill:#1b8e3e,stroke:#000,stroke-width:2px,color:#fff
+    style D fill:#1b8e3e,stroke:#000,stroke-width:2px,color:#fff
+    style F fill:#1b8e3e,stroke:#000,stroke-width:2px,color:#fff
+    style H fill:#1b8e3e,stroke:#000,stroke-width:2px,color:#fff
+    style J fill:#1b8e3e,stroke:#000,stroke-width:2px,color:#fff
+    style K fill:#1b8e3e,stroke:#000,stroke-width:2px,color:#fff
+```
+</div>
+
+---
+
 ## Flash Data Processing
 
 The flash operation results, including phase compositions and thermodynamic properties, are extracted directly from **DWSIM** after each flash operation.

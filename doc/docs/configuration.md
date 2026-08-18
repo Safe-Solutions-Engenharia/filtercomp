@@ -6,6 +6,17 @@
 
 ---
 
+### DWSIM Automatic
+
+Defines the logic for automatic Property Package selection.
+
+??? note "DWSIM Packages"
+    ```python
+    class DWSIMAutomatic(Enum):
+        isAutomatic = True
+        isManual = False
+    ```
+
 ### DWSIM Packages
 
 Used to select the thermodynamic model from **DWSIM**, which governs how physical and chemical properties are calculated.
@@ -180,6 +191,18 @@ These **global constants** configure how the system reads input data, selects ca
 ---
 
 ### Processing Options
+
+??? note "AUTOMATIC_PACKAGE"
+    Automatic selection of Thermodynamic model for **DWSIM**.
+    ```python
+    AUTOMATIC_PACKAGE = DWSIMAutomatic.isAutomatic
+    ```
+
+??? note "POLAR_PROPORTION"
+    Polar fraction threshold used for automatic Thermodynamic model selection.
+    ```python
+    POLAR_PROPORTION = 60.0 #%
+    ```
 
 ??? note "TEMPLATE"
     Used to select a **DWSIM** template with only one **Material Stream** and all required compounds.
