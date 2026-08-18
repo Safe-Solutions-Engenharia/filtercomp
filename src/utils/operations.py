@@ -649,6 +649,76 @@ class FlashOperations:
                 comp_list = [comp_phase[x.Key].MoleFraction for x in compoud_dict.values()]
                 self.current_comp_dict[phase_type.value] = comp_list
 
+    @staticmethod
+    def get_nrtl_interaction_parameter(nrtl_package, component_1: str, component_2: str):
+        interaction_parameters = nrtl_package.m_uni.InteractionParameters
+
+        if (
+            component_1 in interaction_parameters.Keys
+            and component_2 in interaction_parameters[component_1].Keys
+        ):
+            return interaction_parameters[component_1][component_2]
+
+        if (
+            component_2 in interaction_parameters.Keys
+            and component_1 in interaction_parameters[component_2].Keys
+        ):
+            return interaction_parameters[component_2][component_1]
+
+        return None
+
+    @staticmethod
+    def has_nrtl_parameters(nrtl_package, components: list[str], tolerance: float = 1e-6) -> bool:
+        if len(components) < 2:
+            return False
+
+        for component_1, component_2 in combinations(components, 2):
+            interaction_parameter = (
+                FlashOperations.get_nrtl_interaction_parameter(
+                    nrtl_package,
+                    component_1,
+                    component_2
+                )
+            )
+
+            if interaction_parameter is None:
+                return False
+
+            has_parameter = (
+                abs(interaction_parameter.A12) > tolerance
+                or abs(interaction_parameter.A21) > tolerance
+                or abs(interaction_parameter.alpha12) > tolerance
+            )
+
+            if not has_parameter:
+                return False
+
+        return True
+
+    @staticmethod
+    def get_core_components(composition: dict[str, float], target_fraction: float = 0.80, minimum_fraction: float = 1e-6) -> list[str]:
+        sorted_components = sorted(
+            (
+                (name, fraction)
+                for name, fraction in composition.items()
+                if fraction >= minimum_fraction
+            ),
+            key=lambda item: item[1],
+            reverse=True
+        )
+
+        core_components = []
+        accumulated_fraction = 0.0
+
+        for name, fraction in sorted_components:
+            core_components.append(name)
+            accumulated_fraction += fraction
+
+            if accumulated_fraction >= target_fraction:
+                break
+
+        return core_components
+
     def operations_per_scenario(self, current_name: str, current_value: pd.DataFrame) -> pd.DataFrame:
         self.current_name = current_name
         dataframe_base = self.dataframe_base(current_value)
@@ -697,91 +767,66 @@ class FlashOperations:
             scenario_dict['OVERALL_Temperature'] = temperature_C
             
             if self.automatic_package:
-                components = [v.Key for v in compound_dict.values()]
+                components = [compound.Key for compound in compound_dict.values()]
                 components_dict = dict(zip(components, compound_list))
 
                 total_flow = sum(components_dict.values())
 
                 if total_flow > 0:
-                    norm_dict_unit = {k: v / total_flow for k, v in components_dict.items()}
+                    normalized_composition = {name: value / total_flow for name, value in components_dict.items()}
                 else:
-                    norm_dict_unit = {k: 0.0 for k in components_dict.keys()}
+                    normalized_composition = {name: 0.0 for name in components_dict}
 
-                water_fraction = norm_dict_unit.get('Water', 0.0)
+                water_fraction = normalized_composition.get('Water', 0.0)
 
                 hydrocarbon_sum = sum(
-                    val for name, val in norm_dict_unit.items()
-                    if componente_dwsim_hidrocarboneto.get(name, False)
+                    fraction
+                    for name, fraction in normalized_composition.items()
+                    if componente_dwsim_hidrocarboneto.get(
+                        name,
+                        False
+                    )
                 )
 
                 polar_sum = sum(
-                    val for name, val in norm_dict_unit.items()
-                    if componente_dwsim_polar.get(name, False)
+                    fraction
+                    for name, fraction in normalized_composition.items()
+                    if componente_dwsim_polar.get(
+                        name,
+                        False
+                    )
                 )
 
-                proportion = self.polar_proportion / 100.0 if self.polar_proportion > 1.0 else self.polar_proportion
+                proportion = (self.polar_proportion / 100.0 if self.polar_proportion > 1.0 else self.polar_proportion)
 
-                ureg = UnitRegistry()
-                pressure = pressure_value * ureg(pressure_unit)
+                pressure = (pressure_value * UnitRegistry()(pressure_unit))
                 pressure_bar = pressure.to('bar').magnitude
 
-                if water_fraction >= 0.995 and hydrocarbon_sum >= 0.001:
+                if (water_fraction >= 0.995 and hydrocarbon_sum >= 0.001):
                     package_full_name = f'{DWSIMPackages.SteamTables.value}PropertyPackage'
                     self.selected_packages[cen_name] = [DWSIMPackages.SteamTables.value]
-                elif water_fraction >= 0.001 or polar_sum >= proportion:
+                elif (water_fraction >= 0.001 or polar_sum >= proportion):
                     if pressure_bar > 10:
                         package_full_name = f'{DWSIMPackages.PRSV2.value}PropertyPackage'
                         self.selected_packages[cen_name] = [DWSIMPackages.PRSV2.value]
                     else:
-                        x_core = 0.80 # 80% dos componentes relevantes.
-                        componentes_ordenados = sorted(
-                            [(nome, xi) for nome, xi in norm_dict_unit.items() if xi >= 1e-6],
-                            key=lambda item: item[1],
-                            reverse=True
-                        )
+                        core_components = (self.get_core_components(normalized_composition))
 
-                        core_components = []
-                        acumulado = 0.0
-                        for nome, xi in componentes_ordenados:
-                            core_components.append(nome)
-                            acumulado += xi
-                            if acumulado >= x_core:
-                                break
+                        nrtl_instance = (PropertyPackages.NRTLPropertyPackage())
+                        use_nrtl = self.has_nrtl_parameters(nrtl_instance,core_components)
 
-                        nrtl_instance = PropertyPackages.NRTLPropertyPackage()
-
-                        pares_faltantes_core = []
-
-                        if len(core_components) > 1:
-                            for c1, c2 in combinations(core_components, 2):
-                                ip = None
-
-                                if c1 in nrtl_instance.m_uni.InteractionParameters.Keys and c2 in nrtl_instance.m_uni.InteractionParameters[c1].Keys:
-                                    ip = nrtl_instance.m_uni.InteractionParameters[c1][c2]
-                                elif c2 in nrtl_instance.m_uni.InteractionParameters.Keys and c1 in nrtl_instance.m_uni.InteractionParameters[c2].Keys:
-                                    ip = nrtl_instance.m_uni.InteractionParameters[c2][c1]
-
-                                parametro_real = False
-                                if ip is not None:
-                                    if abs(ip.A12) > 1e-6 or abs(ip.A21) > 1e-6 or abs(ip.alpha12) > 1e-6:
-                                        parametro_real = True
-
-                                if not parametro_real:
-                                    pares_faltantes_core.append((c1, c2))
-
-                        if not pares_faltantes_core and len(core_components) > 1:
+                        if use_nrtl:
                             package_full_name = f'{DWSIMPackages.NRTL.value}PropertyPackage'
-                            self.selected_packages[cen_name] = [DWSIMPackages.NRTL.value, [DWSIMPackages.UNIQUAC.value]]
+                            self.selected_packages[cen_name] = [DWSIMPackages.NRTL.value,[DWSIMPackages.UNIQUAC.value]]
+                        elif (water_fraction >= 0.05 and hydrocarbon_sum >= 0.05):
+                            package_full_name = f'{DWSIMPackages.UNIFACLL.value}PropertyPackage'
+                            self.selected_packages[cen_name] = [DWSIMPackages.UNIFACLL.value]
                         else:
-                            if water_fraction >= 0.05 and hydrocarbon_sum >= 0.05:
-                                package_full_name = f'{DWSIMPackages.UNIFACLL.value}PropertyPackage'
-                                self.selected_packages[cen_name] = [DWSIMPackages.UNIFACLL.value]
-                            else:
-                                package_full_name = f'{DWSIMPackages.UNIFAC.value}PropertyPackage'
-                                self.selected_packages[cen_name] = [DWSIMPackages.UNIFAC.value]
+                            package_full_name = f'{DWSIMPackages.UNIFAC.value}PropertyPackage'
+                            self.selected_packages[cen_name] = [DWSIMPackages.UNIFAC.value]
                 else:
                     package_full_name = f'{DWSIMPackages.PengRobinson1978.value}PropertyPackage'
-                    self.selected_packages[cen_name] = [DWSIMPackages.PengRobinson1978.value, [DWSIMPackages.SRK.value, DWSIMPackages.LKP.value]]
+                    self.selected_packages[cen_name] = [DWSIMPackages.PengRobinson1978.value,[DWSIMPackages.SRK.value,DWSIMPackages.LKP.value]]
             else:
                 package_full_name = f'{self.package}PropertyPackage'
                 self.selected_packages[cen_name] = [self.package]
