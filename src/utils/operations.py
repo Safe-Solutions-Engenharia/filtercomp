@@ -311,7 +311,9 @@ class FlashOperations:
         molecular_weight_oil = self.mst.GetPhase('Liquid1').Properties.molecularWeight if self.mst.GetPhase(
             'Liquid1').Properties.molecularWeight else 0
 
-        if (890 < density_oil < 1500 and 17 < molecular_weight_oil < 19):
+        water_phase = self.determine_water_phase()
+
+        if water_phase == 'Liquid1':
             volumetric_flow_oil, volumetric_flow_liquid, molecular_weight_oil, molecular_weight_water, _, _, _, _ = self.get_misc_properties('Liquid2', 'Liquid1')
 
             if mass_fraction:
@@ -470,12 +472,12 @@ class FlashOperations:
         if mass_fraction_liquid2_std:
             cp_std = self.mst.GetPhase('Liquid1').Properties.heatCapacityCp
         else:
-            if ((890 < rho_density < 1500) and (17 < molecular_weight_oil < 19)) or (rho_density == 0):
+            if (self.determine_water_phase() == 'Liquid1') or (rho_density == 0):
                 cp_std = 0.0
                 rho_density = 0.0
             else:
                 cp_std = self.mst.GetPhase('Liquid1').Properties.heatCapacityCp
-                
+
         overall_vaporization_enthalpy, overall_combustion_enthalpy = self.get_overall_enthalpies() if rho_density else (1.0, 1.0)
         index_temperature = self.refine_bubble_point(298.15) if rho_density else 1.0
 
@@ -504,6 +506,32 @@ class FlashOperations:
 
         return evaporation_rate
 
+    def determine_water_phase(self) -> str:
+        density_liquid1 = self.mst.GetPhase('Liquid1').Properties.density
+        mw_liquid1 = self.mst.GetPhase('Liquid1').Properties.molecularWeight if self.mst.GetPhase(
+            'Liquid1').Properties.molecularWeight else 0
+
+        density_liquid2 = self.mst.GetPhase('Liquid2').Properties.density
+        mw_liquid2 = self.mst.GetPhase('Liquid2').Properties.molecularWeight if self.mst.GetPhase(
+            'Liquid2').Properties.molecularWeight else 0
+
+        density_like_water_l1 = (density_liquid1 is not None) and (850 < density_liquid1 < 1500) and (17 < mw_liquid1 < 19)
+        density_like_water_l2 = (density_liquid2 is not None) and (850 < density_liquid2 < 1500) and (17 < mw_liquid2 < 19)
+
+        liquid1_compounds = self.mst.GetPhase('Liquid1').Compounds
+        liquid2_compounds = self.mst.GetPhase('Liquid2').Compounds
+
+        water_frac_l1 = liquid1_compounds['Water'].MassFraction if 'Water' in liquid1_compounds.Keys and liquid1_compounds['Water'].MassFraction else 0.0
+        water_frac_l2 = liquid2_compounds['Water'].MassFraction if 'Water' in liquid2_compounds.Keys and liquid2_compounds['Water'].MassFraction else 0.0
+
+        if density_like_water_l1 == density_like_water_l2:
+            return 'Liquid1' if water_frac_l1 >= water_frac_l2 else 'Liquid2'
+
+        if density_like_water_l1:
+            return 'Liquid1' if water_frac_l1 >= water_frac_l2 else 'Liquid2'
+        else:
+            return 'Liquid2' if water_frac_l2 >= water_frac_l1 else 'Liquid1'
+
     def get_std_flash_data(self, 
                           scenario_dict: dict[str, float],
                           release_temperature: float,
@@ -525,7 +553,9 @@ class FlashOperations:
         molecular_weight_oil = self.mst.GetPhase('Liquid1').Properties.molecularWeight if self.mst.GetPhase(
             'Liquid1').Properties.molecularWeight else 0
         
-        if (890 < density_oil_std < 1500 and 17 < molecular_weight_oil < 19):
+        water_phase_std = self.determine_water_phase()
+
+        if water_phase_std == 'Liquid1':
             (volumetric_flow_oil, volumetric_flow_liquid,
             molecular_weight_oil_std, molecular_weight_water_std,
             mass_fraction_oil_std, mass_fraction_water_std,
@@ -533,7 +563,7 @@ class FlashOperations:
 
             if mass_fraction_liquid2_std:
                 density_oil_std = self.mst.GetPhase('Liquid2').Properties.density if self.mst.GetPhase(
-                'Liquid1').Properties.density else -1
+                'Liquid2').Properties.density else -1
             else:
                 density_oil_std = -1
         else:
@@ -601,18 +631,16 @@ class FlashOperations:
     def get_compound_value_after_flash(self, compoud_dict: dict[str, any]) -> list[float]:
         comp_phase = self.mst.GetPhase(self.molar_phase).Compounds
 
-        density_liquid1 = self.mst.GetPhase('Liquid1').Properties.density
-        molecular_weight_liquid1 = self.mst.GetPhase('Liquid1').Properties.molecularWeight if self.mst.GetPhase(
-        'Liquid1').Properties.molecularWeight else 0
+        water_phase_flash = self.determine_water_phase()
 
         if self.molar_phase == 'Liquid1':
-            if (density_liquid1 is not None) and (890 < density_liquid1 < 1500) and (17 < molecular_weight_liquid1 < 19):
+            if water_phase_flash == 'Liquid1':
                 comp_phase = self.mst.GetPhase('Liquid2').Compounds
             else:
                 comp_phase = self.mst.GetPhase(self.molar_phase).Compounds
 
         elif self.molar_phase == 'Liquid2':
-            if (density_liquid1 is not None) and (890 < density_liquid1 < 1500) and (17 < molecular_weight_liquid1 < 19):
+            if water_phase_flash == 'Liquid1':
                 comp_phase = self.mst.GetPhase('Liquid1').Compounds
             else:
                 comp_phase = self.mst.GetPhase(self.molar_phase).Compounds
@@ -635,7 +663,7 @@ class FlashOperations:
                 liquid1_comp = self.mst.GetPhase('Liquid1').Compounds
                 liquid2_comp = self.mst.GetPhase('Liquid2').Compounds
 
-                if (density_liquid1 is not None) and (890 < density_liquid1 < 1500) and (17 < molecular_weight_liquid1 < 19):
+                if self.determine_water_phase() == 'Liquid1':
                     comp_list_oil = [liquid2_comp[x.Key].MoleFraction for x in compoud_dict.values()]
                     comp_list_water = [liquid1_comp[x.Key].MoleFraction for x in compoud_dict.values()]
                 else:
