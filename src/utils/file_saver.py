@@ -25,7 +25,7 @@ def create_scenario_xlsx(output: str, name: str, filtered_data_dict: dict[str, p
 
 
 def create_package_scenarios_xlsx(output: str, name: str, packages: dict[str, dict[str, any]]) -> None:
-    file_path = os.path.join(output, f"package_scenarios.xlsx")
+    file_path = os.path.join(output, f"package_scenarios_{name}.xlsx")
 
     with pd.ExcelWriter(file_path, engine="openpyxl") as writer:
         for stream_name, scenarios_dict in packages.items():
