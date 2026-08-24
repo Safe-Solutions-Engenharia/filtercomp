@@ -746,6 +746,23 @@ class FlashOperations:
 
         return core_components
 
+    def should_skip_scenario(self, scenario_dict: dict[str, float]) -> bool:
+        phase_mass_fraction_map = {
+            'Overall': None,  # nunca pula
+            'Liquid2': 'LIQUID PHASE_Mass Fraction',   # water
+            'Liquid1': 'OILY PHASE_Mass Fraction',     # oil
+            'Vapor': 'VAPOUR PHASE_Mass Fraction',     # vapor
+        }
+
+        mass_fraction_key = phase_mass_fraction_map.get(self.molar_phase)
+
+        if mass_fraction_key is None:
+            return False
+
+        mass_fraction_value = scenario_dict.get(mass_fraction_key)
+
+        return mass_fraction_value is None
+
     def operations_per_scenario(self, current_name: str, current_value: pd.DataFrame) -> pd.DataFrame:
         self.current_name = current_name
         dataframe_base = self.dataframe_base(current_value)
@@ -835,11 +852,11 @@ class FlashOperations:
 
                 if (water_fraction >= 0.995 and hydrocarbon_sum >= 0.001):
                     package_full_name = f'{DWSIMPackages.SteamTables.value}PropertyPackage'
-                    self.selected_packages[cen_name] = [DWSIMPackages.SteamTables.value]
+                    selected_package_value = [DWSIMPackages.SteamTables.value]
                 elif (water_fraction >= 0.001 or polar_sum >= proportion):
                     if pressure_bar > 10:
                         package_full_name = f'{DWSIMPackages.PRSV2.value}PropertyPackage'
-                        self.selected_packages[cen_name] = [DWSIMPackages.PRSV2.value]
+                        selected_package_value = [DWSIMPackages.PRSV2.value]
                     else:
                         core_components = (self.get_core_components(normalized_composition))
 
@@ -848,19 +865,19 @@ class FlashOperations:
 
                         if use_nrtl:
                             package_full_name = f'{DWSIMPackages.NRTL.value}PropertyPackage'
-                            self.selected_packages[cen_name] = [DWSIMPackages.NRTL.value,[DWSIMPackages.UNIQUAC.value]]
+                            selected_package_value = [DWSIMPackages.NRTL.value,[DWSIMPackages.UNIQUAC.value]]
                         elif (water_fraction >= 0.05 and hydrocarbon_sum >= 0.05):
                             package_full_name = f'{DWSIMPackages.UNIFACLL.value}PropertyPackage'
-                            self.selected_packages[cen_name] = [DWSIMPackages.UNIFACLL.value]
+                            selected_package_value = [DWSIMPackages.UNIFACLL.value]
                         else:
                             package_full_name = f'{DWSIMPackages.UNIFAC.value}PropertyPackage'
-                            self.selected_packages[cen_name] = [DWSIMPackages.UNIFAC.value]
+                            selected_package_value = [DWSIMPackages.UNIFAC.value]
                 else:
                     package_full_name = f'{DWSIMPackages.PengRobinson1978.value}PropertyPackage'
-                    self.selected_packages[cen_name] = [DWSIMPackages.PengRobinson1978.value,[DWSIMPackages.SRK.value,DWSIMPackages.LKP.value]]
+                    selected_package_value = [DWSIMPackages.PengRobinson1978.value,[DWSIMPackages.SRK.value,DWSIMPackages.LKP.value]]
             else:
                 package_full_name = f'{self.package}PropertyPackage'
-                self.selected_packages[cen_name] = [self.package]
+                selected_package_value = [self.package]
 
             self.instantiated_package = getattr(PropertyPackages, package_full_name)()
             flowsheet.AddPropertyPackage(self.instantiated_package)
@@ -888,6 +905,11 @@ class FlashOperations:
 
             scenario_dict = self.get_compounds_molar_fraction(scenario_dict, new_compound_list, current_value)
 
+            if self.should_skip_scenario(scenario_dict):
+                continue
+
+            self.selected_packages[cen_name] = selected_package_value
+
             scenario_df = self.get_scenario_dataframe(dataframe_base, scenario_dict)
             
             dataframe_base = pd.concat([dataframe_base, scenario_df], axis=0)
@@ -903,6 +925,15 @@ class FlashOperations:
             current_value = self.replace_compound_names_dataframe(current_value)
 
             current_database = self.operations_per_scenario(current_name, current_value)
+
+            has_valid_scenario = bool(self.selected_packages)
+
+            if not has_valid_scenario:
+                custom_logger.log(
+                    f'No valid scenario found for {current_name}. The stream will not be registered for the {self.molar_phase} phase.',
+                    logging.WARNING
+                )
+                continue
 
             self.currents_package[current_name] = self.selected_packages
 
