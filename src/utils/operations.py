@@ -117,7 +117,7 @@ class FlashOperations:
     
     #TODO: Adjust the 'force phase' relation.
     def flash_operation(self,
-                        component_list: list[float], pressure_Pa: float, 
+                        component_list: list[float], compound_dict: dict[int, any], pressure_Pa: float, 
                         temperature_K: float, flow_rate_name: str, pressure_unit: str,
                         flow_rate: float, gas_flow: float,
                         liquid_flow: float, flash_type: str) -> None:
@@ -135,24 +135,23 @@ class FlashOperations:
                                     'kmol/h': 1000 / 3600
                                 }
         
-        component_dict = dict(zip(self.mst.GetCompoundNames(), component_list))
+        correct_names = [c.Key for c in compound_dict.values()]
+        component_dict = dict(zip(correct_names, component_list))
 
         if not self.basis_unit:
-            getattr(self.mst, f"SetOverall{self.compound_basis}")(Array[Double](component_list))
-
+            mst_order = list(self.mst.GetCompoundNames())
+            reordered_list = [component_dict.get(name, 0.0) for name in mst_order]
+            getattr(self.mst, f"SetOverall{self.compound_basis}")(Array[Double](reordered_list))
         else:
             conversion_factor = composition_unit_conv.get(self.basis_unit, 1)
-
             if self.compound_basis == CompoundBasis.MOLE_FLOW.value:
                 for compound, value in component_dict.items():
                     converted = value * conversion_factor
                     self.mst.SetOverallCompoundMolarFlow(compound, converted)
-
             elif self.compound_basis == CompoundBasis.MASS_FLOW.value:
                 for compound, value in component_dict.items():
                     converted = value * conversion_factor
                     self.mst.SetOverallCompoundMassFlow(compound, converted)
-
             else:
                 raise ValueError(f"Unsupported compound basis: {self.compound_basis}")
 
@@ -741,6 +740,10 @@ class FlashOperations:
             no_compound_value = all(compound_value == 0 for compound_value in compound_list)
             if no_compound_value:
                 continue
+
+            for compound in compound_dict.values():
+                if compound.Key not in list(flowsheet.SelectedCompounds.Keys):
+                    flowsheet.SelectedCompounds.Add(compound.Key, compound.Value)
                 
             temperature_C = current_value[current_value['SCENARIO_Cenário'] == cen_name]['OVERALL_Temperature'].values[0] # C
             temperature_K = temperature_C + 273.15 # K
@@ -758,8 +761,8 @@ class FlashOperations:
             if self.template_path and os.path.exists(self.template_path):
                 ms_generic = next(iter(flowsheet.SimulationObjects.Values))
                 self.mst = ms_generic.GetAsObject()
+                flowsheet.PropertyPackages.Clear()
             else:
-                [flowsheet.SelectedCompounds.Add(compound.Key, compound.Value) for compound in compound_dict.values()]
                 ms1 = flowsheet.AddObject(ObjectType.MaterialStream, 50, 50, "Current")
                 self.mst = ms1.GetAsObject()
 
@@ -833,9 +836,10 @@ class FlashOperations:
 
             self.instantiated_package = getattr(PropertyPackages, package_full_name)()
             flowsheet.AddPropertyPackage(self.instantiated_package)
+            self.mst.PropertyPackage = self.instantiated_package
 
             # Flash @P&T
-            self.flash_operation(compound_list, pressure_value, 
+            self.flash_operation(compound_list, compound_dict, pressure_value, 
                                  temperature_K, flow_rate_name.lower(), pressure_unit,
                                  flow_rate, gas_flow, liquid_flow, 'Flash @P&T')
                         
@@ -844,7 +848,7 @@ class FlashOperations:
             scenario_dict = self.get_pt_flash_data(scenario_dict)
 
             # Flash @STD
-            self.flash_operation(compound_list, '101325', 
+            self.flash_operation(compound_list, compound_dict, '101325', 
                                  '298.15', flow_rate_name.lower(), 'Pa', 
                                  flow_rate, 1, 1, 'Flash @STD')
             
