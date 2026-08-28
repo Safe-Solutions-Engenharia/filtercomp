@@ -470,21 +470,32 @@ class FlashOperations:
 
         return index_temperature
 
-    def get_burn_rate(self,
-                      mass_fraction_liquid2_std: float,
-                      molecular_weight_oil: float) -> tuple[float, float, float, float]:
-        
-        rho_density = self.mst.GetPhase('Liquid1').Properties.density if self.mst.GetPhase(
-                'Liquid1').Properties.density else 0
-        
-        if mass_fraction_liquid2_std:
-            cp_std = self.mst.GetPhase('Liquid1').Properties.heatCapacityCp
+    def get_burn_rate(self) -> tuple[float, float, float, float]:
+        mass_flow_l1 = self.mst.GetPhase('Liquid1').Properties.massflow
+        mass_flow_l1 = mass_flow_l1 if mass_flow_l1 else 0.0
+
+        mass_flow_l2 = self.mst.GetPhase('Liquid2').Properties.massflow
+        mass_flow_l2 = mass_flow_l2 if mass_flow_l2 else 0.0
+
+        liquid1_present = mass_flow_l1 > 0.0
+        liquid2_present = mass_flow_l2 > 0.0
+        two_liquids_present = liquid1_present and liquid2_present
+
+        water_phase = self.determine_water_phase()
+        oil_phase = 'Liquid2' if water_phase == 'Liquid1' else 'Liquid1'
+
+        if two_liquids_present:
+            target_phase = oil_phase
         else:
-            if (self.determine_water_phase() == 'Liquid1') or (rho_density == 0):
-                cp_std = 0.0
-                rho_density = 0.0
-            else:
-                cp_std = self.mst.GetPhase('Liquid1').Properties.heatCapacityCp
+            target_phase = 'Liquid1' if liquid1_present else 'Liquid2'
+
+        rho_density = self.mst.GetPhase(target_phase).Properties.density if self.mst.GetPhase(
+            target_phase).Properties.density else 0
+
+        if rho_density == 0:
+            cp_std = 0.0
+        else:
+            cp_std = self.mst.GetPhase(target_phase).Properties.heatCapacityCp
 
         overall_vaporization_enthalpy, overall_combustion_enthalpy = self.get_overall_enthalpies() if rho_density else (1.0, 1.0)
         index_temperature = self.refine_bubble_point(298.15) if rho_density else 1.0
@@ -493,10 +504,11 @@ class FlashOperations:
 
         burn_rate = constante_val * rho_density * ((overall_combustion_enthalpy)/(
                     overall_vaporization_enthalpy + cp_std * (index_temperature))) # kg/(m²*s)
-        
+
         burn_rate = abs(burn_rate) if burn_rate else -1.0
 
         return burn_rate, overall_vaporization_enthalpy, rho_density
+
     
     def get_evaporation_rate_and_evaporation_fraction(self, 
                                                       overall_vaporization_enthalpy: float,
@@ -600,8 +612,7 @@ class FlashOperations:
 
         # Burn rate (Oil)
         if not self.debug_mode:
-            burn_rate, overall_vaporization_enthalpy, rho_density = self.get_burn_rate(mass_fraction_liquid2_std, 
-                                                                          molecular_weight_oil)
+            burn_rate, overall_vaporization_enthalpy, rho_density = self.get_burn_rate()
             
             evaporation_rate = self.get_evaporation_rate_and_evaporation_fraction(overall_vaporization_enthalpy, 
                                                                                   release_temperature, rho_density)
