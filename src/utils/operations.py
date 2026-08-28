@@ -460,6 +460,14 @@ class FlashOperations:
         self.mst.SetTemperature(save_temperature)
         self.mst.SetMolarFlow(save_flow)
 
+        try:
+            self.mst.Calculate()
+        except Exception as e:
+            custom_logger.log(
+                f'Erro ao recalcular o flash após restaurar as condições originais no cenario {self.cen_name} da corrente {self.current_name}.',
+                logging.ERROR
+            )
+
         return index_temperature
 
     def get_burn_rate(self,
@@ -507,30 +515,46 @@ class FlashOperations:
         return evaporation_rate
 
     def determine_water_phase(self) -> str:
-        density_liquid1 = self.mst.GetPhase('Liquid1').Properties.density
-        mw_liquid1 = self.mst.GetPhase('Liquid1').Properties.molecularWeight if self.mst.GetPhase(
-            'Liquid1').Properties.molecularWeight else 0
+        MASS_FLOW_THRESHOLD_KG_S = 0.1
+        WATER_FRACTION_THRESHOLD = 0.8
 
-        density_liquid2 = self.mst.GetPhase('Liquid2').Properties.density
-        mw_liquid2 = self.mst.GetPhase('Liquid2').Properties.molecularWeight if self.mst.GetPhase(
-            'Liquid2').Properties.molecularWeight else 0
+        mass_flow_l1 = self.mst.GetPhase('Liquid1').Properties.massflow
+        mass_flow_l1 = mass_flow_l1 if mass_flow_l1 else 0.0
 
-        density_like_water_l1 = (density_liquid1 is not None) and (850 < density_liquid1 < 1500) and (17 < mw_liquid1 < 19)
-        density_like_water_l2 = (density_liquid2 is not None) and (850 < density_liquid2 < 1500) and (17 < mw_liquid2 < 19)
+        mass_flow_l2 = self.mst.GetPhase('Liquid2').Properties.massflow
+        mass_flow_l2 = mass_flow_l2 if mass_flow_l2 else 0.0
 
         liquid1_compounds = self.mst.GetPhase('Liquid1').Compounds
         liquid2_compounds = self.mst.GetPhase('Liquid2').Compounds
 
-        water_frac_l1 = liquid1_compounds['Water'].MassFraction if 'Water' in liquid1_compounds.Keys and liquid1_compounds['Water'].MassFraction else 0.0
-        water_frac_l2 = liquid2_compounds['Water'].MassFraction if 'Water' in liquid2_compounds.Keys and liquid2_compounds['Water'].MassFraction else 0.0
+        water_frac_l1 = liquid1_compounds['Water'].MoleFraction if 'Water' in liquid1_compounds.Keys and liquid1_compounds['Water'].MoleFraction else 0.0
+        water_frac_l2 = liquid2_compounds['Water'].MoleFraction if 'Water' in liquid2_compounds.Keys and liquid2_compounds['Water'].MoleFraction else 0.0
 
-        if density_like_water_l1 == density_like_water_l2:
-            return 'Liquid1' if water_frac_l1 >= water_frac_l2 else 'Liquid2'
+        liquid1_present = mass_flow_l1 > 0.0
+        liquid2_present = mass_flow_l2 > 0.0
 
-        if density_like_water_l1:
-            return 'Liquid1' if water_frac_l1 >= water_frac_l2 else 'Liquid2'
-        else:
-            return 'Liquid2' if water_frac_l2 >= water_frac_l1 else 'Liquid1'
+        if liquid1_present != liquid2_present:
+            single_phase = 'Liquid1' if liquid1_present else 'Liquid2'
+            other_phase = 'Liquid2' if single_phase == 'Liquid1' else 'Liquid1'
+
+            single_water_frac = water_frac_l1 if single_phase == 'Liquid1' else water_frac_l2
+            single_mass_flow = mass_flow_l1 if single_phase == 'Liquid1' else mass_flow_l2
+
+            if single_water_frac > WATER_FRACTION_THRESHOLD:
+                return single_phase
+
+            if single_mass_flow < MASS_FLOW_THRESHOLD_KG_S:
+                density_single = self.mst.GetPhase(single_phase).Properties.density
+                mw_single = self.mst.GetPhase(single_phase).Properties.molecularWeight if self.mst.GetPhase(
+                    single_phase).Properties.molecularWeight else 0
+
+                density_like_water = (density_single is not None) and (850 < density_single < 1500) and (17 < mw_single < 19)
+
+                return single_phase if density_like_water else other_phase
+            else:
+                return other_phase
+
+        return 'Liquid1' if water_frac_l1 >= water_frac_l2 else 'Liquid2'
 
     def get_std_flash_data(self, 
                           scenario_dict: dict[str, float],
@@ -748,10 +772,10 @@ class FlashOperations:
 
     def should_skip_scenario(self, scenario_dict: dict[str, float]) -> bool:
         phase_mass_fraction_map = {
-            'Overall': None,  # nunca pula
-            'Liquid2': 'LIQUID PHASE_Mass Fraction',   # water
-            'Liquid1': 'OILY PHASE_Mass Fraction',     # oil
-            'Vapor': 'VAPOUR PHASE_Mass Fraction',     # vapor
+            'Overall': None,
+            'Liquid2': 'LIQUID PHASE_Mass Fraction',
+            'Liquid1': 'OILY PHASE_Mass Fraction',
+            'Vapor': 'VAPOUR PHASE_Mass Fraction',
         }
 
         mass_fraction_key = phase_mass_fraction_map.get(self.molar_phase)
