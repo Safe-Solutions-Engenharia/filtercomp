@@ -140,6 +140,72 @@ class CalorificValue(Filter):
 
             self.filtered_data_dict[current_name] = result_df
 
+class SpecificCalorificValue(Filter):
+    def __init__(self, 
+                 filter_type: OperationsFilter,
+                 flashed_df_dict: dict[str, pd.DataFrame], 
+                 full_info_dict: dict[str, pd.DataFrame],
+                 composition_dict: dict[str, dict[str, list[float]]],
+                 phase_type: PhaseType,
+                 use_simulated_value: bool) -> None:
+        super().__init__(filter_type,
+                         flashed_df_dict, 
+                         full_info_dict,
+                         composition_dict,
+                         phase_type,
+                         use_simulated_value)
+        
+        self.calculate_calorific_value()
+        for current_filtered_value in self.filtered_data_dict.values():
+            current_filtered_value.columns = [column.split('_')[1].strip() if '_' in column else column for column in current_filtered_value.columns]
+        self.operation_loader.stop()
+
+    @staticmethod
+    def attribute_calorific_value(row: pd.Series, composition_names: list[str], composition_dict, 
+                                  phase_type: PhaseType, current_name: str, enthalpy_db: pd.DataFrame) -> str:
+        if row['SCENARIO_Cenário'] == 'SCENARIO':
+            return 'CALORIFIC'
+        
+        calorific = 0
+        for comp_value, comp_name in zip(composition_dict[current_name][row['SCENARIO_Cenário']][phase_type.value], composition_names):
+            if comp_name in enthalpy_db['Composition'].values and comp_value:
+                matching_rows = enthalpy_db[enthalpy_db['Composition'] == comp_name]['Enthalpy'].values
+                enthalpy_combustion = matching_rows[0] if matching_rows else 0
+                calorific += enthalpy_combustion * comp_value # sum (kJ/kmol * frac mol)
+        
+        return calorific
+        
+    def get_calorific_value(self, current_database: pd.DataFrame, current_name: str, ph_type: PhaseType) -> pd.DataFrame:
+        composition_names = current_database.columns[current_database.iloc[0] == 'COMPONENT FRACTION']
+        current_database['Calorific'] = current_database.apply(
+            lambda row: self.attribute_calorific_value(
+                row, composition_names, self.composition_dict, ph_type, current_name, self.enthalpy_db
+            ),
+            axis=1
+        )
+        return current_database
+
+    def calculate_calorific_value(self) -> None:
+        for current_name, current_database in self.flashed_df_dict.items():
+            if current_database.iloc[1:].empty:
+                continue
+
+            current_database = self.get_calorific_value(current_database, current_name, self.phase_type)
+            current_database = current_database.fillna(0)
+
+            first_row = current_database.iloc[0]
+            current_database = current_database.iloc[1:, :].reset_index(drop=True)
+
+            current_database['Calorific'] = current_database['Calorific'].astype(float)
+
+            max_calorific_row = current_database.iloc[current_database['Calorific'].idxmin()]
+
+            result_df = pd.concat([first_row, max_calorific_row], axis=1).T
+            result_df = result_df.iloc[:, :-1]
+            result_df = result_df.reset_index(drop=True)
+
+            self.filtered_data_dict[current_name] = result_df
+
 class CO2AndH2SFraction(Filter):
     def __init__(self,
                  filter_type: OperationsFilter, 
@@ -284,6 +350,259 @@ class CO2Fraction(Filter):
                 result = result.reset_index(drop=True)
                 self.filtered_data_dict[key_name] = result
 
+class COFraction(Filter):
+    def __init__(self,
+                 filter_type: OperationsFilter, 
+                 flashed_df_dict: dict[str, pd.DataFrame], 
+                 full_info_dict: dict[str, pd.DataFrame],
+                 composition_dict: dict[str, dict[str, list[float]]],
+                 phase_type: PhaseType,
+                 use_simulated_value: bool) -> None:
+        super().__init__(filter_type,
+                         flashed_df_dict, 
+                         full_info_dict,
+                         composition_dict,
+                         phase_type,
+                         use_simulated_value)
+        
+        self.calculate_co()
+        for current_filtered_value in self.filtered_data_dict.values():
+            current_filtered_value.columns = [column.split('_')[1].strip() if '_' in column else column for column in current_filtered_value.columns]
+        self.operation_loader.stop()
+        
+    def calculate_co(self):
+        co_position = list(self.flashed_df_dict.values())[0].columns.str.lower().get_loc('carbon monoxide'.lower())
+        df = list(self.flashed_df_dict.values())[0]
+        index_to_subtract = df.columns.get_loc(df.iloc[0][df.iloc[0] == 'COMPONENT FRACTION'].index[0])
+    
+        max_co = {}
+        for current_name, current_database in self.composition_dict.items():
+            all_co = {}
+
+            for scenario_name, scenario_current_database in current_database.items():
+                co_val = scenario_current_database[self.phase_type.value][co_position - index_to_subtract]
+
+                all_co[scenario_name] = co_val
+
+            if not all_co:
+                continue
+            
+            max_value_co = max([item for item in all_co.values()])
+
+            for k, v in all_co.items():
+                if v == max_value_co:
+                    max_co[current_name] = k
+
+            key_names = []
+            for key in max_co.keys():
+                if current_name in key:
+                    key_names.append(key)
+            
+            first_row = self.flashed_df_dict[current_name].loc[[0]]
+            for key_name in key_names:
+                match_row = self.flashed_df_dict[current_name].loc[self.flashed_df_dict[current_name]['SCENARIO_Cenário'] == max_co2[key_name]]
+                result = pd.concat([first_row, match_row])
+                result = result.reset_index(drop=True)
+                self.filtered_data_dict[key_name] = result
+
+class H2SFraction(Filter):
+    def __init__(self,
+                 filter_type: OperationsFilter, 
+                 flashed_df_dict: dict[str, pd.DataFrame], 
+                 full_info_dict: dict[str, pd.DataFrame],
+                 composition_dict: dict[str, dict[str, list[float]]],
+                 phase_type: PhaseType,
+                 use_simulated_value: bool) -> None:
+        super().__init__(filter_type,
+                         flashed_df_dict, 
+                         full_info_dict,
+                         composition_dict,
+                         phase_type,
+                         use_simulated_value)
+        
+        self.calculate_h2s()
+        for current_filtered_value in self.filtered_data_dict.values():
+            current_filtered_value.columns = [column.split('_')[1].strip() if '_' in column else column for column in current_filtered_value.columns]
+        self.operation_loader.stop()
+        
+    def calculate_h2s(self):
+        h2s_position = list(self.flashed_df_dict.values())[0].columns.str.lower().get_loc('hydrogen sulfide'.lower())
+        df = list(self.flashed_df_dict.values())[0]
+        index_to_subtract = df.columns.get_loc(df.iloc[0][df.iloc[0] == 'COMPONENT FRACTION'].index[0])
+    
+        max_h2s = {}
+        for current_name, current_database in self.composition_dict.items():
+            all_h2s = {}
+
+            for scenario_name, scenario_current_database in current_database.items():
+                h2s_val = scenario_current_database[self.phase_type.value][h2s_position - index_to_subtract]
+
+                all_h2s[scenario_name] = h2s_val
+
+            if not all_h2s:
+                continue
+            
+            max_value_h2s = max([item for item in all_h2s.values()])
+
+            for k, v in all_h2s.items():
+                if v == max_value_h2s:
+                    max_h2s[current_name] = k
+
+            key_names = []
+            for key in max_h2s.keys():
+                if current_name in key:
+                    key_names.append(key)
+            
+            first_row = self.flashed_df_dict[current_name].loc[[0]]
+            for key_name in key_names:
+                match_row = self.flashed_df_dict[current_name].loc[self.flashed_df_dict[current_name]['SCENARIO_Cenário'] == max_co2[key_name]]
+                result = pd.concat([first_row, match_row])
+                result = result.reset_index(drop=True)
+                self.filtered_data_dict[key_name] = result
+
+class NH3Fraction(Filter):
+    def __init__(self,
+                 filter_type: OperationsFilter, 
+                 flashed_df_dict: dict[str, pd.DataFrame], 
+                 full_info_dict: dict[str, pd.DataFrame],
+                 composition_dict: dict[str, dict[str, list[float]]],
+                 phase_type: PhaseType,
+                 use_simulated_value: bool) -> None:
+        super().__init__(filter_type,
+                         flashed_df_dict, 
+                         full_info_dict,
+                         composition_dict,
+                         phase_type,
+                         use_simulated_value)
+        
+        self.calculate_nh3()
+        for current_filtered_value in self.filtered_data_dict.values():
+            current_filtered_value.columns = [column.split('_')[1].strip() if '_' in column else column for column in current_filtered_value.columns]
+        self.operation_loader.stop()
+        
+    def calculate_nh3(self):
+        nh3_position = list(self.flashed_df_dict.values())[0].columns.str.lower().get_loc('ammonia'.lower())
+        df = list(self.flashed_df_dict.values())[0]
+        index_to_subtract = df.columns.get_loc(df.iloc[0][df.iloc[0] == 'COMPONENT FRACTION'].index[0])
+    
+        max_nh3 = {}
+        for current_name, current_database in self.composition_dict.items():
+            all_nh3 = {}
+
+            for scenario_name, scenario_current_database in current_database.items():
+                nh3_val = scenario_current_database[self.phase_type.value][nh3_position - index_to_subtract]
+
+                all_nh3[scenario_name] = nh3_val
+
+            if not all_nh3:
+                continue
+            
+            max_value_nh3 = max([item for item in all_nh3.values()])
+
+            for k, v in all_nh3.items():
+                if v == max_value_nh3:
+                    max_nh3[current_name] = k
+
+            key_names = []
+            for key in max_nh3.keys():
+                if current_name in key:
+                    key_names.append(key)
+            
+            first_row = self.flashed_df_dict[current_name].loc[[0]]
+            for key_name in key_names:
+                match_row = self.flashed_df_dict[current_name].loc[self.flashed_df_dict[current_name]['SCENARIO_Cenário'] == max_co2[key_name]]
+                result = pd.concat([first_row, match_row])
+                result = result.reset_index(drop=True)
+                self.filtered_data_dict[key_name] = result
+
+class BiggerDensity(Filter):
+    def __init__(self, 
+                 filter_type: OperationsFilter,
+                 flashed_df_dict: dict[str, pd.DataFrame], 
+                 full_info_dict: dict[str, pd.DataFrame],
+                 composition_dict: dict[str, dict[str, list[float]]],
+                 phase_type: PhaseType,
+                 use_simulated_value: bool) -> None:
+        super().__init__(filter_type,
+                         flashed_df_dict, 
+                         full_info_dict,
+                         composition_dict,
+                         phase_type,
+                         use_simulated_value)
+        
+        self.get_density_value()
+        for current_filtered_value in self.filtered_data_dict.values():
+            current_filtered_value.columns = [column.split('_')[1].strip() if '_' in column else column for column in current_filtered_value.columns]
+        self.operation_loader.stop()
+
+    def get_density_value(self) -> None:
+        phase_prefix = {
+            PhaseType.VAPOR: 'VAPOUR PHASE',
+            PhaseType.OIL: 'OILY PHASE',
+            PhaseType.WATER: 'LIQUID PHASE'
+        }
+        if self.phase_type == PhaseType.OVERALL:
+            raise NotImplementedError("OVERALL doesn't have density values attached")
+
+        column_name = f'{phase_prefix[self.phase_type]}_Density @Std Cond'
+
+        for current_name, current_database in self.flashed_df_dict.items():
+            if current_database.iloc[1:].empty:
+                continue
+
+            density = pd.to_numeric(current_database[column_name].iloc[1:], errors='coerce')
+            if density.isna().all():
+                selected_row = current_database.iloc[[-1]]
+            else:
+                selected_row = current_database.loc[[density.idxmax()]]
+
+            result_df = pd.concat([current_database.iloc[[0]], selected_row]).reset_index(drop=True)
+            self.filtered_data_dict[current_name] = result_df
+
+class SmallerDensity(Filter):
+    def __init__(self, 
+                 filter_type: OperationsFilter,
+                 flashed_df_dict: dict[str, pd.DataFrame], 
+                 full_info_dict: dict[str, pd.DataFrame],
+                 composition_dict: dict[str, dict[str, list[float]]],
+                 phase_type: PhaseType,
+                 use_simulated_value: bool) -> None:
+        super().__init__(filter_type,
+                         flashed_df_dict, 
+                         full_info_dict,
+                         composition_dict,
+                         phase_type,
+                         use_simulated_value)
+        
+        self.get_density_value()
+        for current_filtered_value in self.filtered_data_dict.values():
+            current_filtered_value.columns = [column.split('_')[1].strip() if '_' in column else column for column in current_filtered_value.columns]
+        self.operation_loader.stop()
+
+    def get_density_value(self) -> None:
+        phase_prefix = {
+            PhaseType.VAPOR: 'VAPOUR PHASE',
+            PhaseType.OIL: 'OILY PHASE',
+            PhaseType.WATER: 'LIQUID PHASE'
+        }
+        if self.phase_type == PhaseType.OVERALL:
+            raise NotImplementedError("OVERALL doesn't have density values attached")
+
+        column_name = f'{phase_prefix[self.phase_type]}_Density @Std Cond'
+
+        for current_name, current_database in self.flashed_df_dict.items():
+            if current_database.iloc[1:].empty:
+                continue
+
+            density = pd.to_numeric(current_database[column_name].iloc[1:], errors='coerce')
+            if density.isna().all():
+                selected_row = current_database.iloc[[-1]]
+            else:
+                selected_row = current_database.loc[[density.idxmin()]]
+
+            result_df = pd.concat([current_database.iloc[[0]], selected_row]).reset_index(drop=True)
+            self.filtered_data_dict[current_name] = result_df
+
 class Dispersion(Filter):
     def __init__(self, 
                  filter_type: OperationsFilter,
@@ -309,7 +628,13 @@ class FilterFactory:
         OperationsFilter.CALORIFIC_VALUE: CalorificValue,
         OperationsFilter.CO2_AND_H2S_FRACTION: CO2AndH2SFraction,
         OperationsFilter.CO2_FRACTION: CO2Fraction,
-        OperationsFilter.DISPERSION: Dispersion
+        OperationsFilter.DISPERSION: Dispersion,
+        OperationsFilter.SPECIFIC_CALORIFIC_VALUE: SpecificCalorificValue,
+        OperationsFilter.CO_FRACTION: COFraction,
+        OperationsFilter.H2S_FRACTION: H2SFraction,
+        OperationsFilter.NH3_FRACTION: NH3Fraction,
+        OperationsFilter.BIGGER_DENSITY: BiggerDensity,
+        OperationsFilter.SMALLER_DENSITY: SmallerDensity,
     }
 
     @staticmethod

@@ -6,6 +6,12 @@ class OperationsFilter(Enum):
     CO2_AND_H2S_FRACTION = 1
     DISPERSION = 2
     CO2_FRACTION = 3
+    SPECIFIC_CALORIFIC_VALUE = 4,
+    CO_FRACTION = 5,
+    H2S_FRACTION = 6,
+    NH3_FRACTION = 7,
+    BIGGER_DENSITY = 8,
+    SMALLER_DENSITY = 9
 
 class PhaseType(Enum):
     OVERALL = 'Overall'
