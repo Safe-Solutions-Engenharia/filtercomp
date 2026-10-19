@@ -400,7 +400,7 @@ class COFraction(Filter):
             
             first_row = self.flashed_df_dict[current_name].loc[[0]]
             for key_name in key_names:
-                match_row = self.flashed_df_dict[current_name].loc[self.flashed_df_dict[current_name]['SCENARIO_Cenário'] == max_co2[key_name]]
+                match_row = self.flashed_df_dict[current_name].loc[self.flashed_df_dict[current_name]['SCENARIO_Cenário'] == max_co[key_name]]
                 result = pd.concat([first_row, match_row])
                 result = result.reset_index(drop=True)
                 self.filtered_data_dict[key_name] = result
@@ -455,7 +455,7 @@ class H2SFraction(Filter):
             
             first_row = self.flashed_df_dict[current_name].loc[[0]]
             for key_name in key_names:
-                match_row = self.flashed_df_dict[current_name].loc[self.flashed_df_dict[current_name]['SCENARIO_Cenário'] == max_co2[key_name]]
+                match_row = self.flashed_df_dict[current_name].loc[self.flashed_df_dict[current_name]['SCENARIO_Cenário'] == max_h2s[key_name]]
                 result = pd.concat([first_row, match_row])
                 result = result.reset_index(drop=True)
                 self.filtered_data_dict[key_name] = result
@@ -510,7 +510,7 @@ class NH3Fraction(Filter):
             
             first_row = self.flashed_df_dict[current_name].loc[[0]]
             for key_name in key_names:
-                match_row = self.flashed_df_dict[current_name].loc[self.flashed_df_dict[current_name]['SCENARIO_Cenário'] == max_co2[key_name]]
+                match_row = self.flashed_df_dict[current_name].loc[self.flashed_df_dict[current_name]['SCENARIO_Cenário'] == max_nh3[key_name]]
                 result = pd.concat([first_row, match_row])
                 result = result.reset_index(drop=True)
                 self.filtered_data_dict[key_name] = result
