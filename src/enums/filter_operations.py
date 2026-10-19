@@ -7,9 +7,9 @@ class OperationsFilter(Enum):
     DISPERSION = 2
     CO2_FRACTION = 3
     SPECIFIC_CALORIFIC_VALUE = 4,
-    CO_FRACTION = 5,
-    H2S_FRACTION = 6,
-    NH3_FRACTION = 7,
+    MIN_CO_FRACTION = 5,
+    MIN_H2S_FRACTION = 6,
+    MIN_NH3_FRACTION = 7,
     BIGGER_DENSITY = 8,
     SMALLER_DENSITY = 9
 

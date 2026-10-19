@@ -350,7 +350,7 @@ class CO2Fraction(Filter):
                 result = result.reset_index(drop=True)
                 self.filtered_data_dict[key_name] = result
 
-class COFraction(Filter):
+class MinCOFraction(Filter):
     def __init__(self,
                  filter_type: OperationsFilter, 
                  flashed_df_dict: dict[str, pd.DataFrame], 
@@ -375,37 +375,40 @@ class COFraction(Filter):
         df = list(self.flashed_df_dict.values())[0]
         index_to_subtract = df.columns.get_loc(df.iloc[0][df.iloc[0] == 'COMPONENT FRACTION'].index[0])
     
-        max_co = {}
+        min_co = {}
         for current_name, current_database in self.composition_dict.items():
             all_co = {}
 
             for scenario_name, scenario_current_database in current_database.items():
                 co_val = scenario_current_database[self.phase_type.value][co_position - index_to_subtract]
 
+                if co_val == 0:
+                    continue
+
                 all_co[scenario_name] = co_val
 
             if not all_co:
                 continue
             
-            max_value_co = max([item for item in all_co.values()])
+            min_value_co = min(all_co.values())
 
             for k, v in all_co.items():
-                if v == max_value_co:
-                    max_co[current_name] = k
+                if v == min_value_co:
+                    min_co[current_name] = k
 
             key_names = []
-            for key in max_co.keys():
+            for key in min_co.keys():
                 if current_name in key:
                     key_names.append(key)
             
             first_row = self.flashed_df_dict[current_name].loc[[0]]
             for key_name in key_names:
-                match_row = self.flashed_df_dict[current_name].loc[self.flashed_df_dict[current_name]['SCENARIO_Cenário'] == max_co[key_name]]
+                match_row = self.flashed_df_dict[current_name].loc[self.flashed_df_dict[current_name]['SCENARIO_Cenário'] == min_co[key_name]]
                 result = pd.concat([first_row, match_row])
                 result = result.reset_index(drop=True)
                 self.filtered_data_dict[key_name] = result
 
-class H2SFraction(Filter):
+class MinH2SFraction(Filter):
     def __init__(self,
                  filter_type: OperationsFilter, 
                  flashed_df_dict: dict[str, pd.DataFrame], 
@@ -430,37 +433,40 @@ class H2SFraction(Filter):
         df = list(self.flashed_df_dict.values())[0]
         index_to_subtract = df.columns.get_loc(df.iloc[0][df.iloc[0] == 'COMPONENT FRACTION'].index[0])
     
-        max_h2s = {}
+        min_h2s = {}
         for current_name, current_database in self.composition_dict.items():
             all_h2s = {}
 
             for scenario_name, scenario_current_database in current_database.items():
                 h2s_val = scenario_current_database[self.phase_type.value][h2s_position - index_to_subtract]
 
+                if h2s_val == 0:
+                    continue
+
                 all_h2s[scenario_name] = h2s_val
 
             if not all_h2s:
                 continue
             
-            max_value_h2s = max([item for item in all_h2s.values()])
+            min_value_h2s = min(all_h2s.values())
 
             for k, v in all_h2s.items():
-                if v == max_value_h2s:
-                    max_h2s[current_name] = k
+                if v == min_value_h2s:
+                    min_h2s[current_name] = k
 
             key_names = []
-            for key in max_h2s.keys():
+            for key in min_h2s.keys():
                 if current_name in key:
                     key_names.append(key)
             
             first_row = self.flashed_df_dict[current_name].loc[[0]]
             for key_name in key_names:
-                match_row = self.flashed_df_dict[current_name].loc[self.flashed_df_dict[current_name]['SCENARIO_Cenário'] == max_h2s[key_name]]
+                match_row = self.flashed_df_dict[current_name].loc[self.flashed_df_dict[current_name]['SCENARIO_Cenário'] == min_h2s[key_name]]
                 result = pd.concat([first_row, match_row])
                 result = result.reset_index(drop=True)
                 self.filtered_data_dict[key_name] = result
 
-class NH3Fraction(Filter):
+class MinNH3Fraction(Filter):
     def __init__(self,
                  filter_type: OperationsFilter, 
                  flashed_df_dict: dict[str, pd.DataFrame], 
@@ -485,32 +491,35 @@ class NH3Fraction(Filter):
         df = list(self.flashed_df_dict.values())[0]
         index_to_subtract = df.columns.get_loc(df.iloc[0][df.iloc[0] == 'COMPONENT FRACTION'].index[0])
     
-        max_nh3 = {}
+        min_nh3 = {}
         for current_name, current_database in self.composition_dict.items():
             all_nh3 = {}
 
             for scenario_name, scenario_current_database in current_database.items():
                 nh3_val = scenario_current_database[self.phase_type.value][nh3_position - index_to_subtract]
 
+                if nh3_val == 0:
+                    continue
+
                 all_nh3[scenario_name] = nh3_val
 
             if not all_nh3:
                 continue
             
-            max_value_nh3 = max([item for item in all_nh3.values()])
+            min_value_nh3 = min(all_nh3.values())
 
             for k, v in all_nh3.items():
-                if v == max_value_nh3:
-                    max_nh3[current_name] = k
+                if v == min_value_nh3:
+                    min_nh3[current_name] = k
 
             key_names = []
-            for key in max_nh3.keys():
+            for key in min_nh3.keys():
                 if current_name in key:
                     key_names.append(key)
             
             first_row = self.flashed_df_dict[current_name].loc[[0]]
             for key_name in key_names:
-                match_row = self.flashed_df_dict[current_name].loc[self.flashed_df_dict[current_name]['SCENARIO_Cenário'] == max_nh3[key_name]]
+                match_row = self.flashed_df_dict[current_name].loc[self.flashed_df_dict[current_name]['SCENARIO_Cenário'] == min_nh3[key_name]]
                 result = pd.concat([first_row, match_row])
                 result = result.reset_index(drop=True)
                 self.filtered_data_dict[key_name] = result
@@ -630,9 +639,9 @@ class FilterFactory:
         OperationsFilter.CO2_FRACTION: CO2Fraction,
         OperationsFilter.DISPERSION: Dispersion,
         OperationsFilter.SPECIFIC_CALORIFIC_VALUE: SpecificCalorificValue,
-        OperationsFilter.CO_FRACTION: COFraction,
-        OperationsFilter.H2S_FRACTION: H2SFraction,
-        OperationsFilter.NH3_FRACTION: NH3Fraction,
+        OperationsFilter.MIN_CO_FRACTION: MinCOFraction,
+        OperationsFilter.MIN_H2S_FRACTION: MinH2SFraction,
+        OperationsFilter.MIN_NH3_FRACTION: MinNH3Fraction,
         OperationsFilter.BIGGER_DENSITY: BiggerDensity,
         OperationsFilter.SMALLER_DENSITY: SmallerDensity,
     }
