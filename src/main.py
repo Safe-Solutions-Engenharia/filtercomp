@@ -32,7 +32,15 @@ def main() -> None:
 
     save_excel_file(OUTPUT_FOLDER, NAME, FRACTION_PHASE, filtered_data_dict, packages)
     
-    custom_logger.log('File saved successfully!', logging.INFO)
+    if flash_operations.failed_flashes:
+        failures = '; '.join(
+            f'corrente {current}, cenário {scenario} ({flash_type})'
+            for current, scenario, flash_type in flash_operations.failed_flashes)
+        custom_logger.log(
+            f'Arquivos salvos com pendências de cálculo: {failures}. '
+            'Esses cenários não foram incluídos nos resultados.', logging.WARNING)
+    else:
+        custom_logger.log('File saved successfully!', logging.INFO)
 
 if __name__ == "__main__":
     main()

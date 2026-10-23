@@ -3,6 +3,7 @@ import os
 from collections import OrderedDict
 import sqlite3
 import difflib
+import math
 
 from chemicals import Tc, Pc, CAS_from_any, Tb, MW
 from chemicals.phase_change import Riedel
@@ -18,6 +19,8 @@ from enums.dwsim_packages import DWSIMPackages, DWSIMAutomatic
 from enums.filter_operations import PhaseType, CompoundBasis, PhaseActivity
 from utils.logger import custom_logger
 from utils.dwsim_components_db import compounds_dwsim, componente_dwsim_polar, componente_dwsim_hidrocarboneto
+
+UNITS = UnitRegistry()
 
 DWSIMPATH = os.path.join(os.getenv('USERPROFILE'), "AppData", "Local", "DWSIM")
 if not os.path.exists(DWSIMPATH):
@@ -61,6 +64,7 @@ class FlashOperations:
         self.compound_basis = compound_basis.value
         self.basis_unit = basis_unit
         self.debug_mode = debug_mode
+        self.failed_flashes = []
 
         self.HEADERS: dict[str, list[str]] = {'SCENARIO': ['Cenário'],
                         'OVERALL': ['Temperature', 'Pressure', 'Molar Flow', 'Mass Flow', 'Cp/Cv @T&P Cond', 'Molecular Weight @T&P Cond', 'Burn Rate', 
@@ -120,7 +124,7 @@ class FlashOperations:
                         component_list: list[float], compound_dict: dict[int, any], pressure_Pa: float, 
                         temperature_K: float, flow_rate_name: str, pressure_unit: str,
                         flow_rate: float, gas_flow: float,
-                        liquid_flow: float, flash_type: str) -> None:
+                        liquid_flow: float, flash_type: str) -> bool:
         component_list = [float(comp) for comp in component_list]
 
         composition_unit_conv = {
@@ -136,7 +140,7 @@ class FlashOperations:
                                 }
         
         correct_names = [c.Key for c in compound_dict.values()]
-        component_dict = dict(zip(correct_names, component_list))
+        component_dict = {name: value for name, value in zip(correct_names, component_list) if value > 0}
 
         if not self.basis_unit:
             mst_order = list(self.mst.GetCompoundNames())
@@ -156,8 +160,14 @@ class FlashOperations:
                 raise ValueError(f"Unsupported compound basis: {self.compound_basis}")
 
         self.mst.SetFlashSpec("PT")
-        self.mst.SetPressure(f'{pressure_Pa} {pressure_unit}')
-        self.mst.SetTemperature(f'{temperature_K} K')
+        pressure_si = UNITS.Quantity(float(pressure_Pa), pressure_unit).to('Pa').magnitude
+        temperature_si = float(temperature_K)
+        if pressure_si <= 0:
+            raise ValueError('A pressão absoluta deve ser maior que zero.')
+        if temperature_si <= 0:
+            raise ValueError('A temperatura absoluta deve ser maior que zero.')
+        self.mst.SetPressure(float(pressure_si))
+        self.mst.SetTemperature(temperature_si)
 
         flow_types = {'overall_mass flow': 'SetMassFlow',
                       'overall_molar flow': 'SetMolarFlow',
@@ -165,7 +175,10 @@ class FlashOperations:
         flow_rate_unit = flow_rate_name.rsplit('_')[-1]
         flow_rate_name_raw = flow_rate_name.rsplit('_', 1)[0]
         flow_functions = flow_types[flow_rate_name_raw]
-        getattr(self.mst, flow_functions)(f'{flow_rate} {flow_rate_unit}')
+        target_units = {'SetMassFlow': 'kg/s', 'SetMolarFlow': 'mol/s', 'SetVolumetricFlow': 'm^3/s'}
+        flow_si = UNITS.Quantity(float(flow_rate), flow_rate_unit.replace('m3', 'm^3')).to(
+            target_units[flow_functions]).magnitude
+        getattr(self.mst, flow_functions)(float(flow_si))
 
         if flash_type == 'Flash @P&T':
             if not gas_flow:
@@ -184,6 +197,7 @@ class FlashOperations:
 
         tol_val = float(self.instantiated_package.FlashSettings[FlashSetting.PTFlash_External_Loop_Tolerance])
         success = False
+        last_error = None
         while not success:
             try:
                 if tol_val >= 1E-2:
@@ -191,6 +205,10 @@ class FlashOperations:
                 self.mst.Calculate()
                 success = True
             except Exception as e:
+                last_error = e
+                if 'interaction parameter' in str(e).lower():
+                    break
+
                 num_iter = int(self.instantiated_package.FlashSettings[FlashSetting.PTFlash_Maximum_Number_Of_External_Iterations])
                 tol_val = float(self.instantiated_package.FlashSettings[FlashSetting.PTFlash_External_Loop_Tolerance])
                 if num_iter < 1000:
@@ -204,7 +222,11 @@ class FlashOperations:
                 continue
 
         if not success:
-            custom_logger.log(f'Erro no {flash_type} do cenario {self.cen_name} da corrente {self.current_name}', logging.ERROR)
+            self.failed_flashes.append((self.current_name, self.cen_name, flash_type))
+            custom_logger.log(
+                f'Erro no {flash_type} do cenario {self.cen_name} da corrente {self.current_name}: '
+                f'{last_error}', logging.ERROR)
+        return success
 
     @staticmethod
     def get_compound_name(current_value: pd.DataFrame, 
@@ -219,14 +241,23 @@ class FlashOperations:
                 compound_dict[index] = compound
 
         compound_dict = OrderedDict(sorted(compound_dict.items()))
+
+        missing = [name for index, name in enumerate(compound_names) if index not in compound_dict]
+        if missing:
+            raise ValueError(f'Componentes não encontrados no DWSIM: {", ".join(missing)}')
         
         return compound_dict
 
     def get_compound_value(self, current_value: pd.DataFrame, cen_name: str) -> list[float]:
-        compound_list = current_value[current_value['SCENARIO_Cenário'] == cen_name].iloc[0, 4:].to_list()
 
-        if self.compound_basis == 'MolarComposition':
-            compound_list = [x / 100 if sum(compound_list) > 2 else x for x in compound_list]
+        compound_list = [float(value) for value in current_value[current_value['SCENARIO_Cenário'] == cen_name].iloc[0, 4:]]
+        if any(value < 0 for value in compound_list):
+            raise ValueError(f'Composição inválida no cenário {cen_name}: use valores não negativos.')
+        total = math.fsum(compound_list)
+        if total > 0 and self.compound_basis in (CompoundBasis.MOLE_FRAC.value, CompoundBasis.MASS_FRAC.value):
+            if not math.isclose(total, 1.0, rel_tol=1e-9, abs_tol=1e-12):
+                custom_logger.log(f'Normalizando composição da corrente {self.current_name}, cenário {cen_name}: soma={total:.12g}', logging.WARNING)
+            compound_list = [value / total for value in compound_list]
 
         return compound_list
 
@@ -389,7 +420,7 @@ class FlashOperations:
                 try:
                     if tol_val >= 1E-2:
                         break
-                    self.mst.SetTemperature(f'{release_temperature + index_temperature} K')
+                    self.mst.SetTemperature(float(release_temperature + index_temperature))
                     self.mst.Calculate()
                     vapor_fraction = self.mst.GetPhase('Vapor').Properties.molarfraction if self.mst.GetPhase('Vapor').Properties.molarfraction else 0
                     success = True
@@ -429,7 +460,7 @@ class FlashOperations:
                 try:
                     if tol_val >= 1E-2:
                         break
-                    self.mst.SetTemperature(f'{release_temperature + index_temperature} K')
+                    self.mst.SetTemperature(float(release_temperature + index_temperature))
                     self.mst.Calculate()
                     vapor_fraction = self.mst.GetPhase('Vapor').Properties.molarfraction if self.mst.GetPhase('Vapor').Properties.molarfraction else 0
                     success = True  # Calculation succeeded
@@ -680,9 +711,14 @@ class FlashOperations:
             else:
                 comp_phase = self.mst.GetPhase(self.molar_phase).Compounds
 
-        composition_list = [comp_phase[x.Key].MoleFraction for x in compoud_dict.values()]
+        composition_list = self.phase_composition(comp_phase, compoud_dict)
 
         return composition_list
+
+    @staticmethod
+    def phase_composition(compounds, compound_dict) -> list[float]:
+        return [compounds[x.Key].MoleFraction if x.Key in compounds.Keys else 0.0
+                for x in compound_dict.values()]
     
     def get_all_compound_value(self, compoud_dict: dict[str, any]) -> None:
         self.current_comp_dict: dict[str, list[float]] = {}
@@ -699,16 +735,16 @@ class FlashOperations:
                 liquid2_comp = self.mst.GetPhase('Liquid2').Compounds
 
                 if self.determine_water_phase() == 'Liquid1':
-                    comp_list_oil = [liquid2_comp[x.Key].MoleFraction for x in compoud_dict.values()]
-                    comp_list_water = [liquid1_comp[x.Key].MoleFraction for x in compoud_dict.values()]
+                    comp_list_oil = self.phase_composition(liquid2_comp, compoud_dict)
+                    comp_list_water = self.phase_composition(liquid1_comp, compoud_dict)
                 else:
-                    comp_list_oil = [liquid1_comp[x.Key].MoleFraction for x in compoud_dict.values()]
-                    comp_list_water = [liquid2_comp[x.Key].MoleFraction for x in compoud_dict.values()]
+                    comp_list_oil = self.phase_composition(liquid1_comp, compoud_dict)
+                    comp_list_water = self.phase_composition(liquid2_comp, compoud_dict)
 
                 self.current_comp_dict['Liquid1'] = comp_list_oil
                 self.current_comp_dict['Liquid2'] = comp_list_water
             else:
-                comp_list = [comp_phase[x.Key].MoleFraction for x in compoud_dict.values()]
+                comp_list = self.phase_composition(comp_phase, compoud_dict)
                 self.current_comp_dict[phase_type.value] = comp_list
 
     @staticmethod
@@ -798,6 +834,15 @@ class FlashOperations:
 
         return mass_fraction_value is None
 
+    @staticmethod
+    def retain_active_compounds(flowsheet, stream, active_names) -> None:
+        for name in list(flowsheet.SelectedCompounds.Keys):
+            if name not in active_names:
+                flowsheet.SelectedCompounds.Remove(name)
+        for phase in stream.Phases.Values:
+            phase.Compounds.Clear()
+        flowsheet.AddCompoundsToMaterialStream(stream)
+
     def operations_per_scenario(self, current_name: str, current_value: pd.DataFrame) -> pd.DataFrame:
         self.current_name = current_name
         dataframe_base = self.dataframe_base(current_value)
@@ -821,8 +866,10 @@ class FlashOperations:
             if no_compound_value:
                 continue
 
+            active_names = {compound.Key for compound, value in zip(compound_dict.values(), compound_list)if value > 0}
+
             for compound in compound_dict.values():
-                if compound.Key not in list(flowsheet.SelectedCompounds.Keys):
+                if compound.Key in active_names and compound.Key not in list(flowsheet.SelectedCompounds.Keys):
                     flowsheet.SelectedCompounds.Add(compound.Key, compound.Value)
                 
             temperature_C = current_value[current_value['SCENARIO_Cenário'] == cen_name]['OVERALL_Temperature'].values[0] # C
@@ -845,6 +892,8 @@ class FlashOperations:
             else:
                 ms1 = flowsheet.AddObject(ObjectType.MaterialStream, 50, 50, "Current")
                 self.mst = ms1.GetAsObject()
+
+            self.retain_active_compounds(flowsheet, self.mst, active_names)
 
             scenario_dict['SCENARIO_Cenário'] = cen_name
             scenario_dict['OVERALL_Temperature'] = temperature_C
@@ -882,7 +931,7 @@ class FlashOperations:
 
                 proportion = (self.polar_proportion / 100.0 if self.polar_proportion > 1.0 else self.polar_proportion)
 
-                pressure = (pressure_value * UnitRegistry()(pressure_unit))
+                pressure = UNITS.Quantity(float(pressure_value), pressure_unit)
                 pressure_bar = pressure.to('bar').magnitude
 
                 if (water_fraction >= 0.995 and hydrocarbon_sum >= 0.001):
@@ -919,30 +968,34 @@ class FlashOperations:
             self.mst.PropertyPackage = self.instantiated_package
 
             # Flash @P&T
-            self.flash_operation(compound_list, compound_dict, pressure_value, 
+            if not self.flash_operation(compound_list, compound_dict, pressure_value,
                                  temperature_K, flow_rate_name.lower(), pressure_unit,
-                                 flow_rate, gas_flow, liquid_flow, 'Flash @P&T')
+                                 flow_rate, gas_flow, liquid_flow, 'Flash @P&T'):
+                continue
                         
             scenario_dict = self.get_overall_data(scenario_dict)
 
             scenario_dict = self.get_pt_flash_data(scenario_dict)
 
             # Flash @STD
-            self.flash_operation(compound_list, compound_dict, '101325', 
+            if not self.flash_operation(compound_list, compound_dict, '101325',
                                  '298.15', flow_rate_name.lower(), 'Pa', 
-                                 flow_rate, 1, 1, 'Flash @STD')
+                                 flow_rate, 1, 1, 'Flash @STD'):
+                continue
             
             scenario_dict, new_compound_list = self.get_std_flash_data(scenario_dict, temperature_K, compound_dict)
 
             self.get_all_compound_value(compound_dict)
 
-            self.cen_comp_dict[cen_name] = self.current_comp_dict
-
             scenario_dict = self.get_compounds_molar_fraction(scenario_dict, new_compound_list, current_value)
 
             if self.should_skip_scenario(scenario_dict):
+                custom_logger.log(
+                    f'Corrente {current_name}, cenário {cen_name}: fase {self.molar_phase} ausente em STD.',
+                    logging.INFO)
                 continue
 
+            self.cen_comp_dict[cen_name] = self.current_comp_dict
             self.selected_packages[cen_name] = selected_package_value
 
             scenario_df = self.get_scenario_dataframe(dataframe_base, scenario_dict)
@@ -980,4 +1033,3 @@ class FlashOperations:
 
 
         return flashed_df_dict
-    
