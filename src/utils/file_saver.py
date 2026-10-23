@@ -5,11 +5,25 @@ from openpyxl.styles import PatternFill
 from openpyxl.styles import Alignment
 import pandas as pd
 import os
+import logging
+
+from utils.logger import custom_logger
+
+
+def valid_scenario_frames(filtered_data_dict):
+    valid = {}
+    for current, frame in filtered_data_dict.items():
+        if len(frame.index) < 2:
+            custom_logger.log(
+                f'Corrente {current} sem cenário selecionado; não será exportada.', logging.WARNING)
+            continue
+        valid[current] = frame
+    return valid
 
 
 def create_scenario_xlsx(output: str, name: str, filtered_data_dict: dict[str, pd.DataFrame]) -> None:
     scenario_dict = {'Corrente': [], 'Cenário': []}
-    for current, df in filtered_data_dict.items():
+    for current, df in valid_scenario_frames(filtered_data_dict).items():
         scenario_dict['Corrente'].append(current)
         scenario_dict['Cenário'].append(df.iloc[1, 0])
 
@@ -76,7 +90,7 @@ def create_final_composition_file(fraction_phase: PhaseType, name: str, fracao_f
     sheet = wb.active
 
     index = 0
-    for corrente, df in filtered_data_dict.items():
+    for corrente, df in valid_scenario_frames(filtered_data_dict).items():
         sheet.cell(row=4, column=4 + index, value=corrente)
 
         composition = df.iloc[:, 33:]
@@ -110,6 +124,11 @@ def create_final_composition_file(fraction_phase: PhaseType, name: str, fracao_f
 
 
 def save_excel_file(output_file: str, name: str, fraction_phase: PhaseType, filtered_data_dict: dict[str, pd.DataFrame], packages: dict[str, dict[int, any]]) -> None:
+    filtered_data_dict = valid_scenario_frames(filtered_data_dict)
+    
+    if not filtered_data_dict:
+        raise ValueError('Nenhum cenário válido para exportar após o flash e a aplicação do filtro.')
+    
     output = os.path.join(output_file, fraction_phase.name)
     composicoes_output = os.path.join(output, 'Composicoes')
     fracao_final_output = os.path.join(output, 'Fracao_Final')
