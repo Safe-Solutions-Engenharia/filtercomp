@@ -29,7 +29,12 @@ class Filter(ABC):
         self.filter_type = filter_type
         self.flashed_df_dict = flashed_df_dict
         self.full_info_dict = full_info_dict
-        self.composition_dict = composition_dict
+        
+        self.composition_dict = {
+            name: {scenario: phases for scenario, phases in composition_dict.get(name, {}).items()
+                if scenario in set(frame['SCENARIO_Cenário'].iloc[1:])}
+                    for name, frame in flashed_df_dict.items()
+            }
         self.use_simulated_value = use_simulated_value
         self.filtered_data_dict: dict[str, pd.DataFrame] = {}
         self.phase_type = phase_type
@@ -371,18 +376,18 @@ class MinCOFraction(Filter):
         self.operation_loader.stop()
         
     def calculate_co(self):
-        co_position = list(self.flashed_df_dict.values())[0].columns.str.lower().get_loc('carbon monoxide'.lower())
-        df = list(self.flashed_df_dict.values())[0]
-        index_to_subtract = df.columns.get_loc(df.iloc[0][df.iloc[0] == 'COMPONENT FRACTION'].index[0])
-    
-        min_co = {}
         for current_name, current_database in self.composition_dict.items():
+            frame = self.flashed_df_dict[current_name]
+            composition_names = frame.columns[frame.iloc[0] == 'COMPONENT FRACTION'].str.lower().tolist()
+            if 'carbon monoxide' not in composition_names:
+                continue
+            co_position = composition_names.index('carbon monoxide')
             all_co = {}
 
             for scenario_name, scenario_current_database in current_database.items():
-                co_val = scenario_current_database[self.phase_type.value][co_position - index_to_subtract]
+                co_val = scenario_current_database[self.phase_type.value][co_position]
 
-                if co_val == 0:
+                if co_val is None or pd.isna(co_val) or co_val == 0:
                     continue
 
                 all_co[scenario_name] = co_val
@@ -390,23 +395,10 @@ class MinCOFraction(Filter):
             if not all_co:
                 continue
             
-            min_value_co = min(all_co.values())
-
-            for k, v in all_co.items():
-                if v == min_value_co:
-                    min_co[current_name] = k
-
-            key_names = []
-            for key in min_co.keys():
-                if current_name in key:
-                    key_names.append(key)
-            
-            first_row = self.flashed_df_dict[current_name].loc[[0]]
-            for key_name in key_names:
-                match_row = self.flashed_df_dict[current_name].loc[self.flashed_df_dict[current_name]['SCENARIO_Cenário'] == min_co[key_name]]
-                result = pd.concat([first_row, match_row])
-                result = result.reset_index(drop=True)
-                self.filtered_data_dict[key_name] = result
+            selected = [key for key, value in all_co.items() if value == min(all_co.values())][-1]
+            match_row = frame.loc[frame['SCENARIO_Cenário'] == selected]
+            if not match_row.empty:
+                self.filtered_data_dict[current_name] = pd.concat([frame.iloc[[0]], match_row]).reset_index(drop=True)
 
 class MinH2SFraction(Filter):
     def __init__(self,
@@ -653,7 +645,8 @@ class FilterFactory:
                       composition_dict: dict[str, dict[str, list[float]]],
                       *, phase_type: PhaseType,
                       use_simulated_value: bool) -> T:
+        if not flashed_df_dict:
+            raise ValueError('Nenhum cenário válido para a fase selecionada após os flashes.')
         filter_class = FilterFactory.filter_classes.get(filter_type, OperationsFilter)
         return filter_class(filter_type, flashed_df_dict, full_info_dict, 
                             composition_dict, phase_type, use_simulated_value)
-    
